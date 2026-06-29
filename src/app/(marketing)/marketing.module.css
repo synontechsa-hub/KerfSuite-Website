@@ -1,0 +1,823 @@
+/* ================================================================
+   KerfSuite Marketing — Landing Page CSS
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   Navigation
+   ---------------------------------------------------------------- */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 64px;
+  background-color: rgba(18, 18, 18, 0.9);
+  border-bottom: 1px solid var(--bg-panel-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.navBrand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navLogo {
+  font-family: var(--font-base);
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.navLogo span {
+  color: var(--accent-orange);
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.navLinks a {
+  font-family: var(--font-base);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.navLinks a:hover {
+  color: var(--text-primary);
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navPortalBtn {
+  font-family: var(--font-base);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-orange);
+  border: 1px solid var(--accent-orange);
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--radius-md);
+  transition: all 0.2s;
+}
+
+.navPortalBtn:hover {
+  background-color: var(--accent-orange);
+  color: #121212;
+}
+
+/* Mobile nav hamburger */
+.navHamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.navHamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--text-primary);
+  transition: all 0.3s;
+}
+
+/* ----------------------------------------------------------------
+   Hero Section
+   ---------------------------------------------------------------- */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem 5rem;
+  overflow: hidden;
+}
+
+/* Grid background */
+.heroGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--bg-panel-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-panel-border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* Radial vignette over the grid */
+.heroGrid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 30%, var(--bg-primary) 80%);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 800px;
+}
+
+.heroEyebrow {
+  font-family: var(--font-base);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--accent-orange);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.heroEyebrow::before,
+.heroEyebrow::after {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background-color: var(--accent-orange);
+}
+
+.heroTitle {
+  font-family: var(--font-base);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  line-height: 1.05;
+  color: var(--text-primary);
+}
+
+.heroTitle span {
+  color: var(--accent-orange);
+}
+
+.heroTagline {
+  font-family: var(--font-base);
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  font-weight: 300;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  max-width: 600px;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* G-Code terminal block */
+.gcodeBlock {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--bg-panel-border);
+  border-left: 3px solid var(--accent-orange);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.6rem;
+  text-align: left;
+  min-width: 340px;
+  margin-top: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.gcodeBlock::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent-orange) 0%, transparent 100%);
+}
+
+.gcodeHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--bg-panel-border);
+}
+
+.gcodeLine {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.gcodeLine span {
+  color: var(--accent-orange);
+  margin-right: 0.8rem;
+  font-weight: 700;
+}
+
+/* ----------------------------------------------------------------
+   Apps / Suite Showcase Section
+   ---------------------------------------------------------------- */
+.appsSection {
+  padding: 6rem 0;
+}
+
+.appsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.appCard {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--bg-panel-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.appCard:hover {
+  border-color: var(--accent-orange);
+  transform: translateY(-3px);
+}
+
+.appCard.comingSoon {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.appCard.comingSoon:hover {
+  border-color: var(--bg-panel-border);
+  transform: none;
+}
+
+.appCardVisual {
+  background-color: var(--bg-panel-mid);
+  border-bottom: 1px solid var(--bg-panel-border);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 120px;
+}
+
+.appCardName {
+  font-family: var(--font-base);
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+}
+
+.appCardName span {
+  color: var(--accent-orange);
+}
+
+.versionTag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--accent-orange);
+  background-color: var(--accent-orange-dim);
+  border: 1px solid rgba(243, 156, 18, 0.3);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-md);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.versionTagIdle {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  background-color: rgba(149, 165, 166, 0.1);
+  border: 1px solid var(--bg-panel-border);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-md);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.appCardBody {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.appCardDesc {
+  font-family: var(--font-base);
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.featureList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.featureList li {
+  font-family: var(--font-base);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.featureList li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent-orange);
+  font-size: 0.6rem;
+  top: 1px;
+}
+
+.appCardActions {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--bg-panel-border);
+}
+
+/* ----------------------------------------------------------------
+   Philosophy / Features Strip
+   ---------------------------------------------------------------- */
+.philosophySection {
+  padding: 5rem 0;
+  background-color: var(--bg-panel-mid);
+  border-top: 1px solid var(--bg-panel-border);
+  border-bottom: 1px solid var(--bg-panel-border);
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.featureCard {
+  padding: 1.5rem;
+  border-left: 3px solid var(--bg-panel-border);
+  transition: border-color 0.3s;
+}
+
+.featureCard:hover {
+  border-left-color: var(--accent-orange);
+}
+
+.featureCardTitle {
+  font-family: var(--font-base);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.featureCardDesc {
+  font-family: var(--font-base);
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* ----------------------------------------------------------------
+   Tech Stack Strip
+   ---------------------------------------------------------------- */
+.techStrip {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--bg-panel-border);
+}
+
+.techGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+}
+
+.techItem {
+  flex: 1;
+  min-width: 160px;
+  padding: 1.2rem 2rem;
+  text-align: center;
+  border-right: 1px solid var(--bg-panel-border);
+}
+
+.techItem:last-child {
+  border-right: none;
+}
+
+.techLabel {
+  font-family: var(--font-base);
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.techValue {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ----------------------------------------------------------------
+   Pricing Section
+   ---------------------------------------------------------------- */
+.pricingSection {
+  padding: 6rem 0;
+}
+
+.pricingNote {
+  font-family: var(--font-base);
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 1rem;
+  letter-spacing: 1px;
+}
+
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.pricingCard {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--bg-panel-border);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color 0.3s;
+}
+
+.pricingCard:hover {
+  border-color: var(--accent-orange);
+}
+
+.pricingCard.featured {
+  border-color: var(--accent-orange);
+  background-color: var(--bg-panel-mid);
+}
+
+.pricingCard.comingSoon {
+  opacity: 0.55;
+}
+
+.pricingCard.comingSoon:hover {
+  border-color: var(--bg-panel-border);
+}
+
+.pricingBadge {
+  position: absolute;
+  top: -1px;
+  right: 1.2rem;
+  font-family: var(--font-base);
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background-color: var(--accent-orange);
+  color: #121212;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.pricingTier {
+  font-family: var(--font-base);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+}
+
+.pricingPrice {
+  font-family: var(--font-base);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.pricingPrice span {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-left: 0.25rem;
+}
+
+.pricingFeatures {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.pricingFeatures li {
+  font-family: var(--font-base);
+  font-size: 0.72rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  padding-left: 1rem;
+  position: relative;
+  line-height: 1.5;
+}
+
+.pricingFeatures li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent-orange);
+  font-size: 0.6rem;
+}
+
+.pricingFeatures li strong {
+  color: var(--accent-orange);
+}
+
+.pricingAction {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--bg-panel-border);
+}
+
+/* Pricing meta (upgrade path, guarantee) */
+.pricingMeta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--bg-panel-border);
+}
+
+.pricingMetaCard h4 {
+  font-family: var(--font-base);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-orange);
+  margin-bottom: 0.5rem;
+}
+
+.pricingMetaCard p {
+  font-family: var(--font-base);
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ----------------------------------------------------------------
+   Portal CTA Banner
+   ---------------------------------------------------------------- */
+.ctaBanner {
+  padding: 5rem 0;
+  background-color: var(--bg-panel-mid);
+  border-top: 1px solid var(--bg-panel-border);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaBanner::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+}
+
+.ctaBannerTitle {
+  font-family: var(--font-base);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.ctaBannerTitle span {
+  color: var(--accent-orange);
+}
+
+.ctaBannerDesc {
+  font-family: var(--font-base);
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  max-width: 480px;
+  margin: 0 auto 2rem;
+  line-height: 1.8;
+}
+
+.ctaBannerActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ----------------------------------------------------------------
+   Footer
+   ---------------------------------------------------------------- */
+.footer {
+  background-color: var(--bg-panel);
+  border-top: 1px solid var(--bg-panel-border);
+  padding: 3rem 0 2rem;
+}
+
+.footerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: start;
+}
+
+.footerBrand {
+  font-family: var(--font-base);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.footerBrand span {
+  color: var(--accent-orange);
+}
+
+.footerTagline {
+  font-family: var(--font-base);
+  font-size: 0.68rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.footerLinks {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footerLinks a {
+  font-family: var(--font-base);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.footerLinks a:hover {
+  color: var(--accent-orange);
+}
+
+.footerCopy {
+  grid-column: 1 / -1;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--bg-panel-border);
+  font-family: var(--font-base);
+  font-size: 0.62rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.footerCopy a {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.footerCopy a:hover {
+  color: var(--accent-orange);
+}
+
+/* ----------------------------------------------------------------
+   Responsive
+   ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .navLinks {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--bg-panel-border);
+    flex-direction: column;
+    padding: 1.5rem 2rem;
+    gap: 1.5rem;
+  }
+
+  .navLinks.open {
+    display: flex;
+  }
+
+  .navHamburger {
+    display: flex;
+  }
+
+  .gcodeBlock {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .footerInner {
+    grid-template-columns: 1fr;
+  }
+
+  .footerLinks {
+    gap: 1.2rem;
+  }
+
+  .techItem {
+    border-right: none;
+    border-bottom: 1px solid var(--bg-panel-border);
+  }
+
+  .techItem:last-child {
+    border-bottom: none;
+  }
+}

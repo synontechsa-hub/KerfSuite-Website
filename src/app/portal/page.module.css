@@ -1,0 +1,359 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+}
+
+.sidebar {
+  width: 250px;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--bg-panel-border);
+  margin-bottom: 1.5rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.navItem {
+  padding: 0.8rem 1rem;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.navItem:hover {
+  background-color: var(--bg-primary);
+}
+
+.navItem.active {
+  border-left-color: var(--accent-orange);
+  background-color: var(--bg-primary);
+}
+
+.navItem.active span {
+  color: var(--accent-orange);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1rem 1rem 0;
+  gap: 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.generateForm {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.select {
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--bg-panel-border);
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.select:focus {
+  border-color: var(--accent-orange);
+}
+
+.labelDisplay {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 2px;
+  min-height: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.labelDisplay:hover {
+  background-color: var(--bg-input);
+}
+
+.labelForm {
+  display: flex;
+}
+
+.labelInput {
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--accent-orange);
+  padding: 2px 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  width: 100%;
+}
+
+.logoutBtn {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #333;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: var(--status-error);
+  color: #fff;
+  border-color: var(--status-error);
+}
+
+.auditList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.auditItem {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  border-left: 2px solid var(--bg-panel-border);
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.auditTime {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  min-width: 60px;
+}
+
+.auditText {
+  color: var(--text-primary);
+}
+
+.dashboardSplit {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .dashboardSplit {
+    flex-direction: column;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.statValue {
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--text-primary);
+  margin: 0.5rem 0;
+}
+
+.statMeta {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th, .table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--bg-panel-border);
+}
+
+.table th {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-active {
+  background-color: rgba(46, 204, 113, 0.1);
+  color: var(--status-running);
+}
+
+.status-waiting {
+  background-color: rgba(243, 156, 18, 0.1);
+  color: var(--accent-orange);
+}
+
+.status-revoked {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: var(--status-error);
+}
+
+.btnDanger {
+  background-color: transparent;
+  color: var(--status-error);
+  border: 1px solid var(--status-error);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.btnDanger:hover {
+  background-color: var(--status-error);
+  color: #fff;
+}
+
+.btnDangerDisabled {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--bg-panel-border);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.labelSave,
+.labelCancel {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  border: 1px solid var(--bg-panel-border);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.labelSave:hover {
+  color: var(--status-running);
+  border-color: var(--status-running);
+}
+
+.labelCancel:hover {
+  color: var(--status-error);
+  border-color: var(--status-error);
+}
+
+.copyBtn {
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+.copyBtn:hover {
+  color: var(--accent-orange);
+  border-color: var(--bg-panel-border);
+}
+
+/* Inventory Styles */
+.inventoryContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rosterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.searchBar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tableRow:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .brand {
+    padding-bottom: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .nav {
+    flex-direction: row;
+    gap: 0;
+  }
+
+  .navItem {
+    padding: 0.5rem 0.8rem;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    font-size: 0.7rem;
+  }
+
+  .navItem.active {
+    border-left-color: transparent;
+    border-bottom-color: var(--accent-orange);
+  }
+
+  .main {
+    padding: 1rem;
+  }
+}
+
