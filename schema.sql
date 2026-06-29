@@ -23,7 +23,7 @@ END $$;
 CREATE TABLE IF NOT EXISTS public.workspaces (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL DEFAULT 'My Workshop',
-    allowed_apps TEXT[] NOT NULL DEFAULT ARRAY['kerfcut']::TEXT[],
+    allowed_apps TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

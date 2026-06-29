@@ -39,7 +39,10 @@ export default async function Home() {
             DASHBOARD
           </h2>
           <div className={styles.headerActions}>
-            {profile.role === 'admin' && <GenerateKeyButton allowedApps={workspace.allowedApps} />}
+            {profile.role === 'admin' && workspace.allowedApps.length > 0 && <GenerateKeyButton allowedApps={workspace.allowedApps} />}
+            {profile.role === 'admin' && workspace.allowedApps.length === 0 && (
+              <a href="/#pricing" className="btn-primary" style={{ padding: '0.6rem 1rem', fontSize: '0.8rem', textDecoration: 'none' }}>Buy License</a>
+            )}
           </div>
         </header>
 
