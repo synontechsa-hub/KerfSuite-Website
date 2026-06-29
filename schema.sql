@@ -324,13 +324,17 @@ DECLARE
 BEGIN
     target_workspace_id := (new.raw_user_meta_data->>'workspace_id')::UUID;
 
-    -- S-03: Block orphan workspaces (direct signups)
+    -- If no workspace is provided (direct signup), create a personal workspace
     IF target_workspace_id IS NULL THEN
-        RAISE EXCEPTION 'Direct signups are not permitted. Use an invitation link.';
+        INSERT INTO public.workspaces (name) 
+        VALUES (COALESCE(new.raw_user_meta_data->>'workspace_name', 'My Workshop')) 
+        RETURNING id INTO target_workspace_id;
+        
+        target_role := 'admin';
+    ELSE
+        -- Read role from metadata, default to 'member'
+        target_role := COALESCE(new.raw_user_meta_data->>'role', 'member');
     END IF;
-
-    -- Read role from metadata, default to 'member'
-    target_role := COALESCE(new.raw_user_meta_data->>'role', 'member');
     
     INSERT INTO public.users (id, workspace_id, email, role)
     VALUES (new.id, target_workspace_id, new.email, target_role);

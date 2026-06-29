@@ -31,8 +31,11 @@ export default function MarketingNav() {
       </ul>
 
       <div className={styles.navActions}>
-        <Link href="/login" className={styles.navPortalBtn}>
-          Portal →
+        <Link href="/login" style={{ color: 'var(--text-secondary)', marginRight: '1rem', fontSize: '0.85rem', textDecoration: 'none' }}>
+          Login
+        </Link>
+        <Link href="/signup" className={styles.navPortalBtn}>
+          Sign Up →
         </Link>
         <button
           className={styles.navHamburger}
