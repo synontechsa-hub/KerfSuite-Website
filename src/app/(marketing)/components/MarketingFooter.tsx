@@ -7,9 +7,31 @@ export default function MarketingFooter() {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerInner}>
-        <div>
-          <p className={styles.footerBrand}>Kerf<span>Suite</span></p>
+        {/* Brand column */}
+        <div className={styles.footerBrandCol}>
+          <img
+            src="/svg/kerfsuite-wordmark.svg"
+            alt="KerfSuite"
+            className={styles.footerWordmark}
+          />
           <p className={styles.footerTagline}>Precision at every stage of production.</p>
+
+          {/* Feed Rate publisher credit */}
+          <div className={styles.footerPublisher}>
+            <span className={styles.footerPublisherLabel}>Published by</span>
+            <a
+              href="https://github.com/Feed-Rate"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.footerPublisherLink}
+            >
+              <img
+                src="/svg/feedrate-logo.svg"
+                alt="Feed Rate"
+                className={styles.footerFeedRateLogo}
+              />
+            </a>
+          </div>
         </div>
 
         <ul className={styles.footerLinks}>
@@ -28,13 +50,25 @@ export default function MarketingFooter() {
             </a>
           </li>
         </ul>
+      </div>
 
+      {/* Powered By Synontech + copyright bar */}
+      <div className={styles.footerBottom}>
         <p className={styles.footerCopy}>
-          &copy; {year} Synontech. All rights reserved. &nbsp;|&nbsp; Powered by{' '}
-          <a href="https://synontech.github.io" target="_blank" rel="noopener noreferrer">
-            Synontech
-          </a>
+          &copy; {year} Synontech / Feed Rate. All rights reserved.
         </p>
+        <a
+          href="https://synontech.github.io"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.footerPoweredBy}
+        >
+          <img
+            src="/svg/powered-by-synontech.svg"
+            alt="Powered by Synontech"
+            className={styles.footerPoweredByImg}
+          />
+        </a>
       </div>
     </footer>
   );

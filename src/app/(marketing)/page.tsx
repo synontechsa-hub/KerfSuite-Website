@@ -59,56 +59,23 @@ export default function LandingPage() {
             </ScrollReveal>
           </div>
 
-          {/* Right: Product Visual Panel */}
+          {/* Right: Workshop Photo Panel */}
           <div className={styles.heroRight}>
-            <ScrollReveal delay={150}>
-              <div className={styles.heroVisualPanel}>
-                {/* Terminal header bar */}
-                <div className={styles.heroVisualHeader}>
-                  <div className={styles.heroVisualDots}>
-                    <span /><span /><span />
-                  </div>
-                  <span className={styles.heroVisualTitle}>KERFCUT — CUT OPTIMIZATION ENGINE</span>
-                </div>
-
-                {/* Mock cut plan visualizer */}
-                <div className={styles.heroVisualBody}>
-                  {/* Sheet grid visualization */}
-                  <div className={styles.heroSheetGrid}>
-                    {/* Row 1 */}
-                    <div className={`${styles.heroPiece} ${styles.pieceA}`}><span>2400×600</span></div>
-                    <div className={`${styles.heroPiece} ${styles.pieceB}`}><span>800×600</span></div>
-                    {/* Row 2 */}
-                    <div className={`${styles.heroPiece} ${styles.pieceC}`}><span>1200×400</span></div>
-                    <div className={`${styles.heroPiece} ${styles.pieceD}`}><span>900×400</span></div>
-                    <div className={`${styles.heroPiece} ${styles.pieceE}`}><span>500×400</span></div>
-                    {/* Row 3 */}
-                    <div className={`${styles.heroPiece} ${styles.pieceF}`}><span>1800×300</span></div>
-                    <div className={`${styles.heroPiece} ${styles.pieceOffcut}`}><span>OFFCUT</span></div>
-                  </div>
-
-                  {/* Stats bar */}
-                  <div className={styles.heroStatsBar}>
-                    <div className={styles.heroStat}>
-                      <span className={styles.heroStatVal}>94.2%</span>
-                      <span className={styles.heroStatLabel}>Yield</span>
-                    </div>
-                    <div className={styles.heroStat}>
-                      <span className={styles.heroStatVal}>6</span>
-                      <span className={styles.heroStatLabel}>Pieces</span>
-                    </div>
-                    <div className={styles.heroStat}>
-                      <span className={styles.heroStatVal}>1</span>
-                      <span className={styles.heroStatLabel}>Sheet</span>
-                    </div>
-                    <div className={styles.heroStat}>
-                      <span className={styles.heroStatVal}>0.3s</span>
-                      <span className={styles.heroStatLabel}>Solved</span>
-                    </div>
-                  </div>
-                </div>
+            <div className={styles.heroImageWrap}>
+              {/* Workshop stock photo */}
+              <img
+                src="/images/hero-workshop.jpg"
+                alt="Workshop floor — precision manufacturing"
+                className={styles.heroImage}
+              />
+              {/* Black fade overlay */}
+              <div className={styles.heroImageOverlay} />
+              {/* Corner tag */}
+              <div className={styles.heroImageTag}>
+                <span className={styles.heroImageTagDot} />
+                WORKSHOP IN PRODUCTION
               </div>
-            </ScrollReveal>
+            </div>
           </div>
         </section>
 
@@ -130,7 +97,7 @@ export default function LandingPage() {
               <ScrollReveal>
                 <article className={styles.appCard}>
                   <div className={styles.appCardVisual}>
-                    <div className={styles.appCardName}>Kerf<span>Cut</span></div>
+                    <img src="/svg/kerfcut-wordmark.svg" alt="KerfCut" className={styles.appCardLogo} />
                     <span className={styles.versionTag}>v1.0.0-Beta // ACTIVE</span>
                   </div>
                   <div className={styles.appCardBody}>

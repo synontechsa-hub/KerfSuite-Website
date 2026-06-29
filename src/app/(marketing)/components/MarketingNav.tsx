@@ -11,7 +11,12 @@ export default function MarketingNav() {
     <nav className={styles.nav}>
       <div className={styles.navBrand}>
         <Link href="/" className={styles.navLogo}>
-          Kerf<span>Suite</span>
+          <img
+            src="/svg/kerfsuite-wordmark.svg"
+            alt="KerfSuite"
+            height={28}
+            style={{ display: 'block', height: '28px', width: 'auto' }}
+          />
         </Link>
       </div>
 

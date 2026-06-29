@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   title: "KerfSuite — The Workshop Operating System",
   description: "A precision utility suite for serious workshops. Manage licenses, machines, and users across the KerfSuite ecosystem.",
   keywords: ["KerfSuite", "KerfCut", "KerfStock", "workshop software", "cut optimization", "CNC"],
+  icons: {
+    icon: [
+      { url: '/svg/favicon.svg', type: 'image/svg+xml' },
+    ],
+  },
   openGraph: {
     title: "KerfSuite — The Workshop Operating System",
     description: "Precision at every stage of production.",
