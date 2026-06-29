@@ -31,7 +31,7 @@ const provisionRatelimit = redis ? new Ratelimit({
   analytics: true,
 }) : null
 
-export default async function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1'
   const path = request.nextUrl.pathname
 
