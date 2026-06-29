@@ -18,54 +18,95 @@ export default function LandingPage() {
 
       <main>
         {/* ====================================================
-            HERO
+            HERO — Split Panel Design
         ==================================================== */}
         <section className={styles.hero}>
+          {/* Engineering grid background */}
           <div className={styles.heroGrid} />
 
-          <div className={styles.heroContent}>
+          {/* Left: Copy Panel */}
+          <div className={styles.heroLeft}>
             <ScrollReveal>
               <p className={styles.heroEyebrow}>
-                By Synontech
+                PRECISION AT EVERY STAGE OF PRODUCTION.
               </p>
 
               <h1 className={styles.heroTitle}>
-                Kerf<span>Suite</span>
+                Work smarter.<br />
+                Waste less.
               </h1>
-
-              <p className={styles.heroTagline}>
-                Precision at every stage of production.
-              </p>
 
               <p className={styles.heroDesc}>
                 A growing ecosystem of integrated workshop utilities designed to bridge
                 the gap between design and physical output. From algorithmic cut
-                optimization to real-time stock management — built for serious makers
-                who demand zero-defect workflows.
+                optimization to real-time stock management, KerfSuite is built for
+                serious makers who demand zero-defect workflows.
               </p>
 
               <div className={styles.heroCtas}>
                 <Link href="#apps" className="btn-filled">
                   Explore the Suite
                 </Link>
-                <Link href="/login" className="btn-primary">
-                  Go to Portal →
+                <Link href="/signup" className="btn-primary">
+                  Get Started →
                 </Link>
               </div>
-            </ScrollReveal>
 
-            {/* G-Code block */}
-            <ScrollReveal delay={200}>
-              <div className={styles.gcodeBlock}>
-                <div className={styles.gcodeHeader}>
-                  <span className="status-dot" />
-                  PROGRAM_FEED: CUT_OPTIMIZATION_V1.0.0-BETA
+              <div className={styles.heroPoweredBy}>
+                <span>Powered by</span>
+                <span className={styles.heroPoweredByBrand}>Synontech</span>
+              </div>
+            </ScrollReveal>
+          </div>
+
+          {/* Right: Product Visual Panel */}
+          <div className={styles.heroRight}>
+            <ScrollReveal delay={150}>
+              <div className={styles.heroVisualPanel}>
+                {/* Terminal header bar */}
+                <div className={styles.heroVisualHeader}>
+                  <div className={styles.heroVisualDots}>
+                    <span /><span /><span />
+                  </div>
+                  <span className={styles.heroVisualTitle}>KERFCUT — CUT OPTIMIZATION ENGINE</span>
                 </div>
-                <div className={styles.gcodeLine}><span>N10</span> G21 G90 G00 X0.0 Y0.0</div>
-                <div className={styles.gcodeLine}><span>N20</span> M03 S18000</div>
-                <div className={styles.gcodeLine}><span>N30</span> G01 Z-2.5 F500</div>
-                <div className={styles.gcodeLine}><span>N40</span> G01 X2440.0 Y1220.0 F2400</div>
-                <div className={styles.gcodeLine}><span>N50</span> M05 M30</div>
+
+                {/* Mock cut plan visualizer */}
+                <div className={styles.heroVisualBody}>
+                  {/* Sheet grid visualization */}
+                  <div className={styles.heroSheetGrid}>
+                    {/* Row 1 */}
+                    <div className={`${styles.heroPiece} ${styles.pieceA}`}><span>2400×600</span></div>
+                    <div className={`${styles.heroPiece} ${styles.pieceB}`}><span>800×600</span></div>
+                    {/* Row 2 */}
+                    <div className={`${styles.heroPiece} ${styles.pieceC}`}><span>1200×400</span></div>
+                    <div className={`${styles.heroPiece} ${styles.pieceD}`}><span>900×400</span></div>
+                    <div className={`${styles.heroPiece} ${styles.pieceE}`}><span>500×400</span></div>
+                    {/* Row 3 */}
+                    <div className={`${styles.heroPiece} ${styles.pieceF}`}><span>1800×300</span></div>
+                    <div className={`${styles.heroPiece} ${styles.pieceOffcut}`}><span>OFFCUT</span></div>
+                  </div>
+
+                  {/* Stats bar */}
+                  <div className={styles.heroStatsBar}>
+                    <div className={styles.heroStat}>
+                      <span className={styles.heroStatVal}>94.2%</span>
+                      <span className={styles.heroStatLabel}>Yield</span>
+                    </div>
+                    <div className={styles.heroStat}>
+                      <span className={styles.heroStatVal}>6</span>
+                      <span className={styles.heroStatLabel}>Pieces</span>
+                    </div>
+                    <div className={styles.heroStat}>
+                      <span className={styles.heroStatVal}>1</span>
+                      <span className={styles.heroStatLabel}>Sheet</span>
+                    </div>
+                    <div className={styles.heroStat}>
+                      <span className={styles.heroStatVal}>0.3s</span>
+                      <span className={styles.heroStatLabel}>Solved</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </ScrollReveal>
           </div>

@@ -106,151 +106,249 @@
 }
 
 /* ----------------------------------------------------------------
-   Hero Section
+   Hero Section — Split Panel Layout
    ---------------------------------------------------------------- */
 .hero {
   position: relative;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 8rem 2rem 5rem;
+  flex-direction: row;
+  align-items: stretch;
   overflow: hidden;
+  padding-top: 64px; /* nav height */
 }
 
-/* Grid background */
+/* Engineering grid background */
 .heroGrid {
   position: absolute;
   inset: 0;
   background-image:
     linear-gradient(var(--bg-panel-border) 1px, transparent 1px),
     linear-gradient(90deg, var(--bg-panel-border) 1px, transparent 1px);
-  background-size: 60px 60px;
-  opacity: 0.25;
+  background-size: 107px 100px;
+  opacity: 0.3;
   pointer-events: none;
+  z-index: 0;
 }
 
-/* Radial vignette over the grid */
-.heroGrid::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, transparent 30%, var(--bg-primary) 80%);
-}
-
-.heroContent {
+/* Left: Text copy column */
+.heroLeft {
   position: relative;
   z-index: 2;
+  flex: 0 0 44%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  max-width: 800px;
+  justify-content: center;
+  padding: 5rem 3rem 5rem 4rem;
+  border-right: 1px solid var(--bg-panel-border);
 }
 
+/* Tag line above heading */
 .heroEyebrow {
   font-family: var(--font-base);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   color: var(--accent-orange);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
-.heroEyebrow::before,
-.heroEyebrow::after {
-  content: '';
-  display: block;
-  width: 32px;
-  height: 1px;
-  background-color: var(--accent-orange);
-}
-
+/* Main H1 */
 .heroTitle {
   font-family: var(--font-base);
-  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
   font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 4px;
   line-height: 1.05;
   color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .heroTitle span {
   color: var(--accent-orange);
 }
 
-.heroTagline {
+/* Body copy */
+.heroDesc {
   font-family: var(--font-base);
-  font-size: clamp(0.8rem, 1.5vw, 1rem);
-  font-weight: 300;
+  font-size: 0.9rem;
+  font-weight: 400;
   color: var(--text-secondary);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  max-width: 600px;
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
 }
 
+/* CTA buttons */
 .heroCtas {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 0.5rem;
+  margin-bottom: 3rem;
 }
 
-/* G-Code terminal block */
-.gcodeBlock {
-  background-color: var(--bg-panel);
-  border: 1px solid var(--bg-panel-border);
-  border-left: 3px solid var(--accent-orange);
-  border-radius: var(--radius-md);
-  padding: 1.2rem 1.6rem;
-  text-align: left;
-  min-width: 340px;
-  margin-top: 0.5rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.gcodeBlock::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--accent-orange) 0%, transparent 100%);
-}
-
-.gcodeHeader {
+/* Powered by badge */
+.heroPoweredBy {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--accent-orange);
+  gap: 0.5rem;
+  font-family: var(--font-base);
+  font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 0.8rem;
-  padding-bottom: 0.6rem;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.heroPoweredByBrand {
+  color: var(--accent-orange);
+  font-weight: 700;
+}
+
+/* Right: Product visual column */
+.heroRight {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 3rem;
+}
+
+/* The mock app panel */
+.heroVisualPanel {
+  width: 100%;
+  max-width: 660px;
+  background: var(--bg-panel);
+  border: 1px solid var(--bg-panel-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,102,0,0.08);
+}
+
+/* App window header bar */
+.heroVisualHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  background: rgba(0,0,0,0.3);
   border-bottom: 1px solid var(--bg-panel-border);
 }
 
-.gcodeLine {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
+.heroVisualDots {
+  display: flex;
+  gap: 6px;
 }
 
-.gcodeLine span {
-  color: var(--accent-orange);
-  margin-right: 0.8rem;
+.heroVisualDots span {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg-panel-border);
+}
+
+.heroVisualDots span:first-child { background: #ff5f56; }
+.heroVisualDots span:nth-child(2) { background: #ffbd2e; }
+.heroVisualDots span:nth-child(3) { background: #27c93f; }
+
+.heroVisualTitle {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
   font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+}
+
+/* Cut plan body area */
+.heroVisualBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Sheet grid - CSS grid representing cut pieces */
+.heroSheetGrid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  height: 300px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--bg-panel-border);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+/* Individual cut pieces */
+.heroPiece {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.heroPiece:hover {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
+/* Piece color variants */
+.pieceA { background: rgba(255, 102, 0, 0.18); grid-column: 1; grid-row: 1; }
+.pieceB { background: rgba(255, 102, 0, 0.10); grid-column: 2; grid-row: 1; }
+.pieceC { background: rgba(255, 140, 0, 0.15); grid-column: 1; grid-row: 2; }
+.pieceD { background: rgba(255, 102, 0, 0.12); grid-column: 2; grid-row: 2; }
+.pieceE { display: none; }
+.pieceF { background: rgba(255, 102, 0, 0.20); grid-column: 1; grid-row: 3; }
+.pieceOffcut { background: repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 8px); grid-column: 2; grid-row: 3; color: rgba(255,255,255,0.3); }
+
+/* Stats bar below the cut plan */
+.heroStatsBar {
+  display: flex;
+  gap: 1rem;
+  border-top: 1px solid var(--bg-panel-border);
+  padding-top: 1rem;
+}
+
+.heroStat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.6rem;
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  border: 1px solid var(--bg-panel-border);
+}
+
+.heroStatVal {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+}
+
+.heroStatLabel {
+  font-family: var(--font-base);
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
 }
 
 /* ----------------------------------------------------------------
