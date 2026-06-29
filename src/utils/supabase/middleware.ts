@@ -27,25 +27,18 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // 1. If it's an auth callback or login, don't perform session checks
-  // This prevents middleware from "swallowing" the one-time code
-  if (
-    request.nextUrl.pathname.startsWith('/login') ||
-    request.nextUrl.pathname.startsWith('/auth') ||
-    request.nextUrl.pathname.startsWith('/api')
-  ) {
-    return supabaseResponse
-  }
+  // Only require authentication for the portal area
+  // This allows the marketing homepage (/) and other public routes to load normally
+  if (request.nextUrl.pathname.startsWith('/portal')) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-  // 2. Otherwise, check session
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+    if (!user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      return NextResponse.redirect(url)
+    }
   }
 
   return supabaseResponse
