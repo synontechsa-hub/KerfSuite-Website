@@ -1087,3 +1087,239 @@
     border-bottom: none;
   }
 }
+
+/* ----------------------------------------------------------------
+   About Section — 3-Column Industrial Layout
+   ---------------------------------------------------------------- */
+.aboutSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--bg-panel-border);
+}
+
+/* Column 1: Copy */
+.aboutCol1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 3rem 6rem 4rem;
+  border-right: 1px solid var(--bg-panel-border);
+  background-color: var(--bg-panel);
+}
+
+.aboutEyebrow {
+  font-family: var(--font-base);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+  margin-bottom: 1.5rem;
+}
+
+.aboutHeadline {
+  font-family: var(--font-base);
+  font-size: clamp(3rem, 4.5vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 2.5rem;
+}
+
+.aboutBody {
+  font-family: var(--font-base);
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.aboutBody:last-child {
+  margin-bottom: 0;
+}
+
+.aboutLink {
+  color: var(--accent-orange);
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.aboutLink:hover {
+  color: var(--accent-orange-hover);
+}
+
+/* Column 2: Dual stacked images */
+.aboutCol2 {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--bg-panel-border);
+  overflow: hidden;
+}
+
+.aboutImgStack {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.aboutImgWrap {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  min-height: 250px;
+}
+
+.aboutImgWrap + .aboutImgWrap {
+  border-top: 1px solid var(--bg-panel-border);
+}
+
+.aboutImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: brightness(0.65) saturate(0.85);
+  transition: filter 0.4s ease, transform 0.6s ease;
+}
+
+.aboutImgWrap:hover .aboutImg {
+  filter: brightness(0.8) saturate(1);
+  transform: scale(1.03);
+}
+
+.aboutImgOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    var(--bg-primary) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.aboutImgTag {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(243, 156, 18, 0.3);
+  border-radius: 3px;
+  padding: 0.35rem 0.7rem;
+  backdrop-filter: blur(4px);
+}
+
+.aboutImgTagDot {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-orange);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Column 3: Product summaries */
+.aboutCol3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 3rem;
+  background-color: var(--bg-panel-mid);
+  overflow-y: auto;
+}
+
+.aboutProductCard {
+  padding: 1rem 0;
+}
+
+.aboutProductLogo {
+  height: 24px;
+  width: auto;
+  display: block;
+  margin-bottom: 1.25rem;
+  filter: brightness(1);
+}
+
+.aboutProductDesc {
+  font-family: var(--font-base);
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.aboutProductFeats {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.aboutProductFeats li {
+  font-family: var(--font-base);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.aboutProductFeats li::before {
+  content: '//';
+  position: absolute;
+  left: 0;
+  color: var(--accent-orange);
+  font-weight: 700;
+}
+
+.aboutDivider {
+  height: 1px;
+  background: var(--bg-panel-border);
+  margin: 2rem 0;
+}
+
+/* Responsive: stack columns */
+@media (max-width: 1024px) {
+  .aboutSection {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .aboutCol1 {
+    padding: 4rem 2rem;
+    border-right: none;
+    border-bottom: 1px solid var(--bg-panel-border);
+  }
+
+  .aboutCol2 {
+    border-right: none;
+    border-bottom: 1px solid var(--bg-panel-border);
+    min-height: 60vw;
+  }
+
+  .aboutImgWrap {
+    min-height: 200px;
+  }
+
+  .aboutCol3 {
+    padding: 3rem 2rem;
+  }
+}
