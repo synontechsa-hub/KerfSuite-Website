@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import Link from 'next/link';
 import styles from './marketing.module.css';
 import MarketingNav from './components/MarketingNav';
@@ -80,6 +80,136 @@ export default function LandingPage() {
         </section>
 
         <div className="cyber-divider" />
+        {/* ====================================================
+            ABOUT SECTION — 3-Column Industrial Layout
+        ==================================================== */}
+        <section id="about" className={styles.aboutSection}>
+          {/* Column 1: Copy */}
+          <div className={styles.aboutCol1}>
+            <ScrollReveal>
+              <p className={styles.aboutEyebrow}>ABOUT</p>
+              <h2 className={styles.aboutHeadline}>
+                Serious<br />tools.
+              </h2>
+              <p className={styles.aboutBody}>
+                KerfSuite was built by craftsmen who got tired of managing
+                workshop operations in spreadsheets and notebooks. Every app
+                in the suite solves a real, specific problem that real shops
+                face every day.
+              </p>
+              <p className={styles.aboutBody}>
+                We don&apos;t build features for a marketing checklist. We build
+                tools that improve yield, reduce waste, and give you back the
+                time you spend chasing numbers instead of making things.
+              </p>
+              <p className={styles.aboutBody}>
+                Published by{' '}
+                <a
+                  href="https://github.com/Feed-Rate"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.aboutLink}
+                >
+                  Feed Rate
+                </a>
+                {' '}and powered by{' '}
+                <a
+                  href="https://synontech.github.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.aboutLink}
+                >
+                  Synontech
+                </a>
+                .
+              </p>
+            </ScrollReveal>
+          </div>
+
+          {/* Column 2: Dual stacked photos */}
+          <div className={styles.aboutCol2}>
+            <ScrollReveal>
+              <div className={styles.aboutImgStack}>
+                <div className={styles.aboutImgWrap}>
+                  <img
+                    src="/images/about-laser.jpg"
+                    alt="CNC laser cutting machine in operation — precision metal fabrication"
+                    className={styles.aboutImg}
+                  />
+                  <div className={styles.aboutImgOverlay} />
+                  <div className={styles.aboutImgTag}>
+                    <span className={styles.aboutImgTagDot} />
+                    CNC LASER // IN OPERATION
+                  </div>
+                </div>
+                <div className={styles.aboutImgWrap}>
+                  <img
+                    src="/images/istockphoto-1279406662-612x612.jpg"
+                    alt="Workshop engineers in safety gear operating CNC machinery"
+                    className={styles.aboutImg}
+                  />
+                  <div className={styles.aboutImgOverlay} />
+                  <div className={styles.aboutImgTag}>
+                    <span className={styles.aboutImgTagDot} />
+                    TEAM // PRODUCTION FLOOR
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+
+          {/* Column 3: Product summaries */}
+          <div className={styles.aboutCol3}>
+            <ScrollReveal delay={100}>
+              <div className={styles.aboutProductCard}>
+                <img
+                  src="/svg/kerfcut-wordmark.svg"
+                  alt="KerfCut"
+                  className={styles.aboutProductLogo}
+                />
+                <p className={styles.aboutProductDesc}>
+                  KerfCut is our flagship algorithmic cut-list optimizer.
+                  Feed it your required piece sizes and it packs them into
+                  raw sheets with MaxRects + Guillotine logic, squeezing
+                  maximum yield from every board, plate, or panel.
+                </p>
+                <ul className={styles.aboutProductFeats}>
+                  <li>Smart sheet packing engine</li>
+                  <li>Grain-direction lock</li>
+                  <li>PDF cut-plan export</li>
+                  <li>Instant quoting</li>
+                </ul>
+              </div>
+            </ScrollReveal>
+
+            <div className={styles.aboutDivider} />
+
+            <ScrollReveal delay={200}>
+              <div className={styles.aboutProductCard}>
+                <img
+                  src="/svg/kerfstock-wordmark.svg"
+                  alt="KerfStock"
+                  className={styles.aboutProductLogo}
+                />
+                <p className={styles.aboutProductDesc}>
+                  KerfStock is your real-time workshop inventory brain.
+                  It tracks sheet goods, hardware, and offcuts - alerting
+                  you when stock runs low and syncing consumed material
+                  directly from KerfCut optimizations.
+                </p>
+                <ul className={styles.aboutProductFeats}>
+                  <li>Real-time inventory monitoring</li>
+                  <li>Offcut tracking</li>
+                  <li>Low-stock alerts</li>
+                  <li>KerfCut integration</li>
+                </ul>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        <div className="cyber-divider" />
+
 
         {/* ====================================================
             APPLICATION STACK
@@ -213,7 +343,7 @@ export default function LandingPage() {
         {/* ====================================================
             PHILOSOPHY
         ==================================================== */}
-        <section className={styles.philosophySection}>
+        <section id="philosophy" className={styles.philosophySection}>
           <div className="section-inner">
             <ScrollReveal>
               <p className="section-tag">Philosophy</p>

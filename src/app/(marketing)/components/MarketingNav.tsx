@@ -21,16 +21,27 @@ export default function MarketingNav() {
       </div>
 
       <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ''}`}>
-        <li><Link href="/#apps" onClick={() => setMenuOpen(false)}>Suite</Link></li>
-        <li><Link href="/#pricing" onClick={() => setMenuOpen(false)}>Pricing</Link></li>
-        <li><Link href="/downloads" onClick={() => setMenuOpen(false)}>Downloads</Link></li>
+        <li><Link href="/#about" onClick={() => setMenuOpen(false)}>about</Link></li>
+        <li><Link href="/#philosophy" onClick={() => setMenuOpen(false)}>philosophy</Link></li>
+        <li><Link href="/#apps" onClick={() => setMenuOpen(false)}>products</Link></li>
+        <li><Link href="/#pricing" onClick={() => setMenuOpen(false)}>pricing</Link></li>
+        <li><Link href="/downloads" onClick={() => setMenuOpen(false)}>downloads</Link></li>
         <li>
           <a
             href="https://synontech.github.io"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Synontech
+            synontech
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/Feed-Rate"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            feed rate
           </a>
         </li>
       </ul>
