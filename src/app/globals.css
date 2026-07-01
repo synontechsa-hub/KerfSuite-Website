@@ -1,4 +1,4 @@
-/* ================================================================
+﻿/* ================================================================
    KerfSuite Design System — globals.css
    Industrial dark-mode, flat machined-metal aesthetic.
    Font: Orbitron (headings + body), JetBrains Mono (code/versions)
@@ -61,7 +61,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 64px; /* fixed nav height */
 }
 
 body {
@@ -237,6 +238,7 @@ input, textarea, select {
 /* Section inner container */
 .section-inner {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 2rem;
 }

@@ -1,4 +1,4 @@
-/* ================================================================
+﻿/* ================================================================
    KerfSuite Marketing — Landing Page CSS
    ================================================================ */
 
@@ -109,7 +109,8 @@
    ---------------------------------------------------------------- */
 .hero {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  min-height: 600px;
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -416,7 +417,11 @@
    Apps / Suite Showcase Section
    ---------------------------------------------------------------- */
 .appsSection {
+  height: 100vh;
+  min-height: 600px;
   padding: 6rem 0;
+  display: flex;
+  align-items: center;
   scroll-snap-align: start;
 }
 
@@ -561,10 +566,15 @@
    Philosophy / Features Strip
    ---------------------------------------------------------------- */
 .philosophySection {
+  height: 100vh;
+  min-height: 600px;
   padding: 5rem 0;
+  display: flex;
+  align-items: center;
   background-color: var(--bg-panel-mid);
   border-top: 1px solid var(--bg-panel-border);
   border-bottom: 1px solid var(--bg-panel-border);
+  scroll-snap-align: start;
 }
 
 .featuresGrid {
@@ -652,7 +662,13 @@
    Pricing Section
    ---------------------------------------------------------------- */
 .pricingSection {
+  height: 100vh;
+  min-height: 600px;
   padding: 6rem 0;
+  display: flex;
+  align-items: center;
+  scroll-snap-align: start;
+  overflow-y: auto;
 }
 
 .pricingNote {
@@ -808,12 +824,17 @@
    Portal CTA Banner
    ---------------------------------------------------------------- */
 .ctaBanner {
+  height: 100vh;
+  min-height: 500px;
   padding: 5rem 0;
+  display: flex;
+  align-items: center;
   background-color: var(--bg-panel-mid);
   border-top: 1px solid var(--bg-panel-border);
   text-align: center;
   position: relative;
   overflow: hidden;
+  scroll-snap-align: start;
 }
 
 .ctaBanner::before {
@@ -866,6 +887,7 @@
   border-top: 1px solid var(--bg-panel-border);
   padding: 3rem 0 2rem;
 }
+
 
 .footerInner {
   max-width: 1200px;
@@ -1094,9 +1116,11 @@
 .aboutSection {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  min-height: 100vh;
+  height: 100vh;
+  min-height: 600px;
   background-color: var(--bg-primary);
   border-top: 1px solid var(--bg-panel-border);
+  scroll-snap-align: start;
 }
 
 /* Column 1: Copy */
