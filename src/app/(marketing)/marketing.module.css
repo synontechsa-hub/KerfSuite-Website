@@ -2,6 +2,19 @@
    KerfSuite Marketing — Landing Page CSS
    ================================================================ */
 
+.marketingPage {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.scrollContainer {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 64px; /* fixed nav height */
+}
+
 /* ----------------------------------------------------------------
    Navigation
    ---------------------------------------------------------------- */
@@ -886,6 +899,7 @@
   background-color: var(--bg-panel);
   border-top: 1px solid var(--bg-panel-border);
   padding: 3rem 0 2rem;
+  scroll-snap-align: end;
 }
 
 

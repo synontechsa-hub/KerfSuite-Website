@@ -61,8 +61,6 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-  scroll-padding-top: 64px; /* fixed nav height */
 }
 
 body {

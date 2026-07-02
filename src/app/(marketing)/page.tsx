@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import styles from './marketing.module.css';
 import MarketingNav from './components/MarketingNav';
@@ -16,7 +16,7 @@ export default function LandingPage() {
     <div className={styles.marketingPage}>
       <MarketingNav />
 
-      <main>
+      <main className={styles.scrollContainer}>
         {/* ====================================================
             HERO — Split Panel Design
         ==================================================== */}
@@ -518,9 +518,8 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+        <MarketingFooter />
       </main>
-
-      <MarketingFooter />
     </div>
   );
 }
