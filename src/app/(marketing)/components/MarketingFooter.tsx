@@ -35,7 +35,7 @@ export default function MarketingFooter() {
         </div>
 
         <ul className={styles.footerLinks}>
-          <li><Link href="/#apps">Suite</Link></li>
+          <li><Link href="/#apps">products</Link></li>
           <li><Link href="/#pricing">Pricing</Link></li>
           <li><Link href="/downloads">Downloads</Link></li>
           <li><Link href="/login">Portal</Link></li>
