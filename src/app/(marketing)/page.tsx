@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import styles from './marketing.module.css';
 import MarketingNav from './components/MarketingNav';
@@ -375,8 +375,10 @@ export default function LandingPage() {
 
             </div>
           </div>
+        </section>
 
         <div className="cyber-divider" />
+
 
         {/* ====================================================
             PRICING
