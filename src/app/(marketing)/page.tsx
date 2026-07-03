@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import Link from 'next/link';
 import styles from './marketing.module.css';
 import MarketingNav from './components/MarketingNav';
@@ -208,16 +208,77 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <div className="cyber-divider" />
-
 
         {/* ====================================================
-            APPLICATION STACK
+            TECH STACK STRIP
+        ==================================================== */}
+        <section className={styles.techStrip}>
+          <div className="section-inner">
+            <div className={styles.techGrid}>
+              {[
+                { label: 'Engine', value: 'Custom Heuristics' },
+                { label: 'Logic', value: 'MaxRects + Guillotine' },
+                { label: 'Database', value: 'PostgreSQL (Cloud)' },
+                { label: 'Stack', value: 'Flutter + Next.js' },
+                { label: 'Identity', value: 'Supabase Auth' },
+              ].map((item) => (
+                <div key={item.label} className={styles.techItem}>
+                  <p className={styles.techLabel}>{item.label}</p>
+                  <p className={styles.techValue}>{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ====================================================
+            PHILOSOPHY
+        ==================================================== */}
+        <section id="philosophy" className={styles.philosophySection}>
+          <div className="section-inner">
+            <ScrollReveal>
+              <p className="section-tag">Philosophy</p>
+              <h2 className="section-title">Built for <span>Production</span></h2>
+            </ScrollReveal>
+
+            <div className={styles.featuresGrid}>
+              {[
+                {
+                  title: 'Integrated Ecosystem',
+                  desc: 'Your workshop data flows between apps. Optimize a cut in KerfCut, and KerfStock automatically marks that material as consumed in the cloud.',
+                },
+                {
+                  title: 'Unified Command',
+                  desc: 'KerfPortal gives workshop owners a single command center to manage users, machines, and licenses from any browser, anywhere.',
+                },
+                {
+                  title: 'Professional Accuracy',
+                  desc: 'Engineered for precision. Every millimetre of kerf is accounted for, ensuring your cut lists match your physical results perfectly.',
+                },
+                {
+                  title: 'Rapid Deployment',
+                  desc: 'Initialize your workshop in minutes. Sign up, generate a key, download the apps, and start optimizing immediately.',
+                },
+              ].map((f, i) => (
+                <ScrollReveal key={f.title} delay={i * 100}>
+                  <div className={styles.featureCard}>
+                    <h3 className={styles.featureCardTitle}>{f.title}</h3>
+                    <p className={styles.featureCardDesc}>{f.desc}</p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+        <div className="cyber-divider" />
+
+        {/* ====================================================
+            PRODUCTS
         ==================================================== */}
         <section id="apps" className={styles.appsSection}>
           <div className="section-inner">
             <ScrollReveal>
-              <p className="section-tag">Application Stack</p>
+              <p className="section-tag">Products</p>
               <h2 className="section-title">The Core <span>Suite</span></h2>
             </ScrollReveal>
 
@@ -314,71 +375,6 @@ export default function LandingPage() {
 
             </div>
           </div>
-        </section>
-
-        <div className="cyber-divider" />
-
-        {/* ====================================================
-            TECH STACK STRIP
-        ==================================================== */}
-        <section className={styles.techStrip}>
-          <div className="section-inner">
-            <div className={styles.techGrid}>
-              {[
-                { label: 'Engine', value: 'Custom Heuristics' },
-                { label: 'Logic', value: 'MaxRects + Guillotine' },
-                { label: 'Database', value: 'PostgreSQL (Cloud)' },
-                { label: 'Stack', value: 'Flutter + Next.js' },
-                { label: 'Identity', value: 'Supabase Auth' },
-              ].map((item) => (
-                <div key={item.label} className={styles.techItem}>
-                  <p className={styles.techLabel}>{item.label}</p>
-                  <p className={styles.techValue}>{item.value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ====================================================
-            PHILOSOPHY
-        ==================================================== */}
-        <section id="philosophy" className={styles.philosophySection}>
-          <div className="section-inner">
-            <ScrollReveal>
-              <p className="section-tag">Philosophy</p>
-              <h2 className="section-title">Built for <span>Production</span></h2>
-            </ScrollReveal>
-
-            <div className={styles.featuresGrid}>
-              {[
-                {
-                  title: 'Integrated Ecosystem',
-                  desc: 'Your workshop data flows between apps. Optimize a cut in KerfCut, and KerfStock automatically marks that material as consumed in the cloud.',
-                },
-                {
-                  title: 'Unified Command',
-                  desc: 'KerfPortal gives workshop owners a single command center to manage users, machines, and licenses from any browser, anywhere.',
-                },
-                {
-                  title: 'Professional Accuracy',
-                  desc: 'Engineered for precision. Every millimetre of kerf is accounted for, ensuring your cut lists match your physical results perfectly.',
-                },
-                {
-                  title: 'Rapid Deployment',
-                  desc: 'Initialize your workshop in minutes. Sign up, generate a key, download the apps, and start optimizing immediately.',
-                },
-              ].map((f, i) => (
-                <ScrollReveal key={f.title} delay={i * 100}>
-                  <div className={styles.featureCard}>
-                    <h3 className={styles.featureCardTitle}>{f.title}</h3>
-                    <p className={styles.featureCardDesc}>{f.desc}</p>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </section>
 
         <div className="cyber-divider" />
 
