@@ -236,37 +236,80 @@ export default function LandingPage() {
         ==================================================== */}
         <section id="philosophy" className={styles.philosophySection}>
           <div className="section-inner">
-            <ScrollReveal>
-              <p className="section-tag">Philosophy</p>
-              <h2 className="section-title">Built for <span>Production</span></h2>
-            </ScrollReveal>
+            <div className={styles.philosophyLayout}>
+              {/* Left: Branding + Diagnostices Console */}
+              <div className={styles.philosophyLeft}>
+                <ScrollReveal>
+                  <p className="section-tag">Philosophy</p>
+                  <h2 className="section-title">Built for <span>Production.</span></h2>
+                  <p className={styles.philosophyTagline}>
+                    We don't build generic SaaS interfaces. We engineer rugged software tools built to stand up to the speed and demands of the workshop floor.
+                  </p>
+                </ScrollReveal>
 
-            <div className={styles.featuresGrid}>
-              {[
-                {
-                  title: 'Integrated Ecosystem',
-                  desc: 'Your workshop data flows between apps. Optimize a cut in KerfCut, and KerfStock automatically marks that material as consumed in the cloud.',
-                },
-                {
-                  title: 'Unified Command',
-                  desc: 'KerfPortal gives workshop owners a single command center to manage users, machines, and licenses from any browser, anywhere.',
-                },
-                {
-                  title: 'Professional Accuracy',
-                  desc: 'Engineered for precision. Every millimetre of kerf is accounted for, ensuring your cut lists match your physical results perfectly.',
-                },
-                {
-                  title: 'Rapid Deployment',
-                  desc: 'Initialize your workshop in minutes. Sign up, generate a key, download the apps, and start optimizing immediately.',
-                },
-              ].map((f, i) => (
-                <ScrollReveal key={f.title} delay={i * 100}>
-                  <div className={styles.featureCard}>
-                    <h3 className={styles.featureCardTitle}>{f.title}</h3>
-                    <p className={styles.featureCardDesc}>{f.desc}</p>
+                <ScrollReveal delay={150}>
+                  <div className={styles.philosophyConsole}>
+                    <div className={styles.consoleHeader}>
+                      <span className={styles.consoleDot} />
+                      <span className={styles.consoleTitle}>SYS // DIAGNOSTICS</span>
+                    </div>
+                    <div className={styles.consoleBody}>
+                      <div className={styles.consoleLine}>
+                        <span className={styles.consoleLabel}>ACCURACY:</span>
+                        <span className={styles.consoleValue}>100% (KERF CALIBRATED)</span>
+                      </div>
+                      <div className={styles.consoleLine}>
+                        <span className={styles.consoleLabel}>REDUNDANCY:</span>
+                        <span className={styles.consoleValue}>CLOUD + LOCAL SYNC</span>
+                      </div>
+                      <div className={styles.consoleLine}>
+                        <span className={styles.consoleLabel}>LATENCY:</span>
+                        <span className={styles.consoleValue}>&lt; 50MS RESPONSIVENESS</span>
+                      </div>
+                      <div className={styles.consoleLine}>
+                        <span className={styles.consoleLabel}>STANDARDS:</span>
+                        <span className={styles.consoleValue}>ZERO DEFECT POLICY</span>
+                      </div>
+                    </div>
                   </div>
                 </ScrollReveal>
-              ))}
+              </div>
+
+              {/* Right: Technical Value list (dividers, not cards) */}
+              <div className={styles.philosophyRight}>
+                {[
+                  {
+                    num: '01',
+                    title: 'Integrated Ecosystem',
+                    desc: 'Your workshop data flows between apps. Optimize a cut in KerfCut, and KerfStock automatically marks that material as consumed in the cloud.',
+                  },
+                  {
+                    num: '02',
+                    title: 'Unified Command',
+                    desc: 'KerfPortal gives workshop owners a single command center to manage users, machines, and licenses from any browser, anywhere.',
+                  },
+                  {
+                    num: '03',
+                    title: 'Professional Accuracy',
+                    desc: 'Engineered for precision. Every millimetre of kerf is accounted for, ensuring your cut lists match your physical results perfectly.',
+                  },
+                  {
+                    num: '04',
+                    title: 'Rapid Deployment',
+                    desc: 'Initialize your workshop in minutes. Sign up, generate a key, download the apps, and start optimizing immediately.',
+                  },
+                ].map((f, i) => (
+                  <ScrollReveal key={f.title} delay={i * 100}>
+                    <div className={styles.philosophyRow}>
+                      <div className={styles.philosophyNum}>{f.num}</div>
+                      <div className={styles.philosophyContent}>
+                        <h3 className={styles.philosophyRowTitle}>{f.title}</h3>
+                        <p className={styles.philosophyRowDesc}>{f.desc}</p>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
             </div>
           </div>
         </section>
