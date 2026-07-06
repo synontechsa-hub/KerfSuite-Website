@@ -60,9 +60,11 @@ export default function InventoryRoster({
           <thead>
             <tr>
               <th className="stencil-heading">SYSTEM ID</th>
+              <th className="stencil-heading">TYPE</th>
               <th className="stencil-heading">MATERIAL</th>
               <th className="stencil-heading">DIMENSIONS (mm)</th>
               <th className="stencil-heading">LOCATION</th>
+              <th className="stencil-heading">JOB REF</th>
               <th className="stencil-heading">STATUS</th>
               <th className="stencil-heading">CREATED</th>
             </tr>
@@ -74,6 +76,9 @@ export default function InventoryRoster({
                   {asset.systemName}
                   {asset.displayName && <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', fontWeight: 300 }}>{asset.displayName}</div>}
                 </td>
+                <td style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>
+                  {asset.assetType.replace('_', ' ')}
+                </td>
                 <td>
                   {asset.material?.name}
                   <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)' }}>{asset.material?.thickness}mm</div>
@@ -83,6 +88,9 @@ export default function InventoryRoster({
                 </td>
                 <td style={{ fontSize: '0.75rem' }}>
                   {asset.location?.name || '---'}
+                </td>
+                <td style={{ fontSize: '0.65rem', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
+                  {asset.jobReference || '---'}
                 </td>
                 <td>
                   <span className={`badge badge-${asset.status}`}>
@@ -96,7 +104,7 @@ export default function InventoryRoster({
             ))}
             {filteredAssets.length === 0 && (
               <tr>
-                <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-dim)' }}>
+                <td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-dim)' }}>
                   NO ASSETS MATCHING CRITERIA
                 </td>
               </tr>

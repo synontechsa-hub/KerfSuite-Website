@@ -213,10 +213,32 @@ input, textarea, select {
   letter-spacing: 1px;
 }
 
-.badge-active   { background-color: rgba(46, 204, 113, 0.1); color: var(--status-running); }
-.badge-waiting  { background-color: rgba(243, 156, 18, 0.1); color: var(--accent-orange); }
-.badge-revoked  { background-color: rgba(231, 76, 60, 0.1);  color: var(--status-error); }
-.badge-idle     { background-color: rgba(149, 165, 166, 0.1); color: var(--status-idle); }
+.badge-active    { background-color: rgba(46, 204, 113, 0.1); color: var(--status-running); }
+.badge-waiting   { background-color: rgba(243, 156, 18, 0.1); color: var(--accent-orange); }
+.badge-revoked   { background-color: rgba(231, 76, 60, 0.1);  color: var(--status-error); }
+.badge-idle      { background-color: rgba(149, 165, 166, 0.1); color: var(--status-idle); }
+.badge-available { background-color: rgba(46, 204, 113, 0.1); color: var(--status-running); }
+.badge-reserved  { background-color: rgba(243, 156, 18, 0.1); color: var(--accent-orange); }
+.badge-consumed  { background-color: rgba(231, 76, 60, 0.1);  color: var(--status-error); }
+.badge-disposed  { background-color: rgba(149, 165, 166, 0.1); color: var(--status-idle); }
+.badge-damaged   { background-color: rgba(231, 76, 60, 0.1);  color: var(--status-error); }
+.badge-missing   { background-color: rgba(149, 165, 166, 0.1); color: var(--text-secondary); }
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeInUp 0.3s ease;
+}
 
 /* Status dot indicator */
 .status-dot {

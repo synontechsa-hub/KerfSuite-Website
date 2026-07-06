@@ -181,10 +181,11 @@ CREATE POLICY "Members insert audit logs" ON public.audit_logs FOR INSERT
 WITH CHECK (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
 
 -- Stock Policies: Strict Workspace Isolation
-CREATE POLICY "Workspace Isolation" ON public.materials FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
-CREATE POLICY "Workspace Isolation" ON public.locations FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
-CREATE POLICY "Workspace Isolation" ON public.assets FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
-CREATE POLICY "Workspace Isolation" ON public.asset_events FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
+-- Hardened for Suite Integration (Allows Portal users and KerfCut Service Role)
+CREATE POLICY "Workspace Isolation" ON public.materials FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()) OR auth.role() = 'service_role');
+CREATE POLICY "Workspace Isolation" ON public.locations FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()) OR auth.role() = 'service_role');
+CREATE POLICY "Workspace Isolation" ON public.assets FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()) OR auth.role() = 'service_role');
+CREATE POLICY "Workspace Isolation" ON public.asset_events FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()) OR auth.role() = 'service_role');
 
 -- Trials: Strict RPC-only access (No direct table access for anon/authenticated)
 DROP POLICY IF EXISTS "Public trials access" ON public.trials;

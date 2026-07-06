@@ -68,21 +68,37 @@ export async function POST(request: Request) {
       }, { status: 409 })
     }
 
-    // 4. CREATE REMNANTS
+    // 4. CREATE REMNANTS (With sequential naming & classification)
     const created_remnants: any[] = []
     if (generated_remnants && Array.isArray(generated_remnants) && generated_remnants.length > 0) {
-      const remnantsToInsert = generated_remnants.map((r: any) => ({
-        workspace_id: workspaceId,
-        material_id: r.material_id,
-        system_name: `REMNANT-${crypto.randomBytes(3).toString('hex').toUpperCase()}`,
-        width: r.width,
-        height: r.height,
-        asset_type: 'remnant',
-        status: 'available',
-        source_asset_id: r.source_asset_id,
-        location_id: r.location_id,
-        job_reference
-      }))
+      // Fetch starting counts for classification
+      const { count: remCount } = await adminClient.from('assets').select('*', { count: 'exact', head: true }).eq('workspace_id', workspaceId).eq('asset_type', 'remnant')
+      const { count: offCount } = await adminClient.from('assets').select('*', { count: 'exact', head: true }).eq('workspace_id', workspaceId).eq('asset_type', 'offcut')
+
+      let currentRemCount = remCount || 0
+      let currentOffCount = offCount || 0
+
+      const remnantsToInsert = generated_remnants.map((r: any) => {
+        // Classification logic (Threshold: 400x400)
+        const is_offcut = (r.width * r.height) < (400 * 400)
+        const asset_type = is_offcut ? 'offcut' : 'remnant'
+        const prefix = is_offcut ? 'OFFCUT' : 'REMNANT'
+        const count = is_offcut ? ++currentOffCount : ++currentRemCount
+
+        return {
+          workspace_id: workspaceId,
+          material_id: r.material_id,
+          system_name: `${prefix}-${count.toString().padStart(4, '0')}`,
+          width: r.width,
+          height: r.height,
+          asset_type,
+          status: 'available',
+          source_asset_id: r.source_asset_id,
+          location_id: r.location_id,
+          job_reference,
+          updated_at: new Date().toISOString()
+        }
+      })
 
       const { data: inserted, error: insertError } = await adminClient
         .from('assets')
@@ -96,7 +112,8 @@ export async function POST(request: Request) {
           id: row.id,
           system_name: row.system_name,
           width: row.width,
-          height: row.height
+          height: row.height,
+          asset_type: row.asset_type
         })
       })
     }

@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Sidebar from '../../components/Sidebar';
 import { PortalService } from '@/services/portal_service';
-import InventoryRoster from './InventoryRoster';
+import InventoryManager from './InventoryManager';
 
 export default async function InventoryPage() {
   const supabase = await createClient();
@@ -27,22 +27,11 @@ export default async function InventoryPage() {
       <Sidebar activeItem="inventory" userEmail={user.email || ''} />
 
       <main className={styles.main}>
-        <header className={`${styles.header} panel`}>
-          <h2 className="stencil-heading" style={{ fontSize: "1rem", color: "var(--text-primary)" }}>
-            INVENTORY / STOCK
-          </h2>
-          <div className={styles.headerActions}>
-            <button className="btn-primary" style={{ fontSize: '0.7rem' }}>+ ADD MANUAL ASSET</button>
-          </div>
-        </header>
-
-        <div className="panel" style={{ marginTop: "1rem" }}>
-          <InventoryRoster
-            initialAssets={assets}
-            materials={materials}
-            locations={locations}
-          />
-        </div>
+        <InventoryManager
+          initialAssets={assets}
+          materials={materials}
+          locations={locations}
+        />
       </main>
     </div>
   );

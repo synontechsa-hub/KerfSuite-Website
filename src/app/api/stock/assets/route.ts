@@ -42,9 +42,23 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json()
+    const asset_type = body.asset_type || 'full_sheet'
 
-    // Auto-generate system name if not provided
-    const system_name = body.system_name || `ASSET-${Math.random().toString(36).substring(2, 8).toUpperCase()}`
+    // AUDIT LOGIC: Sequential naming per workspace and type
+    const prefix = {
+      full_sheet: 'SHEET',
+      remnant: 'REMNANT',
+      offcut: 'OFFCUT',
+      custom: 'CUSTOM'
+    }[asset_type as 'full_sheet' | 'remnant' | 'offcut' | 'custom'] || 'ASSET'
+
+    const { count } = await supabase
+      .from('assets')
+      .select('*', { count: 'exact', head: true })
+      .eq('workspace_id', userData.workspace_id)
+      .eq('asset_type', asset_type)
+
+    const system_name = body.system_name || `${prefix}-${((count || 0) + 1).toString().padStart(4, '0')}`
 
     const { data: asset, error } = await supabase
       .from('assets')
@@ -52,7 +66,8 @@ export async function POST(request: Request) {
         ...body,
         workspace_id: userData.workspace_id,
         system_name,
-        created_by: user.id
+        created_by: user.id,
+        updated_at: new Date().toISOString()
       })
       .select()
       .single()
