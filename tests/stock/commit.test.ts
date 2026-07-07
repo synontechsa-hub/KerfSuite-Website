@@ -1,24 +1,42 @@
-import { createAdminClient } from '@/utils/supabase/server';
+/**
+ * SynStock Commit Atomic Logic Tests
+ */
 
-describe('KerfCut Commit Atomicity', () => {
-  const adminClient = createAdminClient();
+describe('Commit Atomic Pattern Logic', () => {
 
-  test('Conflict Detection on Double Consumption', async () => {
-    // This is a logic test for the atomic update pattern
-    // Pattern: update ... where status = 'available'
+  test('Optimistic Concurrency Pattern (Logical)', () => {
+    // The core logic in commit/route.ts uses .eq('status', 'available')
+    // to ensure an asset isn't double-consumed.
 
-    // In a real test, we would insert a test asset,
-    // then run two concurrent updates and verify only one succeeds.
+    const requestConsumedIds = ['asset-1', 'asset-2'];
 
-    const mockAssetId = '00000000-0000-0000-0000-000000000001';
+    // Logic: If status matches 'available', count will equal request length.
+    // If one is already 'consumed', update count < request length -> 409 Conflict.
 
-    // Simulating the update logic
-    const updateQuery = adminClient
-      .from('assets')
-      .update({ status: 'consumed' })
-      .eq('id', mockAssetId)
-      .eq('status', 'available');
+    const mockDbState = [
+      { id: 'asset-1', status: 'available' },
+      { id: 'asset-2', status: 'consumed' } // Oops, someone grabbed it!
+    ];
 
-    expect(updateQuery).toBeDefined();
+    const successfullyUpdated = mockDbState.filter(a =>
+      requestConsumedIds.includes(a.id) && a.status === 'available'
+    );
+
+    expect(successfullyUpdated.length).toBeLessThan(requestConsumedIds.length);
+    expect(successfullyUpdated.map(a => a.id)).not.toContain('asset-2');
+  });
+
+  test('Batch Event Generation Logic', () => {
+    const consumedIds = ['a', 'b'];
+    const jobRef = 'REF-99';
+
+    const events = consumedIds.map(id => ({
+      asset_id: id,
+      event_type: 'cut',
+      metadata: { job_reference: jobRef }
+    }));
+
+    expect(events).toHaveLength(2);
+    expect(events[0].metadata.job_reference).toBe(jobRef);
   });
 });

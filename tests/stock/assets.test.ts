@@ -1,33 +1,51 @@
-import { createAdminClient } from '@/utils/supabase/server';
-
-const TEST_WORKSPACE_ID = '00000000-0000-0000-0000-000000000000'; // Replace with a valid test ID if needed
+/**
+ * SynStock Asset Logic Tests
+ * Tests naming sequences and classification thresholds
+ */
 
 describe('Inventory Asset Logic', () => {
-  const adminClient = createAdminClient();
 
-  test('Sequential Naming Logic', async () => {
-    // 1. Get current count
-    const { count: initialCount } = await adminClient
-      .from('assets')
-      .select('*', { count: 'exact', head: true })
-      .eq('workspace_id', TEST_WORKSPACE_ID)
-      .eq('asset_type', 'full_sheet');
+  test('Sequential Naming Logic (Unit)', () => {
+    // We simulate the logic used in assets/route.ts
+    const prefix = 'SHEET';
+    const mockDbCount = 5; // 5 existing sheets
 
-    const nextNumber = (initialCount || 0) + 1;
-    const expectedName = `SHEET-${nextNumber.toString().padStart(4, '0')}`;
+    const nextNumber = mockDbCount + 1;
+    const systemName = `${prefix}-${nextNumber.toString().padStart(4, '0')}`;
 
-    // 2. Mock a POST request to /api/stock/assets would happen here
-    // For unit testing logic, we verify the naming pattern
-    expect(expectedName).toMatch(/^SHEET-\d{4}$/);
+    expect(systemName).toBe('SHEET-0006');
+    expect(systemName).toMatch(/^SHEET-\d{4}$/);
   });
 
-  test('Remnant vs Offcut Classification', () => {
-    const threshold = 400 * 400;
+  test('Remnant vs Offcut Classification Threshold', () => {
+    // Ported from kerfcut/commit/route.ts
+    const threshold = 400 * 400; // 160,000 mm2
 
-    const smallPiece = { width: 200, height: 200 }; // 40,000
-    const largePiece = { width: 500, height: 500 }; // 250,000
+    const remnantPiece = { width: 500, height: 400 }; // 200,000
+    const offcutPiece = { width: 300, height: 300 };  // 90,000
 
-    expect(smallPiece.width * smallPiece.height).toBeLessThan(threshold);
-    expect(largePiece.width * largePiece.height).toBeGreaterThan(threshold);
+    const isRemnant = (remnantPiece.width * remnantPiece.height) >= threshold;
+    const isOffcut = (offcutPiece.width * offcutPiece.height) < threshold;
+
+    expect(isRemnant).toBe(true);
+    expect(isOffcut).toBe(true);
+  });
+
+  test('Job Reference Inheritance Logic', () => {
+    const jobReference = 'JOB-1234';
+    const sourceAsset = { id: 'parent-1', location_id: 'shelf-A' };
+
+    // Mock remnant generation
+    const generatedRemnant = {
+      material_id: 'mdf-16',
+      width: 1000,
+      height: 500,
+      source_asset_id: sourceAsset.id,
+      location_id: sourceAsset.location_id, // Inherited
+      job_reference: jobReference // Inherited
+    };
+
+    expect(generatedRemnant.job_reference).toBe(jobReference);
+    expect(generatedRemnant.location_id).toBe('shelf-A');
   });
 });

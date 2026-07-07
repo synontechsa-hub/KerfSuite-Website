@@ -2,7 +2,7 @@ import styles from "../portal/page.module.css";
 import { logout } from '../portal/actions';
 import Link from 'next/link';
 
-type NavItem = 'dashboard' | 'users' | 'account' | 'audit' | 'inventory';
+type NavItem = 'dashboard' | 'users' | 'account' | 'audit' | 'inventory' | 'setup';
 
 export default function Sidebar({
   activeItem,
@@ -29,6 +29,9 @@ export default function Sidebar({
         </Link>
         <Link href="/portal/inventory" className={`${styles.navItem} ${activeItem === 'inventory' ? styles.active : ''}`}>
           <span className="stencil-heading">Inventory / Stock</span>
+        </Link>
+        <Link href="/portal/setup" className={`${styles.navItem} ${activeItem === 'setup' ? styles.active : ''}`}>
+          <span className="stencil-heading">Workshop Setup</span>
         </Link>
         <Link href="/portal/audit" className={`${styles.navItem} ${activeItem === 'audit' ? styles.active : ''}`}>
           <span className="stencil-heading">Audit Log</span>
