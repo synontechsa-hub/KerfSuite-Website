@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styles from '../page.module.css';
 import InventoryRoster from './InventoryRoster';
 import AddAssetModal from './AddAssetModal';
+import QRLabel from './QRLabel';
 import { Asset, Material, Location } from '@/models/portal';
 
 export default function InventoryManager({
@@ -17,6 +18,7 @@ export default function InventoryManager({
 }) {
   const [assets, setAssets] = useState(initialAssets);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [printingAsset, setPrintingAsset] = useState<Asset | null>(null);
 
   const handleAddAsset = (newAsset: any) => {
     // Reload to get fresh data with joins from the server component

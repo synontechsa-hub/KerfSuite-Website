@@ -7,11 +7,13 @@ import styles from '../page.module.css';
 export default function InventoryRoster({
   initialAssets,
   materials,
-  locations
+  locations,
+  onPrint
 }: {
   initialAssets: Asset[],
   materials: Material[],
-  locations: Location[]
+  locations: Location[],
+  onPrint: (asset: Asset) => void
 }) {
   const [filter, setFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -67,6 +69,7 @@ export default function InventoryRoster({
               <th className="stencil-heading">JOB REF</th>
               <th className="stencil-heading">STATUS</th>
               <th className="stencil-heading">CREATED</th>
+              <th className="stencil-heading">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
@@ -100,11 +103,21 @@ export default function InventoryRoster({
                 <td style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>
                   {new Date(asset.createdAt).toLocaleDateString()}
                 </td>
+                <td>
+                  <button
+                    onClick={() => onPrint(asset)}
+                    className="btn-ghost"
+                    style={{ padding: '0.2rem 0.5rem', fontSize: '0.6rem', border: '1px solid var(--accent-orange)', color: 'var(--accent-orange)' }}
+                    title="PRINT QR LABEL"
+                  >
+                    PRINT
+                  </button>
+                </td>
               </tr>
             ))}
             {filteredAssets.length === 0 && (
               <tr>
-                <td colSpan={8} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-dim)' }}>
+                <td colSpan={9} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-dim)' }}>
                   NO ASSETS MATCHING CRITERIA
                 </td>
               </tr>

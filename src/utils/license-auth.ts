@@ -5,7 +5,7 @@ import crypto from 'crypto'
  * Validates that a request from a desktop app is authorized
  * via an active license key and updates telemetry + abuse detection.
  */
-export async function validateLicenseRequest(request: Request) {
+export async function validateLicenseRequest(request: Request, expectedApp?: string) {
   const cdkey = request.headers.get('x-license-key')
   const machineId = request.headers.get('x-machine-id')
   const workspaceId = request.headers.get('x-workspace-id')
@@ -26,7 +26,7 @@ export async function validateLicenseRequest(request: Request) {
 
   const { data: slot, error } = await adminClient
     .from('license_slots')
-    .select('id, status, bound_machine_id, workspace_id, last_ip, abuse_score, is_flagged')
+    .select('id, status, bound_machine_id, workspace_id, last_ip, abuse_score, is_flagged, app')
     .or(`cdkey.eq.${cdkey},cdkey_hash.eq.${cdkeyHash}`)
     .eq('workspace_id', workspaceId)
     .single()
@@ -41,6 +41,11 @@ export async function validateLicenseRequest(request: Request) {
 
   if (slot.bound_machine_id !== machineId) {
     return { error: 'License bound to another machine', status: 403 }
+  }
+
+  // APP-SPECIFIC VALIDATION
+  if (expectedApp && slot.app !== expectedApp) {
+    return { error: `License not valid for ${expectedApp}`, status: 403 }
   }
 
   // ABUSE DETECTION LOGIC

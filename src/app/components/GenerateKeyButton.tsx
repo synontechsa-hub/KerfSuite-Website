@@ -8,6 +8,16 @@ import styles from '../portal/page.module.css'
 export default function GenerateKeyButton({ allowedApps }: { allowedApps: string[] }) {
   const [error, setError] = useState<string | null>(null)
 
+  if (!allowedApps || allowedApps.length === 0) {
+    return (
+      <div className={styles.generateForm}>
+        <p className="stencil-heading" style={{ fontSize: '0.65rem', opacity: 0.6 }}>
+          NO PRO LICENSES ASSIGNED
+        </p>
+      </div>
+    )
+  }
+
   return (
     <form 
       action={async (formData) => {
@@ -21,8 +31,8 @@ export default function GenerateKeyButton({ allowedApps }: { allowedApps: string
       className={styles.generateForm}
     >
       <select name="app" className={styles.select}>
-        {allowedApps.includes('kerfcut') && <option value="kerfcut">KerfCut (Desktop)</option>}
-        {allowedApps.includes('kerfstock') && <option value="kerfstock">KerfStock (Mobile)</option>}
+        {allowedApps.includes('kerfcut') && <option value="kerfcut">KerfCut (Optimisation PRO)</option>}
+        {allowedApps.includes('kerfstock') && <option value="kerfstock">KerfStock (Inventory PRO)</option>}
       </select>
       
       <SubmitButton

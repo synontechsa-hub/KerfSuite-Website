@@ -9,8 +9,8 @@ import crypto from 'crypto'
  * Refactored for ATOMICITY to prevent race conditions (double-spend).
  */
 export async function POST(request: Request) {
-  // 1. Validate Machine License
-  const auth = await validateLicenseRequest(request)
+  // 1. Validate Machine License (Expect KerfCut)
+  const auth = await validateLicenseRequest(request, 'kerfcut')
   if ('error' in auth) {
     return NextResponse.json({ error: auth.error }, { status: auth.status })
   }

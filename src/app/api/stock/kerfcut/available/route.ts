@@ -3,8 +3,8 @@ import { createAdminClient } from '@/utils/supabase/server'
 import { validateLicenseRequest } from '@/utils/license-auth'
 
 export async function GET(request: Request) {
-  // 1. Validate Machine License
-  const auth = await validateLicenseRequest(request)
+  // 1. Validate Machine License (Expect KerfCut)
+  const auth = await validateLicenseRequest(request, 'kerfcut')
   if ('error' in auth) {
     return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
