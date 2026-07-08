@@ -47,6 +47,7 @@ export default function InventoryManager({
           initialAssets={assets}
           materials={materials}
           locations={locations}
+          onPrint={(asset) => setPrintingAsset(asset)}
         />
       </div>
 
@@ -57,6 +58,13 @@ export default function InventoryManager({
         locations={locations}
         onAdd={handleAddAsset}
       />
+
+      {printingAsset && (
+        <QRLabel
+          asset={printingAsset}
+          onClose={() => setPrintingAsset(null)}
+        />
+      )}
     </>
   );
 }
