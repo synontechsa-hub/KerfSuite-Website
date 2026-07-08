@@ -12,7 +12,7 @@ export default function Sidebar({
   userEmail: string
 }) {
   return (
-    <aside className={`${styles.sidebar} panel`}>
+    <aside className={`${styles.sidebar} panel no-print`}>
       <div className={styles.brand}>
         <h1 style={{ color: "var(--text-primary)", letterSpacing: "3px", fontSize: "1.2rem", fontWeight: 900, textTransform: "uppercase" }}>
           Kerf<span style={{ color: "var(--accent-orange)" }}>Suite</span>
