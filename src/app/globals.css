@@ -240,6 +240,15 @@ input, textarea, select {
   animation: fadeInUp 0.3s ease;
 }
 
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+}
+
 /* Status dot indicator */
 .status-dot {
   display: inline-block;
