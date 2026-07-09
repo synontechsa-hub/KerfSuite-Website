@@ -21,7 +21,7 @@ export default function Sidebar({
       </div>
       
       <nav className={styles.nav}>
-        <Link href="/" className={`${styles.navItem} ${activeItem === 'dashboard' ? styles.active : ''}`}>
+        <Link href="/portal" className={`${styles.navItem} ${activeItem === 'dashboard' ? styles.active : ''}`}>
           <span className="stencil-heading">Dashboard & Licenses</span>
         </Link>
         <Link href="/portal/users" className={`${styles.navItem} ${activeItem === 'users' ? styles.active : ''}`}>
@@ -39,7 +39,7 @@ export default function Sidebar({
         <a href="https://synontech.itch.io/kerfsuite" target="_blank" rel="noopener noreferrer" className={styles.navItem}>
           <span className="stencil-heading">Download Software ↗</span>
         </a>
-        <Link href="/account" className={`${styles.navItem} ${activeItem === 'account' ? styles.active : ''}`}>
+        <Link href="/portal/account" className={`${styles.navItem} ${activeItem === 'account' ? styles.active : ''}`}>
           <span className="stencil-heading">Security / Account</span>
         </Link>
       </nav>
