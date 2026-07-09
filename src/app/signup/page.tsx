@@ -63,7 +63,7 @@ export default function SignupPage() {
           )}
 
           <div className={styles.actions}>
-            <button className="btn-primary" style={{ width: "100%", padding: "0.8rem" }} disabled={isPending}>
+            <button type="submit" className="btn-primary" style={{ width: "100%", padding: "0.8rem" }} disabled={isPending}>
               {isPending ? 'Registering...' : 'Create Workspace'}
             </button>
           </div>
