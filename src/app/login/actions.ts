@@ -59,7 +59,7 @@ export async function login(prevState: any, formData: FormData) {
     revalidatePath('/portal', 'layout')
     redirect('/portal')
   } catch (err: any) {
-    if (err.message === 'NEXT_REDIRECT') throw err
+    if (err?.digest === 'NEXT_REDIRECT') throw err
     console.error('Unhandled login error:', err)
     return { error: 'A server error occurred during authentication.' }
   }

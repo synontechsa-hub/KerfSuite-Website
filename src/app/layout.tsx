@@ -41,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${orbitron.variable} ${jetbrainsMono.variable}`}>
-      <head>
+      <body>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-X6DP36W31F"
           strategy="afterInteractive"
@@ -55,8 +55,6 @@ export default function RootLayout({
             gtag('config', 'G-X6DP36W31F');
           `}
         </Script>
-      </head>
-      <body>
         {children}
         <Analytics />
       </body>
