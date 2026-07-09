@@ -32,57 +32,63 @@ const provisionRatelimit = redis ? new Ratelimit({
 }) : null
 
 export async function proxy(request: NextRequest) {
-  const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1'
-  const path = request.nextUrl.pathname
+  try {
+    const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1'
+    const path = request.nextUrl.pathname
 
-  if (path.startsWith('/api/v1/licenses/verify') && licenseRatelimit) {
-    try {
-      const { success } = await licenseRatelimit.limit(`license_${ip}`)
-      if (!success) {
-        return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 })
+    if (path.startsWith('/api/v1/licenses/verify') && licenseRatelimit) {
+      try {
+        const { success } = await licenseRatelimit.limit(`license_${ip}`)
+        if (!success) {
+          return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 })
+        }
+      } catch (error) {
+        console.error('License Rate limiting error (Failing Open):', error)
+        // Fail open for paying customers
       }
-    } catch (error) {
-      console.error('License Rate limiting error (Failing Open):', error)
-      // Fail open for paying customers
     }
-  }
 
-  if (path.startsWith('/api/v1/trials') && trialRatelimit) {
-    try {
-      const { success } = await trialRatelimit.limit(`trial_${ip}`)
-      if (!success) {
-        return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 })
+    if (path.startsWith('/api/v1/trials') && trialRatelimit) {
+      try {
+        const { success } = await trialRatelimit.limit(`trial_${ip}`)
+        if (!success) {
+          return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 })
+        }
+      } catch (error) {
+        console.error('Trial Rate limiting error (Failing Closed):', error)
+        // Fail closed to prevent trial abuse
+        return NextResponse.json({ error: 'Service temporarily unavailable.' }, { status: 503 })
       }
-    } catch (error) {
-      console.error('Trial Rate limiting error (Failing Closed):', error)
-      // Fail closed to prevent trial abuse
-      return NextResponse.json({ error: 'Service temporarily unavailable.' }, { status: 503 })
     }
-  }
 
-  if (path.startsWith('/login') && request.method === 'POST' && authRatelimit) {
-    try {
-      const { success } = await authRatelimit.limit(`login_${ip}`)
-      if (!success) {
-        return NextResponse.redirect(new URL('/login?message=Too many attempts. Try again later.', request.url))
+    if (path.startsWith('/login') && request.method === 'POST' && authRatelimit) {
+      try {
+        const { success } = await authRatelimit.limit(`login_${ip}`)
+        if (!success) {
+          return NextResponse.redirect(new URL('/login?message=Too many attempts. Try again later.', request.url))
+        }
+      } catch (error) {
+        console.error('Auth Rate limiting error:', error)
       }
-    } catch (error) {
-      console.error('Auth Rate limiting error:', error)
     }
-  }
 
-  if (path.startsWith('/api/provision') && provisionRatelimit) {
-    try {
-      const { success } = await provisionRatelimit.limit(`provision_${ip}`)
-      if (!success) {
-        return NextResponse.json({ error: 'Too many requests.' }, { status: 429 })
+    if (path.startsWith('/api/provision') && provisionRatelimit) {
+      try {
+        const { success } = await provisionRatelimit.limit(`provision_${ip}`)
+        if (!success) {
+          return NextResponse.json({ error: 'Too many requests.' }, { status: 429 })
+        }
+      } catch (error) {
+        console.error('Provision Rate limiting error:', error)
       }
-    } catch (error) {
-      console.error('Provision Rate limiting error:', error)
     }
-  }
 
-  return await updateSession(request)
+    return await updateSession(request)
+  } catch (err: any) {
+    console.error('Unhandled proxy error:', err)
+    // Fail safe to standard response if proxy logic itself crashes
+    return NextResponse.next({ request })
+  }
 }
 
 export const config = {
