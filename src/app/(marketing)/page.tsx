@@ -124,6 +124,21 @@ export default function LandingPage() {
                 .
               </p>
             </ScrollReveal>
+
+            {/* Integrated Tech Stack Strip (Rule 8.2: Component-based UI) */}
+            <div className={styles.techGrid} style={{ marginTop: 'auto', paddingTop: '3rem' }}>
+              {[
+                { label: 'Engine', value: 'Custom Heuristics' },
+                { label: 'Logic', value: 'MaxRects + Guillotine' },
+                { label: 'Database', value: 'PostgreSQL' },
+                { label: 'Identity', value: 'Supabase Auth' },
+              ].map((item) => (
+                <div key={item.label} className={styles.techItem} style={{ textAlign: 'left', padding: '0.8rem 0', borderRight: 'none', borderBottom: '1px solid var(--bg-panel-border)' }}>
+                  <p className={styles.techLabel} style={{ marginBottom: '0.2rem' }}>{item.label}</p>
+                  <p className={styles.techValue}>{item.value}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Column 2: Dual stacked photos */}
@@ -208,28 +223,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-
-        {/* ====================================================
-            TECH STACK STRIP
-        ==================================================== */}
-        <section className={styles.techStrip}>
-          <div className="section-inner">
-            <div className={styles.techGrid}>
-              {[
-                { label: 'Engine', value: 'Custom Heuristics' },
-                { label: 'Logic', value: 'MaxRects + Guillotine' },
-                { label: 'Database', value: 'PostgreSQL (Cloud)' },
-                { label: 'Stack', value: 'Flutter + Next.js' },
-                { label: 'Identity', value: 'Supabase Auth' },
-              ].map((item) => (
-                <div key={item.label} className={styles.techItem}>
-                  <p className={styles.techLabel}>{item.label}</p>
-                  <p className={styles.techValue}>{item.value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ====================================================
             PHILOSOPHY
