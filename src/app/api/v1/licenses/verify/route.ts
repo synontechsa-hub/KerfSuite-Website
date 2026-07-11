@@ -83,7 +83,12 @@ export async function POST(request: Request) {
       exp: expiresAt
     })
 
-    const leaseSecret = process.env.LEASE_SECRET || 'dev-industrial-secret-change-me'
+    const leaseSecret = process.env.LEASE_SECRET
+    if (!leaseSecret) {
+      console.error('CRITICAL: LEASE_SECRET environment variable is not set')
+      return NextResponse.json({ error: 'System configuration error' }, { status: 500 })
+    }
+
     const base64Payload = Buffer.from(payload).toString('base64url')
     const signature = crypto
       .createHmac('sha256', leaseSecret)

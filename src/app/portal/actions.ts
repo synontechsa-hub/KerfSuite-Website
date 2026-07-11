@@ -66,7 +66,7 @@ export async function generateKey(formData: FormData) {
     actorEmail: profile.email,
     actionType: 'key_generated',
     targetId: license.id,
-    description: `Generated ${app} key: ${cdkey}`
+    description: `Generated ${app} key ending in ...${cdkey.slice(-4)}`
   })
 
   revalidatePath('/')

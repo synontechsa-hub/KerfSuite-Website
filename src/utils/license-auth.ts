@@ -27,7 +27,7 @@ export async function validateLicenseRequest(request: Request, expectedApp?: str
   const { data: slot, error } = await adminClient
     .from('license_slots')
     .select('id, status, bound_machine_id, workspace_id, last_ip, abuse_score, is_flagged, app')
-    .or(`cdkey.eq.${cdkey},cdkey_hash.eq.${cdkeyHash}`)
+    .eq('cdkey_hash', cdkeyHash)
     .eq('workspace_id', workspaceId)
     .single()
 
@@ -70,7 +70,7 @@ export async function validateLicenseRequest(request: Request, expectedApp?: str
         actor_email: 'SECURITY-ENGINE',
         action_type: 'potential_abuse_flagged',
         target_id: slot.id,
-        description: `License ${cdkey.slice(0, 8)}... flagged for excessive IP shifting (5+ unique origins).`
+        description: `License ending in ...${cdkey.slice(-4)} flagged for excessive IP shifting (5+ unique origins).`
       })
     }
   }

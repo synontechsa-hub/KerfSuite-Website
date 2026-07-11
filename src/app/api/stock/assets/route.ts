@@ -1,5 +1,18 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
+import { z } from 'zod'
+
+const CreateAssetSchema = z.object({
+  material_id: z.string().uuid(),
+  display_name: z.string().optional(),
+  width: z.number().positive(),
+  height: z.number().positive(),
+  asset_type: z.enum(['full_sheet', 'remnant', 'offcut', 'custom']).default('full_sheet'),
+  status: z.enum(['available', 'reserved', 'consumed', 'disposed', 'damaged', 'missing']).default('available'),
+  location_id: z.string().uuid().optional(),
+  job_reference: z.string().optional(),
+  system_name: z.string().optional()
+})
 
 export async function GET() {
   const supabase = await createClient()
@@ -41,8 +54,15 @@ export async function POST(request: Request) {
   if (!userData) return NextResponse.json({ error: 'User workspace not found' }, { status: 403 })
 
   try {
-    const body = await request.json()
-    const asset_type = body.asset_type || 'full_sheet'
+    const rawBody = await request.json()
+    const validation = CreateAssetSchema.safeParse(rawBody)
+
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error.issues[0].message }, { status: 400 })
+    }
+
+    const body = validation.data
+    const asset_type = body.asset_type
 
     // AUDIT LOGIC: Sequential naming per workspace and type
     const prefix = {
@@ -50,7 +70,7 @@ export async function POST(request: Request) {
       remnant: 'REMNANT',
       offcut: 'OFFCUT',
       custom: 'CUSTOM'
-    }[asset_type as 'full_sheet' | 'remnant' | 'offcut' | 'custom'] || 'ASSET'
+    }[asset_type] || 'ASSET'
 
     const { count } = await supabase
       .from('assets')
