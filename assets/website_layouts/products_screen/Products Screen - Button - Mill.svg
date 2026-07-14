@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X7 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1920px" height="1000px" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+viewBox="0 0 1920 1000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <font id="FontID0" horiz-adv-x="835" font-variant="normal" fill-rule="nonzero" font-weight="700">
+	<font-face 
+		font-family="Orbitron">
+		<font-face-src>
+			<font-face-name name="Orbitron Regular"/>
+		</font-face-src>
+	</font-face>
+   <missing-glyph><path d="M0 0z"/></missing-glyph>
+   <glyph unicode="M" horiz-adv-x="927" d="M56.0173 0l0 720.017 144.974 0 260.984 -311.012 260.003 311.012 146.007 0 0 -720.017 -132.996 0 0 528.009 -273.014 -325.004 -273.995 323.971 0 -526.976 -131.963 0z"/>
+   <glyph unicode="l" horiz-adv-x="325" d="M189.994 0c-25.3498,0 -48.3246,6.35035 -68.9762,18.9994 -20.7032,12.6491 -37.3277,29.3252 -50.0284,49.9768 -12.6491,20.7032 -18.9994,43.678 -18.9994,69.0278l0 631.989 132.015 0.980949 0 -627.962c-0.671176,-3.35588 0.154887,-6.35035 2.47819,-9.03506 2.37493,-2.63307 5.52429,-3.66565 9.49972,-2.99448l110.021 -0.980949 0.980949 -130.002 -117.972 0 0.980949 0z"/>
+   <glyph unicode="i" horiz-adv-x="222" d="M51.9903 0l0 0 0 579.999 130.002 0 1.03258 -579.999 -131.034 0zm0 639.011l0 0 0 130.982 130.002 0 1.03258 -132.015 -131.034 1.03258z"/>
+  </font>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="btn_mill">
+   <g transform="matrix(0.999988 0 0 1 569.328 220.528)">
+    <text x="960" y="500"  fill="#FF6600" font-weight="bold" font-size="22.8768px" font-family="Orbitron">Mill</text>
+   </g>
+   <path fill="white" fill-rule="nonzero" d="M1496 713l7 0 0 -2c0,-1 0,-1 0,-1 0,0 0,0 0,0l-7 0c0,0 0,0 0,0 0,0 0,0 0,1l0 2zm23 -6l0 -1c0,-1 0,-1 0,-2 1,0 1,0 1,-1 1,0 1,0 2,0l5 0 0 3 -5 0c0,0 0,0 0,0 0,0 0,0 0,0l0 1 5 0 0 3 -5 0 0 11 -3 0 0 0 0 -11 -7 0c0,0 0,0 -1,0 0,0 0,0 0,1l0 8 0 2 0 0 -15 0 0 0c-1,0 -1,-1 -2,-1 0,0 -1,-1 -1,-1 0,-1 0,-1 0,-2l0 -7c0,0 0,-1 0,-1 0,-1 1,-1 1,-1 1,-1 1,-1 2,-1l7 0c1,0 1,0 2,1 0,0 0,0 1,1 0,0 0,1 0,1l0 5 -10 0 0 2c0,0 0,0 0,0 0,1 0,1 0,1l12 0 0 -8c0,0 1,-1 1,-1 0,-1 1,-1 1,-1 0,-1 1,-1 2,-1l7 0zm-43 -3l3 0 0 17 -3 0 0 -17zm11 17l4 0 -7 -9 6 -8 -4 0 -6 8 7 9z"/>
+  </g>
+ </g>
+</svg>
