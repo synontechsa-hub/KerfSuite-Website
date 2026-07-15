@@ -222,7 +222,7 @@ export default function LandingPage() {
                   <p className="section-tag">Philosophy</p>
                   <h2 className="section-title">Built for <span>Production.</span></h2>
                   <p className={styles.philosophyTagline}>
-                    We don't build generic SaaS interfaces. We engineer rugged software tools built to stand up to the speed and demands of the workshop floor.
+                    We don&apos;t build generic SaaS interfaces. We engineer rugged software tools built to stand up to the speed and demands of the workshop floor.
                   </p>
                 </ScrollReveal>
 
