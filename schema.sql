@@ -145,47 +145,61 @@ ALTER TABLE public.locations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.assets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.asset_events ENABLE ROW LEVEL SECURITY;
 
--- 6. POLICIES
+-- 6. SECURITY HELPERS & POLICIES
+
+-- Helper to retrieve current user's workspace ID bypassing RLS
+CREATE OR REPLACE FUNCTION public.get_user_workspace()
+RETURNS uuid SECURITY DEFINER LANGUAGE plpgsql AS $$
+BEGIN
+  RETURN (SELECT workspace_id FROM public.users WHERE id = auth.uid());
+END;
+$$;
+
+-- Helper to check if current user is admin bypassing RLS
+CREATE OR REPLACE FUNCTION public.is_user_admin()
+RETURNS boolean SECURITY DEFINER LANGUAGE plpgsql AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM public.users 
+    WHERE id = auth.uid() AND role = 'admin'
+  );
+END;
+$$;
 
 -- Workspaces: Users view own workspace only
 DROP POLICY IF EXISTS "Users view own workspace" ON public.workspaces;
 CREATE POLICY "Users view own workspace" ON public.workspaces FOR SELECT
-USING (id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
+USING (id = public.get_user_workspace());
 
--- Users: Users view workspace peers
+-- Users: Users view workspace peers (or own profile)
 DROP POLICY IF EXISTS "Users view workspace peers" ON public.users;
 CREATE POLICY "Users view workspace peers" ON public.users FOR SELECT
-USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
+USING (workspace_id = public.get_user_workspace() OR id = auth.uid());
 
 -- License Slots: Members can view, only Admins can write
 DROP POLICY IF EXISTS "Members view workspace licenses" ON public.license_slots;
 CREATE POLICY "Members view workspace licenses" ON public.license_slots FOR SELECT
-USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
+USING (workspace_id = public.get_user_workspace());
 
 DROP POLICY IF EXISTS "Admins manage workspace licenses" ON public.license_slots;
 CREATE POLICY "Admins manage workspace licenses" ON public.license_slots FOR ALL
-USING (
-  workspace_id IN (
-    SELECT workspace_id FROM public.users
-    WHERE users.id = auth.uid() AND users.role = 'admin'
-  )
-);
+USING (workspace_id = public.get_user_workspace() AND public.is_user_admin());
 
 -- Audit Logs: Members can view and insert
 DROP POLICY IF EXISTS "Users view audit logs" ON public.audit_logs;
 CREATE POLICY "Users view audit logs" ON public.audit_logs FOR SELECT
-USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
+USING (workspace_id = public.get_user_workspace());
 
 DROP POLICY IF EXISTS "Members insert audit logs" ON public.audit_logs;
 CREATE POLICY "Members insert audit logs" ON public.audit_logs FOR INSERT
-WITH CHECK (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()));
+WITH CHECK (workspace_id = public.get_user_workspace());
 
 -- Stock Policies: Strict Workspace Isolation
 -- Hardened for Suite Integration (Allows Portal users and KerfCut Service Role)
-CREATE POLICY "Workspace Isolation" ON public.materials FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()) OR auth.role() = 'service_role');
-CREATE POLICY "Workspace Isolation" ON public.locations FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()) OR auth.role() = 'service_role');
-CREATE POLICY "Workspace Isolation" ON public.assets FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()) OR auth.role() = 'service_role');
-CREATE POLICY "Workspace Isolation" ON public.asset_events FOR ALL USING (workspace_id IN (SELECT workspace_id FROM public.users WHERE users.id = auth.uid()) OR auth.role() = 'service_role');
+CREATE POLICY "Workspace Isolation" ON public.materials FOR ALL USING (workspace_id = public.get_user_workspace() OR auth.role() = 'service_role');
+CREATE POLICY "Workspace Isolation" ON public.locations FOR ALL USING (workspace_id = public.get_user_workspace() OR auth.role() = 'service_role');
+CREATE POLICY "Workspace Isolation" ON public.assets FOR ALL USING (workspace_id = public.get_user_workspace() OR auth.role() = 'service_role');
+CREATE POLICY "Workspace Isolation" ON public.asset_events FOR ALL USING (workspace_id = public.get_user_workspace() OR auth.role() = 'service_role');
 
 -- Trials: Strict RPC-only access (No direct table access for anon/authenticated)
 DROP POLICY IF EXISTS "Public trials access" ON public.trials;

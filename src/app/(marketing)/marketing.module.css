@@ -123,38 +123,29 @@
 .hero {
   position: relative;
   height: 100vh;
-  min-height: 600px;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
+  min-height: 700px;
   overflow: hidden;
   padding-top: 64px; /* nav height */
   scroll-snap-align: start;
+  background-color: var(--bg-primary);
 }
 
-/* Engineering grid background */
-.heroGrid {
+/* Industrial background image */
+.heroBackground {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(var(--bg-panel-border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bg-panel-border) 1px, transparent 1px);
-  background-size: 107px 100px;
-  opacity: 0.3;
-  pointer-events: none;
-  z-index: 0;
+  background-image: url('/images/marketing/hero/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
 }
 
 /* Left: Text copy column */
-.heroLeft {
+.heroContent {
   position: relative;
   z-index: 2;
-  flex: 0 0 44%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 5rem 3rem 5rem 4rem;
-  border-right: 1px solid var(--bg-panel-border);
+  max-width: 600px;
+  padding: 2rem 0;
 }
 
 /* Tag line above heading */
@@ -171,13 +162,13 @@
 /* Main H1 */
 .heroTitle {
   font-family: var(--font-base);
-  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  font-size: clamp(3rem, 6vw, 5.5rem);
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 0.95;
   color: var(--text-primary);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: -1px;
 }
 
 .heroTitle span {
@@ -203,90 +194,67 @@
   margin-bottom: 3rem;
 }
 
+/* Custom SVG Buttons */
+.heroBtnExplore {
+  display: block;
+  width: 260px;
+  height: 60px;
+  background-image: url('/svg/marketing/hero/btn-explore.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: filter 0.2s;
+}
+
+.heroBtnExplore:hover {
+  filter: brightness(1.2);
+}
+
+.heroBtnStarted {
+  display: block;
+  width: 260px;
+  height: 60px;
+  background-image: url('/svg/marketing/hero/btn-started.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: filter 0.2s;
+}
+
+.heroBtnStarted:hover {
+  filter: brightness(1.2);
+}
+
+.heroElements {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.heroElementFeedRate {
+  height: 30px;
+  width: auto;
+  align-self: flex-start;
+  opacity: 0.8;
+}
+
+.heroElementPowered {
+  height: 25px;
+  width: auto;
+}
+
 /* Powered by badge */
 .heroPoweredBy {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   font-family: var(--font-base);
   font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: var(--text-secondary);
   opacity: 0.6;
 }
 
-.heroPoweredByBrand {
-  color: var(--accent-orange);
-  font-weight: 700;
-}
-
-/* Right: Workshop photo column */
-.heroRight {
-  position: relative;
-  z-index: 2;
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.heroImageWrap {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 500px;
-  overflow: hidden;
-}
-
-.heroImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  display: block;
-  filter: brightness(0.75);
-}
-
-/* Dark gradient fades from left (strong, blending into left panel) and bottom */
-.heroImageOverlay {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to right, var(--bg-primary) 0%, transparent 35%),
-    linear-gradient(to top, var(--bg-primary) 0%, transparent 30%),
-    rgba(0, 0, 0, 0.35);
-}
-
-/* Corner status tag */
-.heroImageTag {
-  position: absolute;
-  bottom: 2rem;
-  right: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--accent-orange);
-  background: rgba(0,0,0,0.6);
-  border: 1px solid rgba(255,102,0,0.3);
-  border-radius: 4px;
-  padding: 0.4rem 0.8rem;
-  backdrop-filter: blur(4px);
-}
-
-.heroImageTagDot {
-  display: block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-orange);
-  animation: pulse 1.5s ease-in-out infinite;
-}
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
@@ -1208,19 +1176,45 @@
   }
 
   .hero {
-    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    padding-bottom: 4rem;
   }
 
-  .heroLeft {
-    flex: unset;
-    padding: 5rem 2rem 3rem;
-    border-right: none;
-    border-bottom: 1px solid var(--bg-panel-border);
+  .heroContent {
+    padding: 4rem 1rem;
+    text-align: center;
+    max-width: 100%;
   }
 
-  .heroRight {
-    height: 50vh;
-    min-height: 300px;
+  .heroEyebrow {
+    font-size: 0.55rem;
+  }
+
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .heroCtas {
+    justify-content: center;
+  }
+
+  .heroBtnExplore, .heroBtnStarted {
+    width: 220px;
+    height: 50px;
+    margin: 0 auto;
+  }
+
+  .heroElements {
+    align-items: center;
+  }
+
+  .heroElementFeedRate {
+    align-self: center;
+  }
+
+  .heroPoweredBy {
+    justify-content: center;
   }
 
   .footerLinks {

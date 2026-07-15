@@ -21,60 +21,46 @@ export default function LandingPage() {
             HERO — Split Panel Design
         ==================================================== */}
         <section className={styles.hero}>
-          {/* Engineering grid background */}
-          <div className={styles.heroGrid} />
+          {/* Industrial background */}
+          <div className={styles.heroBackground} />
 
-          {/* Left: Copy Panel */}
-          <div className={styles.heroLeft}>
-            <ScrollReveal>
-              <p className={styles.heroEyebrow}>
-                PRECISION AT EVERY STAGE OF PRODUCTION.
-              </p>
+          <div className="section-inner" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+            {/* Left: Copy Panel */}
+            <div className={styles.heroContent}>
+              <ScrollReveal>
+                <p className={styles.heroEyebrow}>
+                  PRECISION AT EVERY STAGE OF PRODUCTION.
+                </p>
 
-              <h1 className={styles.heroTitle}>
-                Work smarter.<br />
-                Waste less.
-              </h1>
+                <h1 className={styles.heroTitle}>
+                  Work smarter.<br />
+                  Waste <span>less.</span>
+                </h1>
 
-              <p className={styles.heroDesc}>
-                A growing ecosystem of integrated workshop utilities designed to bridge
-                the gap between design and physical output. From algorithmic cut
-                optimization to real-time stock management, KerfSuite is built for
-                serious makers who demand zero-defect workflows.
-              </p>
+                <p className={styles.heroDesc}>
+                  A growing ecosystem of integrated workshop utilities designed to bridge
+                  the gap between design and physical output. From algorithmic cut
+                  optimization to real-time stock management, KerfSuite is built for
+                  serious makers who demand zero-defect workflows.
+                </p>
 
-              <div className={styles.heroCtas}>
-                <Link href="#apps" className="btn-filled">
-                  Explore the Suite
-                </Link>
-                <Link href="/signup" className="btn-primary">
-                  Get Started →
-                </Link>
-              </div>
+                <div className={styles.heroCtas}>
+                  <Link href="#apps" className={styles.heroBtnExplore}>
+                    <span className="sr-only">Explore the Suite</span>
+                  </Link>
+                  <Link href="/signup" className={styles.heroBtnStarted}>
+                    <span className="sr-only">Get Started</span>
+                  </Link>
+                </div>
 
-              <div className={styles.heroPoweredBy}>
-                <span>Powered by</span>
-                <span className={styles.heroPoweredByBrand}>Synontech</span>
-              </div>
-            </ScrollReveal>
-          </div>
-
-          {/* Right: Workshop Photo Panel */}
-          <div className={styles.heroRight}>
-            <div className={styles.heroImageWrap}>
-              {/* Workshop stock photo */}
-              <img
-                src="/images/hero-workshop.jpg"
-                alt="Workshop floor — precision manufacturing"
-                className={styles.heroImage}
-              />
-              {/* Black fade overlay */}
-              <div className={styles.heroImageOverlay} />
-              {/* Corner tag */}
-              <div className={styles.heroImageTag}>
-                <span className={styles.heroImageTagDot} />
-                WORKSHOP IN PRODUCTION
-              </div>
+                <div className={styles.heroElements}>
+                  <img src="/svg/marketing/hero/element-feedrate.svg" alt="Feed Rate" className={styles.heroElementFeedRate} />
+                  <div className={styles.heroPoweredBy}>
+                    <span>Powered by</span>
+                    <img src="/svg/marketing/hero/element-powered.svg" alt="Synontech" className={styles.heroElementPowered} />
+                  </div>
+                </div>
+              </ScrollReveal>
             </div>
           </div>
         </section>
