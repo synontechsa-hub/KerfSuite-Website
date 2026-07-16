@@ -6,7 +6,7 @@
 
 :root {
   /* --- Backgrounds --- */
-  --bg-primary:       #121212;
+  --bg-primary:       #0a0a0a;
   --bg-panel:         #1a1a1a;
   --bg-panel-mid:     #222222;
   --bg-panel-raised:  #2a2a2a;
@@ -17,8 +17,8 @@
   --border-accent:    #3a3a3a;
 
   /* --- Accent Colors --- */
-  --accent-orange:        #f39c12;
-  --accent-orange-hover:  #e67e22;
+  --accent-orange:        #FF6600;
+  --accent-orange-hover:  #e65c00;
   --accent-orange-dim:    rgba(243, 156, 18, 0.12);
   --accent-orange-glow:   rgba(243, 156, 18, 0.25);
 

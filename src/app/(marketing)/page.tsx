@@ -25,10 +25,6 @@ export default function LandingPage() {
           <div className={styles.heroBackground} />
 
           <div className="section-inner" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
-            {/* Hero Photo Overlay */}
-            <div className={styles.heroPhotoWrap}>
-              <img src="/images/marketing/hero/hero-photo.jpg" alt="Workshop floor" className={styles.heroPhoto} />
-            </div>
 
             {/* Left: Copy Panel */}
             <div className={styles.heroContent}>
@@ -67,6 +63,23 @@ export default function LandingPage() {
                 </div>
               </ScrollReveal>
             </div>
+
+            {/* Hero Photo Panel Overlay */}
+            <div className={styles.heroPhotoWrap}>
+              <div className={styles.heroVisualPanel}>
+                <div className={styles.heroVisualHeader}>
+                  <div className={styles.heroVisualDots}>
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                  <div className={styles.heroVisualTitle}>SYS // PRODUCTION_FLOOR</div>
+                </div>
+                <div className={styles.heroVisualBody} style={{ padding: 0, height: '100%' }}>
+                  <img src="/images/marketing/hero/hero-photo.jpg" alt="Workshop floor" className={styles.heroPhoto} style={{ objectFit: 'cover' }} />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -78,9 +91,21 @@ export default function LandingPage() {
           <div className={styles.aboutBackground} />
 
           <div className="section-inner" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-            {/* About Photo Overlay */}
+            {/* About Photo Panel Overlay */}
             <div className={styles.aboutPhotoWrap}>
-              <img src="/images/marketing/about/about-photo.png" alt="CNC Machinery" className={styles.aboutPhoto} />
+              <div className={styles.heroVisualPanel}>
+                <div className={styles.heroVisualHeader}>
+                  <div className={styles.heroVisualDots}>
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                  <div className={styles.heroVisualTitle}>SYS // WORKSHOP_ASSETS</div>
+                </div>
+                <div className={styles.heroVisualBody} style={{ padding: 0, height: '100%' }}>
+                  <img src="/images/marketing/about/about-photo.png" alt="CNC Machinery" className={styles.aboutPhoto} />
+                </div>
+              </div>
             </div>
 
             {/* Right-aligned Content */}
@@ -88,9 +113,9 @@ export default function LandingPage() {
               <ScrollReveal>
                 <p className={styles.aboutEyebrow}>ABOUT</p>
                 <h2 className={styles.aboutHeadline}>
-                  Serious<br />
-                  <span>tools</span> for all<br />
-                  your <span>needs.</span>
+                  SERIOUS<br />
+                  <span>TOOLS</span> FOR ALL<br />
+                  YOUR <span>NEEDS.</span>
                 </h2>
                 <div className={styles.aboutBody}>
                   <p>

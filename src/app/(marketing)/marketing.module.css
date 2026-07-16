@@ -130,14 +130,23 @@
   background-color: var(--bg-primary);
 }
 
-/* Industrial background image */
+/* Universal SVG background */
 .heroBackground {
   position: absolute;
   inset: 0;
-  background-image: url('/images/marketing/hero/hero-bg.jpg');
+  background-image: url('/svg/marketing/Background.svg');
   background-size: cover;
   background-position: center;
   z-index: 1;
+  opacity: 0.4;
+}
+
+.heroBackground::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
 }
 
 /* Left: Text copy column */
@@ -151,44 +160,45 @@
 
 .heroPhotoWrap {
   position: absolute;
-  right: 0;
+  right: 5%;
   top: 50%;
   transform: translateY(-50%);
-  width: 50%;
-  height: 80%;
+  width: 45%;
+  height: 70%;
   z-index: 2;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .heroPhoto {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: right center;
-  filter: drop-shadow(0 0 30px rgba(0,0,0,0.5));
+  object-fit: cover;
 }
 
 /* Tag line above heading */
 .heroEyebrow {
   font-family: var(--font-base);
-  font-size: 0.6rem;
+  font-size: 12.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   color: var(--accent-orange);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 /* Main H1 */
 .heroTitle {
   font-family: var(--font-base);
-  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-size: 75px;
   font-weight: 900;
-  line-height: 0.95;
+  line-height: 1.1;
   color: var(--text-primary);
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   text-transform: uppercase;
-  letter-spacing: -1px;
+  letter-spacing: 2px;
 }
 
 .heroTitle span {
@@ -198,12 +208,12 @@
 /* Body copy */
 .heroDesc {
   font-family: var(--font-base);
-  font-size: 0.9rem;
+  font-size: 14.5px;
   font-weight: 400;
   color: var(--text-secondary);
-  line-height: 1.75;
-  max-width: 480px;
-  margin-bottom: 2.5rem;
+  line-height: 1.8;
+  max-width: 520px;
+  margin-bottom: 3rem;
 }
 
 /* CTA buttons */
@@ -285,11 +295,35 @@
 .heroVisualPanel {
   width: 100%;
   max-width: 660px;
-  background: var(--bg-panel);
+  background: #000;
   border: 1px solid var(--bg-panel-border);
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 0 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,102,0,0.08);
+  box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,102,0,0.1);
+  position: relative;
+}
+
+.heroVisualPanel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 5;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+.heroVisualPanel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+  z-index: 6;
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
 }
 
 /* App window header bar */
@@ -321,11 +355,12 @@
 
 .heroVisualTitle {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent-orange);
+  opacity: 0.8;
 }
 
 /* Cut plan body area */
@@ -1266,29 +1301,39 @@
 .aboutBackground {
   position: absolute;
   inset: 0;
-  background-image: url('/images/marketing/about/about-bg.jpg');
+  background-image: url('/svg/marketing/Background.svg');
   background-size: cover;
   background-position: center;
   z-index: 1;
+  opacity: 0.4;
+}
+
+.aboutBackground::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
 }
 
 .aboutPhotoWrap {
   position: absolute;
-  left: 0;
+  left: 5%;
   top: 50%;
   transform: translateY(-50%);
-  width: 55%;
-  height: 85%;
+  width: 45%;
+  height: 70%;
   z-index: 2;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .aboutPhoto {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: left center;
-  filter: drop-shadow(0 0 40px rgba(0,0,0,0.6));
+  object-fit: cover;
 }
 
 .aboutContent {
@@ -1300,22 +1345,22 @@
 
 .aboutEyebrow {
   font-family: var(--font-base);
-  font-size: 0.7rem;
+  font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--accent-orange);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .aboutHeadline {
   font-family: var(--font-base);
-  font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+  font-size: 75px;
   font-weight: 900;
-  line-height: 0.95;
+  line-height: 1.1;
   color: var(--text-primary);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   margin-bottom: 2.5rem;
 }
 
@@ -1331,7 +1376,7 @@
 
 .aboutBody p {
   font-family: var(--font-base);
-  font-size: 0.85rem;
+  font-size: 14.5px;
   font-weight: 400;
   line-height: 1.8;
   color: var(--text-secondary);
