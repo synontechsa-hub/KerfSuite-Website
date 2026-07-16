@@ -593,6 +593,7 @@
   height: 100vh;
   min-height: 800px;
   overflow: hidden;
+  padding-top: 64px; /* clear fixed nav */
   background-color: var(--bg-primary);
   scroll-snap-align: start;
 }
