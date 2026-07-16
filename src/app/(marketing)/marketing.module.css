@@ -598,6 +598,24 @@
   scroll-snap-align: start;
 }
 
+.philosophyBackground {
+  position: absolute;
+  inset: 0;
+  background-image: url('/svg/marketing/Background.svg');
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+.philosophyBackground::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+}
+
 /* Right-side photo */
 .philosophyPhotoWrap {
   position: absolute;
@@ -629,7 +647,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem 50px 2rem calc(5% - 40px);
+  padding: 1.5rem 50px 1.5rem calc(5% - 40px);
 }
 
 .philosophyEyebrow {
@@ -639,7 +657,7 @@
   text-transform: uppercase;
   letter-spacing: 4px;
   color: var(--accent-orange);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .philosophyHeadline {
@@ -650,7 +668,7 @@
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 
 .philosophyHeadline span {
@@ -663,14 +681,14 @@
   font-weight: 400;
   color: var(--text-primary);
   line-height: 1.8;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Feature list */
 .philosophyFeatures {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.25rem;
 }
 
 .philosophyFeatureItem {

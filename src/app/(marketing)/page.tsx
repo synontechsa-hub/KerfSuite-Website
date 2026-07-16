@@ -132,6 +132,9 @@ export default function LandingPage() {
             PHILOSOPHY
         ==================================================== */}
         <section id="philosophy" className={styles.philosophySection}>
+          {/* Background */}
+          <div className={styles.philosophyBackground} />
+
           {/* Right-side photo panel */}
           <div className={styles.philosophyPhotoWrap}>
             <img
