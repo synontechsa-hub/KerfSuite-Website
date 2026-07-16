@@ -21,12 +21,17 @@ export default function LandingPage() {
             HERO — Split Panel Design
         ==================================================== */}
         <section className={styles.hero}>
-          {/* Industrial background */}
           <div className={styles.heroBackground} />
 
-          <div className="section-inner" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
+          <div className={styles.heroPhotoWrap}>
+            <img
+              src="/images/marketing/hero/hero-photo.jpg"
+              alt="CNC laser cutting metal on the production floor"
+              className={styles.heroPhoto}
+            />
+          </div>
 
-            {/* Left: Copy Panel */}
+          <div className="splitInner" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center' }}>
             <div className={styles.heroContent}>
               <ScrollReveal>
                 <p className={styles.heroEyebrow}>
@@ -34,8 +39,9 @@ export default function LandingPage() {
                 </p>
 
                 <h1 className={styles.heroTitle}>
-                  Work smarter.<br />
-                  Waste <span>less.</span>
+                  WORK<br />
+                  SMARTER.<br />
+                  WASTE <span>LESS.</span>
                 </h1>
 
                 <p className={styles.heroDesc}>
@@ -46,39 +52,18 @@ export default function LandingPage() {
                 </p>
 
                 <div className={styles.heroCtas}>
-                  <Link href="#apps" className={styles.heroBtnExplore}>
-                    <span className="sr-only">Explore the Suite</span>
-                  </Link>
-                  <Link href="/signup" className={styles.heroBtnStarted}>
-                    <span className="sr-only">Get Started</span>
-                  </Link>
+                  <Link href="#apps" className={styles.heroBtnExplore} aria-label="Explore the Suite" />
+                  <Link href="/signup" className={styles.heroBtnStarted} aria-label="Get Started" />
                 </div>
 
                 <div className={styles.heroElements}>
-                  <img src="/svg/marketing/hero/element-feedrate.svg" alt="Feed Rate" className={styles.heroElementFeedRate} />
                   <div className={styles.heroPoweredBy}>
                     <span>Powered by</span>
                     <img src="/svg/marketing/hero/element-powered.svg" alt="Synontech" className={styles.heroElementPowered} />
                   </div>
+                  <img src="/svg/marketing/hero/element-feedrate.svg" alt="Feed Rate" className={styles.heroElementFeedRate} />
                 </div>
               </ScrollReveal>
-            </div>
-
-            {/* Hero Photo Panel Overlay */}
-            <div className={styles.heroPhotoWrap}>
-              <div className={styles.heroVisualPanel}>
-                <div className={styles.heroVisualHeader}>
-                  <div className={styles.heroVisualDots}>
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                  <div className={styles.heroVisualTitle}>SYS // PRODUCTION_FLOOR</div>
-                </div>
-                <div className={styles.heroVisualBody} style={{ padding: 0, height: '100%' }}>
-                  <img src="/images/marketing/hero/hero-photo.jpg" alt="Workshop floor" className={styles.heroPhoto} style={{ objectFit: 'cover' }} />
-                </div>
-              </div>
             </div>
           </div>
         </section>

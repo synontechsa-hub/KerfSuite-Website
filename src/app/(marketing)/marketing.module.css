@@ -161,18 +161,126 @@
   position: absolute;
   right: 0;
   top: 0;
-  bottom: 0;
-  width: 100%; /* Full screen width to allow photo to span */
-  z-index: 1;
+  width: 61.1%;
+  height: 100%;
+  z-index: 2;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.heroPhoto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.heroEyebrow {
+  font-family: var(--font-base);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--accent-orange);
+  margin-bottom: 2rem;
+}
+
+.heroTitle {
+  font-family: var(--font-base);
+  font-size: clamp(2.5rem, 5vw, 75px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.heroTitle span {
+  color: var(--accent-orange);
+}
+
+.heroDesc {
+  font-family: var(--font-base);
+  font-size: 14.5px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.8;
+  max-width: 520px;
+  margin-bottom: 3rem;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.heroBtnExplore {
+  display: block;
+  width: 225px;
+  height: 36px;
+  background-image: url('/svg/marketing/hero/btn-explore.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: filter 0.2s;
+}
+
+.heroBtnExplore:hover {
+  filter: brightness(1.2);
+}
+
+.heroBtnStarted {
+  display: block;
+  width: 190px;
+  height: 36px;
+  background-image: url('/svg/marketing/hero/btn-started.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: filter 0.2s;
+}
+
+.heroBtnStarted:hover {
+  filter: brightness(1.2);
+}
+
+.heroElements {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 520px;
+  gap: 1rem;
+}
+
+.heroElementFeedRate {
+  height: 40px;
+  width: auto;
+  opacity: 0.9;
+}
+
+.heroElementPowered {
+  height: 25px;
+  width: auto;
+}
+
+.heroPoweredBy {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  gap: 0.75rem;
+  font-family: var(--font-base);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-secondary);
+  opacity: 0.8;
 }
 
 .heroVisualPanel {
-  width: 80%; /* Takes up 80% of screen from right */
-  height: 100%; /* FULL SCREEN HEIGHT */
+  width: 80%;
+  height: 100%;
   background: #000;
   border-left: 1px solid var(--bg-panel-border);
   overflow: hidden;
@@ -1111,6 +1219,13 @@
     height: auto;
     min-height: 100vh;
     padding-bottom: 4rem;
+  }
+
+  .heroPhotoWrap {
+    position: relative;
+    width: 100%;
+    height: 45vh;
+    margin-bottom: 2rem;
   }
 
   .heroContent {
