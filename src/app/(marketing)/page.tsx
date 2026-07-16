@@ -75,32 +75,22 @@ export default function LandingPage() {
         <section id="about" className={styles.aboutSection}>
           <div className={styles.aboutBackground} />
 
-          <div className="section-inner" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-            {/* About Photo Panel Overlay */}
-            <div className={styles.aboutPhotoWrap}>
-              <div className={styles.aboutVisualPanel}>
-                <div className={styles.heroVisualHeader}>
-                  <div className={styles.heroVisualDots}>
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                  <div className={styles.heroVisualTitle}>SYS // WORKSHOP_ASSETS</div>
-                </div>
-                <div className={styles.heroVisualBody} style={{ padding: 0, height: '100%' }}>
-                  <img src="/images/marketing/about/about-photo.png" alt="CNC Machinery" className={styles.aboutPhoto} />
-                </div>
-              </div>
-            </div>
+          <div className={styles.aboutPhotoWrap}>
+            <img
+              src="/images/marketing/about/about-photo.png"
+              alt="CNC machinery in a workshop"
+              className={styles.aboutPhoto}
+            />
+          </div>
 
-            {/* Right-aligned Content */}
+          <div className="splitInner" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
             <div className={styles.aboutContent}>
               <ScrollReveal>
                 <p className={styles.aboutEyebrow}>ABOUT</p>
                 <h2 className={styles.aboutHeadline}>
                   SERIOUS<br />
-                  <span>TOOLS</span> FOR ALL<br />
-                  YOUR <span>NEEDS.</span>
+                  <span>TOOLS</span> FOR<br />
+                  ALL YOUR <span>NEEDS.</span>
                 </h2>
                 <div className={styles.aboutBody}>
                   <p>

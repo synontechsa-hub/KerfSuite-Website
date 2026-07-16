@@ -1312,61 +1312,27 @@
   position: absolute;
   left: 0;
   top: 0;
-  bottom: 0;
-  width: 100%;
-  z-index: 1;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-/* About panel should also be full height */
-.aboutVisualPanel {
-  width: 60%;
-  height: 100%; /* FULL SCREEN HEIGHT */
-  background: #000;
-  border-right: 1px solid var(--bg-panel-border);
-  overflow: hidden;
-  box-shadow: 20px 0 100px rgba(0,0,0,0.9);
-  position: relative;
-}
-
-.aboutVisualPanel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 5;
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
-}
-
-.aboutVisualPanel::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  width: 50%;
   height: 100%;
-  background: linear-gradient(0deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
-  z-index: 6;
-  animation: scanline 8s linear infinite;
+  z-index: 2;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .aboutPhoto {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 .aboutContent {
   position: relative;
   z-index: 3;
   max-width: 850px;
-  text-align: right;
+  text-align: left;
   padding: 6rem 0;
+  margin-right: 5%;
 }
 
 .aboutEyebrow {
@@ -1381,7 +1347,7 @@
 
 .aboutHeadline {
   font-family: var(--font-base);
-  font-size: 75px;
+  font-size: clamp(2.5rem, 5vw, 75px);
   font-weight: 900;
   line-height: 1.1;
   color: var(--text-primary);
@@ -1405,7 +1371,7 @@
   font-size: 14.5px;
   font-weight: 400;
   line-height: 1.8;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 /* Responsive: stack columns */
@@ -1419,21 +1385,15 @@
   .aboutPhotoWrap {
     position: relative;
     width: 100%;
-    height: auto;
-    transform: none;
-    margin-bottom: 3rem;
-    left: auto;
-    top: auto;
-  }
-
-  .aboutPhoto {
-    object-position: center;
-    max-height: 400px;
+    height: 45vh;
+    margin-bottom: 2rem;
   }
 
   .aboutContent {
     max-width: 100%;
     text-align: center;
+    margin-right: 0;
+    padding: 0 1rem;
   }
 
   .aboutHeadline {
