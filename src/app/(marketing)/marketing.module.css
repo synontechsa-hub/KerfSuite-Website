@@ -589,7 +589,7 @@
 .philosophySection {
   position: relative;
   height: 100vh;
-  min-height: 900px;
+  min-height: 800px;
   overflow: hidden;
   background-color: var(--bg-primary);
   scroll-snap-align: start;
@@ -617,17 +617,16 @@
   -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
 }
 
-/* Left text content */
 .philosophyInner {
   position: relative;
   z-index: 3;
   height: 100%;
+  width: 50%;
+  max-width: 720px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 560px;
-  padding: 6rem 0;
-  margin-left: calc(5% - 40px);
+  padding: 2rem 50px 2rem calc(5% - 40px);
 }
 
 .philosophyEyebrow {
@@ -642,7 +641,7 @@
 
 .philosophyHeadline {
   font-family: var(--font-base);
-  font-size: clamp(2.5rem, 5vw, 75px);
+  font-size: clamp(2rem, 3.8vw, 68px);
   font-weight: 900;
   line-height: 1.1;
   color: var(--text-primary);
@@ -709,6 +708,7 @@
   }
 
   .philosophyInner {
+    width: 100%;
     max-width: 100%;
     padding: 3rem 1.5rem;
     margin-left: 0;
@@ -1255,7 +1255,7 @@
 .aboutSection {
   position: relative;
   height: 100vh;
-  min-height: 900px;
+  min-height: 800px;
   overflow: hidden;
   padding-top: 64px; /* clear fixed nav */
   background-color: var(--bg-primary);
