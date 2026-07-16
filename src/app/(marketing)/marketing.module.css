@@ -123,7 +123,7 @@
 .hero {
   position: relative;
   height: 100vh;
-  min-height: 700px;
+  min-height: 900px;
   overflow: hidden;
   padding-top: 64px; /* nav height */
   scroll-snap-align: start;
@@ -149,158 +149,38 @@
   pointer-events: none;
 }
 
-/* Left: Text copy column */
 .heroContent {
   position: relative;
-  z-index: 2;
-  max-width: 600px;
-  padding: 2rem 0;
-  margin-left: 5%; /* Shift text to make room for photo if needed */
+  z-index: 3;
+  max-width: 800px;
+  padding: 6rem 0;
+  margin-left: 5%;
 }
 
 .heroPhotoWrap {
   position: absolute;
-  right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 45%;
-  height: 70%;
-  z-index: 2;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 75%;
+  z-index: 1;
   pointer-events: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.heroPhoto {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Tag line above heading */
-.heroEyebrow {
-  font-family: var(--font-base);
-  font-size: 12.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  color: var(--accent-orange);
-  margin-bottom: 2rem;
-}
-
-/* Main H1 */
-.heroTitle {
-  font-family: var(--font-base);
-  font-size: 75px;
-  font-weight: 900;
-  line-height: 1.1;
-  color: var(--text-primary);
-  margin-bottom: 2.5rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.heroTitle span {
-  color: var(--accent-orange);
-}
-
-/* Body copy */
-.heroDesc {
-  font-family: var(--font-base);
-  font-size: 14.5px;
-  font-weight: 400;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  max-width: 520px;
-  margin-bottom: 3rem;
-}
-
-/* CTA buttons */
-.heroCtas {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
-}
-
-/* Custom SVG Buttons */
-.heroBtnExplore {
-  display: block;
-  width: 260px;
-  height: 60px;
-  background-image: url('/svg/marketing/hero/btn-explore.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  transition: filter 0.2s;
-}
-
-.heroBtnExplore:hover {
-  filter: brightness(1.2);
-}
-
-.heroBtnStarted {
-  display: block;
-  width: 260px;
-  height: 60px;
-  background-image: url('/svg/marketing/hero/btn-started.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  transition: filter 0.2s;
-}
-
-.heroBtnStarted:hover {
-  filter: brightness(1.2);
-}
-
-.heroElements {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-top: 1rem;
-}
-
-.heroElementFeedRate {
-  height: 30px;
-  width: auto;
-  align-self: flex-start;
-  opacity: 0.8;
-}
-
-.heroElementPowered {
-  height: 25px;
-  width: auto;
-}
-
-/* Powered by badge */
-.heroPoweredBy {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-base);
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--text-secondary);
-  opacity: 0.6;
-}
-
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  justify-content: flex-end;
 }
 
 /* The mock app panel */
 .heroVisualPanel {
-  width: 100%;
-  max-width: 660px;
+  width: 95%;
+  height: 85%;
   background: #000;
   border: 1px solid var(--bg-panel-border);
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 0 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,102,0,0.1);
+  box-shadow: 0 0 100px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,102,0,0.1);
   position: relative;
+  margin-right: -5%;
 }
 
 .heroVisualPanel::before {
@@ -1292,7 +1172,7 @@
 .aboutSection {
   position: relative;
   height: 100vh;
-  min-height: 800px;
+  min-height: 900px;
   overflow: hidden;
   background-color: var(--bg-primary);
   scroll-snap-align: start;
@@ -1318,16 +1198,15 @@
 
 .aboutPhotoWrap {
   position: absolute;
-  left: 5%;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 45%;
-  height: 70%;
-  z-index: 2;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 75%;
+  z-index: 1;
   pointer-events: none;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .aboutPhoto {
@@ -1339,8 +1218,9 @@
 .aboutContent {
   position: relative;
   z-index: 3;
-  max-width: 650px;
+  max-width: 850px;
   text-align: right;
+  padding: 6rem 0;
 }
 
 .aboutEyebrow {
