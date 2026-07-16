@@ -584,167 +584,138 @@
 }
 
 /* ----------------------------------------------------------------
-   Philosophy / Features Strip
+   Philosophy Section — Split Panel (text left, photo right)
    ---------------------------------------------------------------- */
 .philosophySection {
+  position: relative;
   height: 100vh;
-  min-height: 600px;
-  padding: 5rem 0;
-  display: flex;
-  align-items: center;
-  background-color: var(--bg-panel-mid);
-  border-top: 1px solid var(--bg-panel-border);
-  border-bottom: 1px solid var(--bg-panel-border);
+  min-height: 900px;
+  overflow: hidden;
+  background-color: var(--bg-primary);
   scroll-snap-align: start;
 }
 
-.philosophyLayout {
-  display: grid;
-  grid-template-columns: 1.2fr 1.8fr;
-  gap: 5rem;
-  width: 100%;
-  align-items: start;
+/* Right-side photo */
+.philosophyPhotoWrap {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 55%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-.philosophyLeft {
+.philosophyPhoto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center left;
+  /* Fade left edge into dark background */
+  mask-image: linear-gradient(to left, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
+}
+
+/* Left text content */
+.philosophyInner {
+  position: relative;
+  z-index: 3;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  justify-content: center;
+  max-width: 560px;
+  padding: 6rem 0;
+  margin-left: calc(5% - 40px);
+}
+
+.philosophyEyebrow {
+  font-family: var(--font-base);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--accent-orange);
+  margin-bottom: 2rem;
+}
+
+.philosophyHeadline {
+  font-family: var(--font-base);
+  font-size: clamp(2.5rem, 5vw, 75px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 2rem;
+}
+
+.philosophyHeadline span {
+  color: var(--accent-orange);
 }
 
 .philosophyTagline {
   font-family: var(--font-base);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--text-secondary);
-  margin-top: 1rem;
+  font-size: 14.5px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
 }
 
-.philosophyConsole {
-  background-color: #161616;
-  border: 1px solid var(--bg-panel-border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  font-family: var(--font-mono);
-}
-
-.consoleHeader {
-  background-color: var(--bg-panel);
-  border-bottom: 1px solid var(--bg-panel-border);
-  padding: 0.6rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-}
-
-.consoleDot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--status-running);
-  box-shadow: 0 0 6px var(--status-running);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.consoleTitle {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--text-secondary);
-}
-
-.consoleBody {
-  padding: 1.2rem;
+/* Feature list */
+.philosophyFeatures {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.4rem;
 }
 
-.consoleLine {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.7rem;
-  letter-spacing: 0.5px;
-}
-
-.consoleLabel {
-  color: var(--text-dim);
-}
-
-.consoleValue {
-  color: var(--accent-orange);
-}
-
-.philosophyRight {
+.philosophyFeatureItem {
   display: flex;
   flex-direction: column;
+  gap: 0.3rem;
 }
 
-.philosophyRow {
-  display: flex;
-  gap: 2rem;
-  padding: 2rem 0;
-  border-bottom: 1px solid var(--bg-panel-border);
-  transition: border-bottom-color 0.3s ease;
-}
-
-.philosophyRow:first-child {
-  border-top: 1px solid var(--bg-panel-border);
-}
-
-.philosophyRow:hover {
-  border-bottom-color: var(--accent-orange);
-}
-
-.philosophyNum {
+.philosophyFeatureTitle {
   font-family: var(--font-base);
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--accent-orange);
-  opacity: 0.75;
-  transition: opacity 0.3s ease;
-}
-
-.philosophyRow:hover .philosophyNum {
-  opacity: 1;
-}
-
-.philosophyContent {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.philosophyRowTitle {
-  font-family: var(--font-base);
-  font-size: 0.95rem;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: var(--text-primary);
-  transition: color 0.3s ease;
-}
-
-.philosophyRow:hover .philosophyRowTitle {
   color: var(--accent-orange);
 }
 
-.philosophyRowDesc {
+.philosophyFeatureDesc {
   font-family: var(--font-base);
-  font-size: 0.8rem;
-  font-weight: 300;
-  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-primary);
   line-height: 1.7;
 }
 
-/* Responsive layout adjustments */
+/* Responsive */
 @media (max-width: 1024px) {
-  .philosophyLayout {
-    grid-template-columns: 1fr;
-    gap: 3rem;
+  .philosophySection {
+    height: auto;
+    min-height: 100vh;
+    padding-bottom: 4rem;
+  }
+
+  .philosophyPhotoWrap {
+    position: relative;
+    width: 100%;
+    height: 45vh;
+  }
+
+  .philosophyInner {
+    max-width: 100%;
+    padding: 3rem 1.5rem;
+    margin-left: 0;
   }
 }
+
+
 
 /* ----------------------------------------------------------------
    Tech Stack Strip
