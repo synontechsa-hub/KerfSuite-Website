@@ -173,6 +173,9 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  /* Fade left edge into dark background */
+  mask-image: linear-gradient(to left, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
 }
 
 .heroEyebrow {
