@@ -93,7 +93,7 @@ export default function LandingPage() {
           <div className="section-inner" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
             {/* About Photo Panel Overlay */}
             <div className={styles.aboutPhotoWrap}>
-              <div className={styles.heroVisualPanel}>
+              <div className={styles.aboutVisualPanel}>
                 <div className={styles.heroVisualHeader}>
                   <div className={styles.heroVisualDots}>
                     <span />
