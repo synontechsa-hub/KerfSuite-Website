@@ -83,7 +83,7 @@ export default function LandingPage() {
             />
           </div>
 
-          <div className="splitInner" style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          <div className={styles.aboutContentContainer}>
             <div className={styles.aboutContent}>
               <ScrollReveal>
                 <p className={styles.aboutEyebrow}>ABOUT</p>
