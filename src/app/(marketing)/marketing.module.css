@@ -1257,6 +1257,7 @@
   height: 100vh;
   min-height: 900px;
   overflow: hidden;
+  padding-top: 64px; /* clear fixed nav */
   background-color: var(--bg-primary);
   scroll-snap-align: start;
 }
@@ -1339,7 +1340,7 @@
   z-index: 3;
   max-width: 560px;
   text-align: left;
-  padding: 6rem 0;
+  padding: 2rem 0;
   margin-right: 5%;
 }
 
@@ -1350,18 +1351,18 @@
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--accent-orange);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .aboutHeadline {
   font-family: var(--font-base);
-  font-size: clamp(2.5rem, 5vw, 75px);
+  font-size: clamp(2rem, 4vw, 60px);
   font-weight: 900;
   line-height: 1.1;
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .aboutHeadline span {
@@ -1371,14 +1372,14 @@
 .aboutBody {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .aboutBody p {
   font-family: var(--font-base);
-  font-size: 14.5px;
+  font-size: 13.5px;
   font-weight: 400;
-  line-height: 1.8;
+  line-height: 1.7;
   color: var(--text-primary);
 }
 
