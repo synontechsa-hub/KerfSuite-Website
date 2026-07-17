@@ -192,106 +192,122 @@ export default function LandingPage() {
         <div className="cyber-divider" />
 
         {/* ====================================================
-            PRODUCTS
+            PRODUCTS — Split Panel Design (Text Right, Photo Left)
         ==================================================== */}
-        <section id="apps" className={styles.appsSection}>
-          <div className="section-inner">
-            <ScrollReveal>
-              <p className="section-tag">Products</p>
-              <h2 className="section-title">The Core <span>Suite</span></h2>
-            </ScrollReveal>
+        <section id="apps" className={styles.productsSection}>
+          {/* Background */}
+          <div className={styles.productsBackground} />
 
-            <div className={styles.appsGrid}>
+          {/* Left-side photo panel */}
+          <div className={styles.productsPhotoWrap}>
+            <img
+              src="/images/marketing/products/products-photo.jpg"
+              alt="Industrial controller with operator finger pressing button"
+              className={styles.productsPhoto}
+            />
+          </div>
 
-              {/* KerfCut */}
+          {/* Right-side text content and grid */}
+          <div className={styles.productsContentContainer}>
+            <div className={styles.productsContent}>
               <ScrollReveal>
-                <article className={styles.appCard}>
-                  <div className={styles.appCardVisual}>
-                    <img src="/svg/kerfcut-wordmark.svg" alt="KerfCut" className={styles.appCardLogo} />
-                    <span className={styles.versionTag}>v1.0.0-Beta // ACTIVE</span>
-                  </div>
-                  <div className={styles.appCardBody}>
-                    <p className={styles.appCardDesc}>
-                      Algorithmic cut-list optimizer designed to maximize material yield.
-                      KerfCut takes your piece lists and packs them into raw sheets using
-                      MaxRects and Guillotine logic — instantly.
-                    </p>
-                    <ul className={styles.featureList}>
-                      <li>Smart Sheet Packing (MaxRects + Guillotine)</li>
-                      <li>Instant Quoting</li>
-                      <li>Grain Direction Locking</li>
-                      <li>PDF Cut Plan Export</li>
-                    </ul>
-                    <div className={styles.appCardActions}>
-                      <a
-                        href="https://github.com/Feed-Rate/KerfSuite/releases/tag/v1.0.0-beta"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-primary"
-                      >
-                        Download KerfCut
-                      </a>
+                <p className={styles.productsEyebrow}>PRODUCTS</p>
+                <h2 className={styles.productsHeadline}>
+                  EVERY TOOL.<br />
+                  ONE <span>ECOSYSTEM.</span>
+                </h2>
+                <div className={styles.productsBody}>
+                  <p>
+                    KerfSuite is a growing ecosystem of integrated workshop applications designed to work
+                    together from day one. Instead of isolated tools and disconnected workflows, each application
+                    shares data wherever possible, reducing manual input, eliminating duplicate work, and minimizing
+                    costly human error.
+                  </p>
+                  <p>
+                    KerfCut is the first application available today, delivering intelligent nesting and material
+                    optimization for workshops of every size. Already in development is KerfStock, a companion
+                    inventory manager that works seamlessly alongside KerfCut. Together, they create a connected
+                    workflow where optimized cuts, off-cuts, and inventory remain synchronized automatically,
+                    giving you complete visibility over your materials.
+                  </p>
+                  <p>
+                    As the KerfSuite ecosystem expands, every new application will integrate into the platform,
+                    creating a unified production environment that grows alongside your workshop.
+                  </p>
+                </div>
+
+                {/* Grid of 12 app logo buttons */}
+                <div className={styles.productsAppGrid}>
+                  
+                  {/* KerfCut (Active with Popup) */}
+                  <div className={`${styles.appGridItem} ${styles.activeItem}`}>
+                    <div className={styles.appLogoBtn}>
+                      Kerf<span>Cut</span>
+                    </div>
+                    <div className={styles.appPopup}>
+                      <div className={styles.popupHeader}>
+                        <span className={styles.popupName}>Kerf<span>Cut</span></span>
+                        <span className={styles.popupBadge}>v1.0.0-Beta // ACTIVE</span>
+                      </div>
+                      <p className={styles.popupDesc}>
+                        KerfCut is built for CNC flatbeds, guillotines, and cut-off saws. Its optimized cut layouts minimize material waste so your operators can stop doing mental maths and get back to cutting.
+                      </p>
+                      <div className={styles.popupActions}>
+                        <a
+                          href="https://github.com/Feed-Rate/KerfSuite/releases/tag/v1.0.0-beta"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.popupBtn}
+                        >
+                          Download
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </article>
-              </ScrollReveal>
 
-              {/* KerfStock */}
-              <ScrollReveal delay={100}>
-                <article className={styles.appCard}>
-                  <div className={styles.appCardVisual}>
-                    <div className={styles.appCardName}>Kerf<span>Stock</span></div>
-                    <span className={styles.versionTag}>v0.8.2 // Beta</span>
-                  </div>
-                  <div className={styles.appCardBody}>
-                    <p className={styles.appCardDesc}>
-                      Real-time workshop inventory tracking. KerfStock monitors sheet goods,
-                      hardware, and offcut inventory — alerting you when stock is low and
-                      automatically syncing with KerfCut.
-                    </p>
-                    <ul className={styles.featureList}>
-                      <li>Inventory Monitoring</li>
-                      <li>Offcut Management</li>
-                      <li>Low Stock Alerts</li>
-                      <li>KerfCut Integration</li>
-                    </ul>
-                    <div className={styles.appCardActions}>
-                      <Link href="/login" className="btn-primary">
-                        Access Inventory Portal
-                      </Link>
+                  {/* KerfStock (Active with Popup) */}
+                  <div className={`${styles.appGridItem} ${styles.activeItem}`}>
+                    <div className={styles.appLogoBtn}>
+                      Kerf<span>Stock</span>
+                    </div>
+                    <div className={styles.appPopup}>
+                      <div className={styles.popupHeader}>
+                        <span className={styles.popupName}>Kerf<span>Stock</span></span>
+                        <span className={styles.popupBadge}>v0.8.2 // Beta</span>
+                      </div>
+                      <p className={styles.popupDesc}>
+                        KerfStock is KerfCut&apos;s dedicated inventory companion. Access your full material stock at a glance, on desktop, mobile, or in the browser, letting you connect whenever, wherever you like.
+                      </p>
+                      <div className={styles.popupActions}>
+                        <Link href="/login" className={styles.popupBtn}>
+                          Access Portal
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </article>
-              </ScrollReveal>
 
-              {/* KerfQuote */}
-              <ScrollReveal delay={200}>
-                <article className={`${styles.appCard} ${styles.comingSoon}`}>
-                  <div className={styles.appCardVisual}>
-                    <div className={styles.appCardName}>Kerf<span>Quote</span></div>
-                    <span className={styles.versionTagIdle}>Roadmap</span>
-                  </div>
-                  <div className={styles.appCardBody}>
-                    <p className={styles.appCardDesc}>
-                      Professional quoting and estimating tool. Generate accurate
-                      client-ready quotes directly from KerfCut optimizations with
-                      material costs, labour, and margin built in.
-                    </p>
-                    <ul className={styles.featureList}>
-                      <li>Quote Generation</li>
-                      <li>Material Cost Calculator</li>
-                      <li>Client PDF Output</li>
-                      <li>KerfCut Integration</li>
-                    </ul>
-                    <div className={styles.appCardActions}>
-                      <span className="btn-ghost" style={{ cursor: 'not-allowed', opacity: 0.5 }}>
-                        On Roadmap
-                      </span>
+                  {/* Remaining 10 apps (Inactive / Roadmap) */}
+                  {[
+                    { prefix: 'Kerf', suffix: 'Vendor' },
+                    { prefix: 'Kerf', suffix: 'Plot' },
+                    { prefix: 'Kerf', suffix: 'Job' },
+                    { prefix: 'Kerf', suffix: 'Flow' },
+                    { prefix: 'Kerf', suffix: 'Mill' },
+                    { prefix: 'Kerf', suffix: 'Run' },
+                    { prefix: 'Kerf', suffix: 'Tack' },
+                    { prefix: 'Kerf', suffix: 'Hub' },
+                    { prefix: 'Kerf', suffix: 'Quote' },
+                    { prefix: 'Kerf', suffix: 'Ledger' },
+                  ].map((app) => (
+                    <div key={app.suffix} className={`${styles.appGridItem} ${styles.inactiveItem}`}>
+                      <div className={styles.appLogoBtn}>
+                        {app.prefix}<span>{app.suffix}</span>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              </ScrollReveal>
+                  ))}
 
+                </div>
+              </ScrollReveal>
             </div>
           </div>
         </section>
