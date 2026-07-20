@@ -1056,9 +1056,10 @@
 .pricingSection {
   height: 100vh;
   min-height: 800px;
-  padding: 6rem 0;
+  padding: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   scroll-snap-align: start;
   overflow: hidden;
   position: relative;
@@ -1079,80 +1080,64 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1200px;
+  height: 100%;
+  max-width: 1920px;
+  max-height: 1000px;
   margin: 0 auto;
-  padding: 0 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Use the exact aspect ratio of the mockup 1920x1000 */
+  aspect-ratio: 1920 / 1000;
+}
+
+/* Base scaling factor for the whole section to match viewport */
+.pricingInner {
+  transform: scale(min(calc(100vw / 1920), calc(100vh / 1000)));
+  transform-origin: center center;
 }
 
 .pricingTextContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 4rem;
-  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .pricingCategory {
-  height: 20px;
+  position: absolute;
+  left: 39px;
+  top: 143px; /* text y=156, size=12.5. top approx 143 */
+  height: 13px;
   width: auto;
 }
 
 .pricingHeading {
-  height: clamp(60px, 12vw, 120px);
+  position: absolute;
+  left: 37px;
+  top: 174px; /* text y=249, size=75. top approx 174 */
+  height: 75px;
   width: auto;
 }
 
 .pricingBody {
-  height: 22px;
+  position: absolute;
+  left: 41px;
+  top: 664px; /* text y=677, size=12.5. top approx 664 */
+  height: 213px; /* Total height for all body groups including guarantee */
   width: auto;
-  opacity: 0.8;
 }
 
 .pricingGrid {
+  position: absolute;
+  top: 269px;
+  left: 50px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  width: 100%;
-  max-width: 1400px;
-}
-
-@media (max-width: 1100px) {
-  .pricingGrid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 800px;
-  }
-
-  .pricingSection {
-    height: auto;
-    padding: 6rem 0;
-  }
-
-  .pricingHeading {
-    height: 80px;
-  }
-}
-
-@media (max-width: 600px) {
-  .pricingGrid {
-    grid-template-columns: 1fr;
-    max-width: 400px;
-  }
-
-  .pricingHeading {
-    height: 60px;
-  }
-
-  .pricingCategory {
-    height: 16px;
-  }
-
-  .pricingBody {
-    height: 18px;
-  }
+  grid-template-columns: 375px 375px 375px 405px;
+  gap: 97px; /* 522 - (50+375) = 97 */
+  width: auto;
 }
 
 .pricingCard {
@@ -1162,25 +1147,26 @@
   background: none;
   border: none;
   padding: 0;
+  width: 100%;
+  height: 359px;
 }
 
 .pricingCard:hover {
-  transform: translateY(-10px);
-  filter: brightness(1.1);
+  transform: translateY(-20px);
+  filter: brightness(1.2);
 }
 
 .pricingCardImg {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
 }
 
 .pricingAction {
   position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
+  bottom: 30px;
+  left: 31px; /* 81 - 50 */
+  width: 312px;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -1189,7 +1175,74 @@
   opacity: 1;
 }
 
-/* Pricing meta removed as it's not in the new artwork or integrated into cards */
+/* Reset scale for mobile as the aspect ratio trick only works for desktop */
+@media (max-width: 1024px) {
+  .pricingSection {
+    height: auto;
+    padding: 4rem 1rem;
+  }
+
+  .pricingInner {
+    height: auto;
+    aspect-ratio: auto;
+    transform: none;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .pricingTextContainer {
+    position: relative;
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .pricingCategory, .pricingHeading, .pricingBody {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .pricingHeading {
+    height: 50px;
+  }
+
+  .pricingGrid {
+    position: relative;
+    left: auto;
+    top: auto;
+    grid-template-columns: repeat(2, 350px);
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  .pricingCard {
+    height: auto;
+    width: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricingGrid {
+    grid-template-columns: 320px;
+  }
+
+  .pricingCard {
+    width: 320px;
+  }
+
+  .pricingHeading {
+    height: 40px;
+  }
+}
 
 /* ----------------------------------------------------------------
    Portal CTA Banner

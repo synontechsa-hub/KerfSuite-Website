@@ -355,8 +355,8 @@ export default function LandingPage() {
                       <input type="hidden" name="cancel_return" value="https://kerfsuite.vercel.app/#pricing" />
                       <input type="hidden" name="no_shipping" value="1" />
                       <input type="hidden" name="no_note" value="1" />
-                      <button type="submit" className="btn-filled" style={{ width: '100%', border: 'none', height: '40px' }}>
-                        Buy License
+                      <button type="submit" className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', cursor: 'pointer', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
+                        BUY LICENSE
                       </button>
                     </form>
                   </div>
@@ -367,6 +367,11 @@ export default function LandingPage() {
               <ScrollReveal delay={400}>
                 <div className={styles.pricingCard}>
                   <img src="/svg/marketing/pricing/card-2.svg" alt="KerfStock" className={styles.pricingCardImg} />
+                  <div className={styles.pricingAction}>
+                    <button className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', opacity: 0.5, cursor: 'not-allowed', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
+                      COMING SOON
+                    </button>
+                  </div>
                 </div>
               </ScrollReveal>
 
@@ -374,6 +379,11 @@ export default function LandingPage() {
               <ScrollReveal delay={500}>
                 <div className={styles.pricingCard}>
                   <img src="/svg/marketing/pricing/card-3.svg" alt="Full Suite" className={styles.pricingCardImg} />
+                  <div className={styles.pricingAction}>
+                    <button className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', opacity: 0.5, cursor: 'not-allowed', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
+                      COMING SOON
+                    </button>
+                  </div>
                 </div>
               </ScrollReveal>
 
@@ -381,6 +391,11 @@ export default function LandingPage() {
               <ScrollReveal delay={600}>
                 <div className={styles.pricingCard}>
                   <img src="/svg/marketing/pricing/card-4.svg" alt="Workshop Pro" className={styles.pricingCardImg} />
+                  <div className={styles.pricingAction}>
+                    <button className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', opacity: 0.5, cursor: 'not-allowed', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
+                      COMING SOON
+                    </button>
+                  </div>
                 </div>
               </ScrollReveal>
             </div>
