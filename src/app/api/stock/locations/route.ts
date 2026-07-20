@@ -49,9 +49,13 @@ export async function POST(request: Request) {
     if (body.parent_id) {
       const { data: parent } = await supabase
         .from('locations')
-        .select('depth')
+        .select('depth, workspace_id')
         .eq('id', body.parent_id)
         .single()
+
+      if (!parent || parent.workspace_id !== userData.workspace_id) {
+        return NextResponse.json({ error: 'Invalid parent location' }, { status: 400 })
+      }
       depth = (parent?.depth || 0) + 1
     }
 
