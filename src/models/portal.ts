@@ -118,7 +118,7 @@ export function mapUserProfileFromDb(db: any): UserProfile {
     role: db.role,
     workspaceId: db.workspace_id,
     createdAt: db.created_at,
-    confirmed: db.confirmed,
+    confirmed: db.confirmed ?? (db.email_confirmed_at ? true : false),
   };
 }
 

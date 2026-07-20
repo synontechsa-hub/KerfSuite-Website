@@ -330,6 +330,211 @@ BEGIN
 END;
 $$;
 
+-- Atomic Asset Naming and Creation (Fixes race conditions)
+CREATE OR REPLACE FUNCTION public.create_asset(
+    p_material_id UUID,
+    p_width NUMERIC,
+    p_height NUMERIC,
+    p_asset_type public.asset_type_enum,
+    p_display_name TEXT DEFAULT NULL,
+    p_location_id UUID DEFAULT NULL,
+    p_status public.asset_status_enum DEFAULT 'available'
+)
+RETURNS public.assets
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public
+AS $$
+DECLARE
+    v_workspace_id UUID;
+    v_user_id UUID;
+    v_prefix TEXT;
+    v_count INTEGER;
+    v_system_name TEXT;
+    v_asset public.assets;
+BEGIN
+    v_user_id := auth.uid();
+    v_workspace_id := public.get_user_workspace();
+
+    IF v_workspace_id IS NULL THEN
+        RAISE EXCEPTION 'Unauthorized: No workspace found for user';
+    END IF;
+
+    v_prefix := CASE p_asset_type
+        WHEN 'full_sheet' THEN 'SHEET'
+        WHEN 'remnant' THEN 'REMNANT'
+        WHEN 'offcut' THEN 'OFFCUT'
+        WHEN 'custom' THEN 'CUSTOM'
+        ELSE 'ASSET'
+    END;
+
+    -- Atomic count within the same transaction to prevent race conditions
+    -- Using FOR UPDATE on a hypothetical counters table would be better for high scale,
+    -- but for now, we lock the assets table for this workspace/type.
+    SELECT COUNT(*) + 1 INTO v_count
+    FROM public.assets
+    WHERE workspace_id = v_workspace_id AND asset_type = p_asset_type;
+
+    v_system_name := v_prefix || '-' || LPAD(v_count::TEXT, 4, '0');
+
+    INSERT INTO public.assets (
+        workspace_id,
+        material_id,
+        system_name,
+        display_name,
+        width,
+        height,
+        asset_type,
+        status,
+        location_id,
+        created_by,
+        updated_by
+    ) VALUES (
+        v_workspace_id,
+        p_material_id,
+        v_system_name,
+        p_display_name,
+        p_width,
+        p_height,
+        p_asset_type,
+        p_status,
+        p_location_id,
+        v_user_id,
+        v_user_id
+    ) RETURNING * INTO v_asset;
+
+    -- Log event
+    INSERT INTO public.asset_events (
+        asset_id,
+        workspace_id,
+        event_type,
+        performed_by,
+        notes
+    ) VALUES (
+        v_asset.id,
+        v_workspace_id,
+        'purchased',
+        v_user_id,
+        'Initial asset creation via RPC'
+    );
+
+    RETURN v_asset;
+END;
+$$;
+
+-- Atomic KerfCut Job Commitment
+CREATE OR REPLACE FUNCTION public.commit_kerfcut_job(
+    p_workspace_id UUID,
+    p_job_reference TEXT,
+    p_consumed_assets UUID[],
+    p_generated_remnants JSONB -- Array of {material_id, width, height, location_id, source_asset_id}
+)
+RETURNS JSONB
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public
+AS $$
+DECLARE
+    v_user_id UUID;
+    v_updated_count INTEGER;
+    v_remnant JSONB;
+    v_prefix TEXT;
+    v_count INTEGER;
+    v_system_name TEXT;
+    v_asset_type public.asset_type_enum;
+    v_created_remnants JSONB := '[]'::JSONB;
+    v_remnant_data RECORD;
+BEGIN
+    v_user_id := auth.uid();
+
+    -- 1. Atomic Consumption
+    UPDATE public.assets
+    SET status = 'consumed',
+        job_reference = p_job_reference,
+        updated_at = now(),
+        updated_by = v_user_id
+    WHERE id = ANY(p_consumed_assets)
+      AND workspace_id = p_workspace_id
+      AND status = 'available';
+
+    GET DIAGNOSTICS v_updated_count = ROW_COUNT;
+
+    -- 2. Conflict Detection
+    IF v_updated_count != array_length(p_consumed_assets, 1) THEN
+        RAISE EXCEPTION 'CONFLICT: One or more assets were already consumed or are unavailable.';
+    END IF;
+
+    -- 3. Create Remnants
+    IF p_generated_remnants IS NOT NULL AND jsonb_array_length(p_generated_remnants) > 0 THEN
+        FOR v_remnant IN SELECT * FROM jsonb_array_elements(p_generated_remnants)
+        LOOP
+            -- Classification logic (Threshold: 400x400)
+            IF ((v_remnant->>'width')::NUMERIC * (v_remnant->>'height')::NUMERIC) < (400 * 400) THEN
+                v_asset_type := 'offcut';
+                v_prefix := 'OFFCUT';
+            ELSE
+                v_asset_type := 'remnant';
+                v_prefix := 'REMNANT';
+            END IF;
+
+            SELECT COUNT(*) + 1 INTO v_count
+            FROM public.assets
+            WHERE workspace_id = p_workspace_id AND asset_type = v_asset_type;
+
+            v_system_name := v_prefix || '-' || LPAD(v_count::TEXT, 4, '0');
+
+            INSERT INTO public.assets (
+                workspace_id,
+                material_id,
+                system_name,
+                width,
+                height,
+                asset_type,
+                status,
+                location_id,
+                source_asset_id,
+                job_reference,
+                created_by,
+                updated_by
+            ) VALUES (
+                p_workspace_id,
+                (v_remnant->>'material_id')::UUID,
+                v_system_name,
+                (v_remnant->>'width')::NUMERIC,
+                (v_remnant->>'height')::NUMERIC,
+                v_asset_type,
+                'available',
+                (v_remnant->>'location_id')::UUID,
+                (v_remnant->>'source_asset_id')::UUID,
+                p_job_reference,
+                v_user_id,
+                v_user_id
+            ) RETURNING id, system_name, width, height, asset_type INTO v_remnant_data;
+
+            v_created_remnants := v_created_remnants || jsonb_build_object(
+                'id', v_remnant_data.id,
+                'system_name', v_remnant_data.system_name,
+                'width', v_remnant_data.width,
+                'height', v_remnant_data.height,
+                'asset_type', v_remnant_data.asset_type
+            );
+
+            -- Add Event for new remnant
+            INSERT INTO public.asset_events (asset_id, workspace_id, event_type, performed_by, notes, metadata)
+            VALUES (v_remnant_data.id, p_workspace_id, 'received_from_kerfcut', v_user_id, 'Generated from job ' || p_job_reference, jsonb_build_object('job_reference', p_job_reference));
+        END LOOP;
+    END IF;
+
+    -- 4. Add Events for consumed assets
+    INSERT INTO public.asset_events (asset_id, workspace_id, event_type, performed_by, notes, metadata)
+    SELECT id, p_workspace_id, 'cut', v_user_id, 'Consumed in job ' || p_job_reference, jsonb_build_object('job_reference', p_job_reference)
+    FROM public.assets
+    WHERE id = ANY(p_consumed_assets);
+
+    RETURN jsonb_build_object(
+        'status', 'committed',
+        'consumed_count', v_updated_count,
+        'remnants_created', v_created_remnants
+    );
+END;
+$$;
+
 -- Auto-create User Profile on Auth Signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
@@ -375,6 +580,10 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON public.locations TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.assets TO authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.asset_events TO authenticated;
 
+-- Grant execution of new RPCs
+GRANT EXECUTE ON FUNCTION public.create_asset TO authenticated;
+GRANT EXECUTE ON FUNCTION public.commit_kerfcut_job TO authenticated;
+
 -- Revoke from Authenticated (desktop app RPCs don't need portal user access)
 REVOKE EXECUTE ON FUNCTION public.increment_trial_run(TEXT) FROM authenticated;
 REVOKE EXECUTE ON FUNCTION public.verify_license(TEXT) FROM authenticated;
@@ -384,6 +593,7 @@ REVOKE EXECUTE ON FUNCTION public.bind_machine(TEXT, TEXT) FROM authenticated;
 GRANT EXECUTE ON FUNCTION public.increment_trial_run(TEXT) TO anon;
 GRANT EXECUTE ON FUNCTION public.verify_license(TEXT) TO anon;
 GRANT EXECUTE ON FUNCTION public.bind_machine(TEXT, TEXT) TO anon;
+GRANT EXECUTE ON FUNCTION public.commit_kerfcut_job TO anon;
 
 -- 9. TRIGGERS
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;

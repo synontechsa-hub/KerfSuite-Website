@@ -222,7 +222,7 @@ export async function revokeKey(keyId: string) {
       actorEmail: profile.email,
       actionType: 'key_revoked',
       targetId: keyId,
-      description: `Revoked key: ${keyInfo?.cdkey || 'REDACTED'}`
+      description: `Revoked key: ${keyInfo?.cdkey ? '...' + keyInfo.cdkey.slice(-4) : 'REDACTED'}`
     })
 
     revalidatePath('/')

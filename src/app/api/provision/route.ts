@@ -17,7 +17,10 @@ export async function POST(request: Request) {
   const PROVISIONING_SECRET = process.env.PROVISIONING_SECRET
 
   // 1. Validate Secret
-  if (!PROVISIONING_SECRET || secret !== PROVISIONING_SECRET) {
+  const isAuthorized = PROVISIONING_SECRET && secret && secret.length === PROVISIONING_SECRET.length &&
+    crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(PROVISIONING_SECRET))
+
+  if (!isAuthorized) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

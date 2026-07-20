@@ -45,14 +45,6 @@ export async function POST(request: Request) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: userData } = await supabase
-    .from('users')
-    .select('workspace_id')
-    .eq('id', user.id)
-    .single()
-
-  if (!userData) return NextResponse.json({ error: 'User workspace not found' }, { status: 403 })
-
   try {
     const rawBody = await request.json()
     const validation = CreateAssetSchema.safeParse(rawBody)
@@ -62,46 +54,21 @@ export async function POST(request: Request) {
     }
 
     const body = validation.data
-    const asset_type = body.asset_type
 
-    // AUDIT LOGIC: Sequential naming per workspace and type
-    const prefix = {
-      full_sheet: 'SHEET',
-      remnant: 'REMNANT',
-      offcut: 'OFFCUT',
-      custom: 'CUSTOM'
-    }[asset_type] || 'ASSET'
-
-    const { count } = await supabase
-      .from('assets')
-      .select('*', { count: 'exact', head: true })
-      .eq('workspace_id', userData.workspace_id)
-      .eq('asset_type', asset_type)
-
-    const system_name = body.system_name || `${prefix}-${((count || 0) + 1).toString().padStart(4, '0')}`
-
+    // ATOMIC: Use RPC to handle sequential naming and creation in one transaction
     const { data: asset, error } = await supabase
-      .from('assets')
-      .insert({
-        ...body,
-        workspace_id: userData.workspace_id,
-        system_name,
-        created_by: user.id,
-        updated_at: new Date().toISOString()
+      .rpc('create_asset', {
+        p_material_id: body.material_id,
+        p_width: body.width,
+        p_height: body.height,
+        p_asset_type: body.asset_type,
+        p_display_name: body.display_name,
+        p_location_id: body.location_id,
+        p_status: body.status
       })
-      .select()
       .single()
 
     if (error) throw error
-
-    // Log event
-    await supabase.from('asset_events').insert({
-      asset_id: asset.id,
-      workspace_id: userData.workspace_id,
-      event_type: 'purchased',
-      performed_by: user.id,
-      notes: 'Initial asset creation'
-    })
 
     return NextResponse.json(asset)
   } catch (error: unknown) {
