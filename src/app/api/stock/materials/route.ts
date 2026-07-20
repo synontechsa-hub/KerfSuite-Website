@@ -1,24 +1,14 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
+import { getAuthedWorkspace } from '@/utils/auth-helpers'
 
 export async function GET() {
-  const supabase = await createClient()
+  const auth = await getAuthedWorkspace()
+  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const { data: userData } = await supabase
-    .from('users')
-    .select('workspace_id')
-    .eq('id', user.id)
-    .single()
-
-  if (!userData) return NextResponse.json({ error: 'User workspace not found' }, { status: 403 })
-
-  const { data: materials, error } = await supabase
+  const { data: materials, error } = await auth.supabase
     .from('materials')
     .select('*')
-    .eq('workspace_id', userData.workspace_id)
+    .eq('workspace_id', auth.workspaceId)
     .eq('is_deleted', false)
     .order('name', { ascending: true })
 
@@ -28,28 +18,19 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient()
+  const auth = await getAuthedWorkspace()
+  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const { data: userData } = await supabase
-    .from('users')
-    .select('workspace_id, role')
-    .eq('id', user.id)
-    .single()
-
-  if (!userData) return NextResponse.json({ error: 'User workspace not found' }, { status: 403 })
-  if (userData.role !== 'admin') return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
+  if (auth.role !== 'admin') return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
 
   try {
     const body = await request.json()
-    const { data: material, error } = await supabase
+    const { data: material, error } = await auth.supabase
       .from('materials')
       .insert({
         ...body,
-        workspace_id: userData.workspace_id,
-        created_by: user.id
+        workspace_id: auth.workspaceId,
+        created_by: auth.user.id
       })
       .select()
       .single()
@@ -57,10 +38,10 @@ export async function POST(request: Request) {
     if (error) throw error
 
     // Log administrative action
-    await supabase.from('audit_logs').insert({
-      workspace_id: userData.workspace_id,
-      actor_id: user.id,
-      actor_email: user.email,
+    await auth.supabase.from('audit_logs').insert({
+      workspace_id: auth.workspaceId,
+      actor_id: auth.user.id,
+      actor_email: auth.user.email,
       action_type: 'material_created',
       description: `Created material: ${body.name} (${body.thickness}${body.unit})`
     })
