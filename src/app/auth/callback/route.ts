@@ -6,7 +6,13 @@ function buildRedirect(request: Request, origin: string, path: string) {
   const forwardedHost = request.headers.get('x-forwarded-host')
   const isLocalEnv = process.env.NODE_ENV === 'development'
   if (isLocalEnv) return NextResponse.redirect(`${origin}${path}`)
-  if (forwardedHost) return NextResponse.redirect(`https://${forwardedHost}${path}`)
+
+  // SECURITY: Validate forwardedHost against allowlist to prevent Open Redirect
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).host : null
+  if (forwardedHost && forwardedHost === siteUrl) {
+    return NextResponse.redirect(`https://${forwardedHost}${path}`)
+  }
+
   return NextResponse.redirect(`${origin}${path}`)
 }
 
