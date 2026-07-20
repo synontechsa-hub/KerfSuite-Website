@@ -316,33 +316,29 @@ export default function LandingPage() {
 
 
         {/* ====================================================
-            PRICING
+            PRICING — Asset Integrated Design
         ==================================================== */}
         <section id="pricing" className={styles.pricingSection}>
-          <div className="section-inner">
-            <ScrollReveal>
-              <p className="section-tag">Licensing</p>
-              <h2 className="section-title">Ecosystem <span>Access</span></h2>
-              <p className={styles.pricingNote}>
-                All licenses include 1 year of updates. Renew annually to continue receiving updates.
-              </p>
-            </ScrollReveal>
+          <div className={styles.pricingBackground} />
+
+          <div className={styles.pricingInner}>
+            <div className={styles.pricingTextContainer}>
+              <ScrollReveal>
+                <img src="/svg/marketing/pricing/text-category.svg" alt="Licensing" className={styles.pricingCategory} />
+              </ScrollReveal>
+              <ScrollReveal delay={100}>
+                <img src="/svg/marketing/pricing/text-heading.svg" alt="Ecosystem Access" className={styles.pricingHeading} />
+              </ScrollReveal>
+              <ScrollReveal delay={200}>
+                <img src="/svg/marketing/pricing/text-body.svg" alt="All licenses include 1 year of updates." className={styles.pricingBody} />
+              </ScrollReveal>
+            </div>
 
             <div className={styles.pricingGrid}>
-
-              {/* KerfCut Single */}
-              <ScrollReveal>
-                <div className={`${styles.pricingCard} ${styles.featured}`}>
-                  <div className={styles.pricingBadge}>Most Popular</div>
-                  <div className={styles.pricingTier}>KerfCut Single Tool</div>
-                  <div className={styles.pricingPrice}>$25 <span>/ year</span></div>
-                  <ul className={styles.pricingFeatures}>
-                    <li>Full access to KerfCut</li>
-                    <li>Standard PDF exports</li>
-                    <li>Single user license</li>
-                    <li>1 year of updates</li>
-                    <li>KerfPortal access</li>
-                  </ul>
+              {/* Card 1: KerfCut Single */}
+              <ScrollReveal delay={300}>
+                <div className={styles.pricingCard}>
+                  <img src="/svg/marketing/pricing/card-1.svg" alt="KerfCut Single Tool" className={styles.pricingCardImg} />
                   <div className={styles.pricingAction}>
                     <form
                       action="https://www.paypal.com/cgi-bin/webscr"
@@ -359,7 +355,7 @@ export default function LandingPage() {
                       <input type="hidden" name="cancel_return" value="https://kerfsuite.vercel.app/#pricing" />
                       <input type="hidden" name="no_shipping" value="1" />
                       <input type="hidden" name="no_note" value="1" />
-                      <button type="submit" className="btn-filled" style={{ width: '100%', border: 'none' }}>
+                      <button type="submit" className="btn-filled" style={{ width: '100%', border: 'none', height: '40px' }}>
                         Buy License
                       </button>
                     </form>
@@ -367,62 +363,26 @@ export default function LandingPage() {
                 </div>
               </ScrollReveal>
 
-              {/* Full Suite */}
-              <ScrollReveal delay={100}>
-                <div className={`${styles.pricingCard} ${styles.comingSoon}`}>
-                  <div className={styles.pricingTier}>Full Suite</div>
-                  <div className={styles.pricingPrice}>$45 <span>/ year</span></div>
-                  <ul className={styles.pricingFeatures}>
-                    <li>Access to ALL modules</li>
-                    <li>Cross-app data sync</li>
-                    <li>Priority bug response</li>
-                    <li><strong>Get KerfStock free when it launches</strong></li>
-                  </ul>
-                  <div className={styles.pricingAction}>
-                    <button className="btn-ghost" style={{ width: '100%', cursor: 'not-allowed', opacity: 0.5 }} disabled>
-                      Suite Coming Soon
-                    </button>
-                  </div>
+              {/* Card 2: KerfStock */}
+              <ScrollReveal delay={400}>
+                <div className={styles.pricingCard}>
+                  <img src="/svg/marketing/pricing/card-2.svg" alt="KerfStock" className={styles.pricingCardImg} />
                 </div>
               </ScrollReveal>
 
-              {/* Workshop Pro */}
-              <ScrollReveal delay={200}>
-                <div className={`${styles.pricingCard} ${styles.comingSoon}`}>
-                  <div className={styles.pricingTier}>Workshop Pro</div>
-                  <div className={styles.pricingPrice}>$149 <span>/ year</span></div>
-                  <ul className={styles.pricingFeatures}>
-                    <li>Full Suite for 5 users</li>
-                    <li>Shared network database</li>
-                    <li>Priority feature requests</li>
-                    <li>Dedicated support channel</li>
-                  </ul>
-                  <div className={styles.pricingAction}>
-                    <button className="btn-ghost" style={{ width: '100%', cursor: 'not-allowed', opacity: 0.5 }} disabled>
-                      Workshop Coming Soon
-                    </button>
-                  </div>
+              {/* Card 3: Full Suite */}
+              <ScrollReveal delay={500}>
+                <div className={styles.pricingCard}>
+                  <img src="/svg/marketing/pricing/card-3.svg" alt="Full Suite" className={styles.pricingCardImg} />
                 </div>
               </ScrollReveal>
 
-            </div>
-
-            {/* Pricing meta */}
-            <div className={styles.pricingMeta}>
-              <div className={styles.pricingMetaCard}>
-                <h4>Ecosystem Upgrade Path</h4>
-                <p>
-                  Start with KerfCut today. When KerfStock launches, upgrade to the Full
-                  Suite at a prorated discount — your existing investment carries over fully.
-                </p>
-              </div>
-              <div className={styles.pricingMetaCard}>
-                <h4>Precision Guarantee</h4>
-                <p>
-                  Risk-free optimization. If KerfCut doesn&apos;t improve your material
-                  yield, contact us within 14 days for a full refund.
-                </p>
-              </div>
+              {/* Card 4: Workshop Pro */}
+              <ScrollReveal delay={600}>
+                <div className={styles.pricingCard}>
+                  <img src="/svg/marketing/pricing/card-4.svg" alt="Workshop Pro" className={styles.pricingCardImg} />
+                </div>
+              </ScrollReveal>
             </div>
           </div>
         </section>

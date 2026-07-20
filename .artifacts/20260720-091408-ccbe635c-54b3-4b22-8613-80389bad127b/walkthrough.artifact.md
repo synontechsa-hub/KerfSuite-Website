@@ -15,10 +15,10 @@ I have completed a full security and reliability sweep of KerfPortal. This effor
 - **Timing Attack Mitigation:** Provisioning secret verification now uses `crypto.timingSafeEqual`.
 - **HSTS Enforcement:** Added the `Strict-Transport-Security` header to the global security headers in `next.config.ts`.
 
-### 3. Architectural Clean-up
-- **Auth Boilerplate Reduction:** Created a centralized `getAuthedWorkspace` helper in `src/utils/auth-helpers.ts`.
-- **Refactored API Routes:** Updated `materials`, `locations`, and `assets` routes to use this new helper, ensuring consistent error handling and workspace scoping.
-- **DB Type Safety:** Improved `UserProfile` mapping logic to correctly reflect email confirmation status from the auth layer.
+### 4. Pricing Page Update
+- **Asset Integration:** Replaced the legacy pricing section with an asset-integrated design using provided high-fidelity SVGs.
+- **Interactivity:** Maintained functional PayPal checkout for the "KerfCut Single" tier via a hover-activated button on the SVG card.
+- **Responsiveness:** Ensured the SVG-based grid adapts correctly to mobile and tablet screen sizes.
 
 ## Verification Results
 
