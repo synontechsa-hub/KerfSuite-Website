@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
+import { getAuthedWorkspace } from '@/utils/auth-helpers'
 import { z } from 'zod'
 
 const CreateAssetSchema = z.object({
@@ -15,23 +15,13 @@ const CreateAssetSchema = z.object({
 })
 
 export async function GET() {
-  const supabase = await createClient()
+  const auth = await getAuthedWorkspace()
+  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const { data: userData } = await supabase
-    .from('users')
-    .select('workspace_id')
-    .eq('id', user.id)
-    .single()
-
-  if (!userData) return NextResponse.json({ error: 'User workspace not found' }, { status: 403 })
-
-  const { data: assets, error } = await supabase
+  const { data: assets, error } = await auth.supabase
     .from('assets')
     .select('*, materials(name, thickness), locations(name)')
-    .eq('workspace_id', userData.workspace_id)
+    .eq('workspace_id', auth.workspaceId)
     .order('created_at', { ascending: false })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -40,10 +30,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await getAuthedWorkspace()
+  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   try {
     const rawBody = await request.json()
@@ -56,7 +44,7 @@ export async function POST(request: Request) {
     const body = validation.data
 
     // ATOMIC: Use RPC to handle sequential naming and creation in one transaction
-    const { data: asset, error } = await supabase
+    const { data: asset, error } = await auth.supabase
       .rpc('create_asset', {
         p_material_id: body.material_id,
         p_width: body.width,
