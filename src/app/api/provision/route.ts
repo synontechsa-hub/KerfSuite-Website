@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { z } from 'zod'
+import crypto from 'crypto'
 
 const ProvisionSchema = z.object({
   email: z.string().email('Invalid email address'),
