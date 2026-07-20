@@ -1055,162 +1055,105 @@
    ---------------------------------------------------------------- */
 .pricingSection {
   height: 100vh;
-  min-height: 600px;
+  min-height: 800px;
   padding: 6rem 0;
   display: flex;
   align-items: center;
   scroll-snap-align: start;
-  overflow-y: auto;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--bg-primary);
 }
 
-.pricingNote {
-  font-family: var(--font-base);
-  font-size: 0.75rem;
-  font-weight: 300;
-  color: var(--text-secondary);
+.pricingBackground {
+  position: absolute;
+  inset: 0;
+  background-image: url('/svg/marketing/Background.svg');
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+.pricingInner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pricingTextContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
   text-align: center;
-  margin-top: 1rem;
-  letter-spacing: 1px;
+}
+
+.pricingCategory {
+  height: 12px;
+  width: auto;
+}
+
+.pricingHeading {
+  height: clamp(40px, 8vw, 80px);
+  width: auto;
+}
+
+.pricingBody {
+  height: 14px;
+  width: auto;
+  opacity: 0.7;
 }
 
 .pricingGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-  margin-top: 3rem;
+  width: 100%;
 }
 
 .pricingCard {
-  background-color: var(--bg-panel);
-  border: 1px solid var(--bg-panel-border);
-  border-radius: var(--radius-md);
-  padding: 2rem;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  transition: border-color 0.3s;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .pricingCard:hover {
-  border-color: var(--accent-orange);
+  transform: translateY(-10px);
+  filter: brightness(1.1);
 }
 
-.pricingCard.featured {
-  border-color: var(--accent-orange);
-  background-color: var(--bg-panel-mid);
-}
-
-.pricingCard.comingSoon {
-  opacity: 0.55;
-}
-
-.pricingCard.comingSoon:hover {
-  border-color: var(--bg-panel-border);
-}
-
-.pricingBadge {
-  position: absolute;
-  top: -1px;
-  right: 1.2rem;
-  font-family: var(--font-base);
-  font-size: 0.6rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  background-color: var(--accent-orange);
-  color: #121212;
-  padding: 0.25rem 0.6rem;
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-}
-
-.pricingTier {
-  font-family: var(--font-base);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--text-secondary);
-}
-
-.pricingPrice {
-  font-family: var(--font-base);
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1;
-}
-
-.pricingPrice span {
-  font-size: 0.8rem;
-  font-weight: 300;
-  color: var(--text-secondary);
-  margin-left: 0.25rem;
-}
-
-.pricingFeatures {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  flex: 1;
-}
-
-.pricingFeatures li {
-  font-family: var(--font-base);
-  font-size: 0.72rem;
-  font-weight: 300;
-  color: var(--text-secondary);
-  padding-left: 1rem;
-  position: relative;
-  line-height: 1.5;
-}
-
-.pricingFeatures li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--accent-orange);
-  font-size: 0.6rem;
-}
-
-.pricingFeatures li strong {
-  color: var(--accent-orange);
+.pricingCardImg {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .pricingAction {
-  margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid var(--bg-panel-border);
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-/* Pricing meta (upgrade path, guarantee) */
-.pricingMeta {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--bg-panel-border);
+.pricingCard:hover .pricingAction {
+  opacity: 1;
 }
 
-.pricingMetaCard h4 {
-  font-family: var(--font-base);
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--accent-orange);
-  margin-bottom: 0.5rem;
-}
-
-.pricingMetaCard p {
-  font-family: var(--font-base);
-  font-size: 0.75rem;
-  font-weight: 300;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
+/* Pricing meta removed as it's not in the new artwork or integrated into cards */
 
 /* ----------------------------------------------------------------
    Portal CTA Banner
