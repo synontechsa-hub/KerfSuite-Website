@@ -1097,26 +1097,27 @@
 }
 
 .pricingCategory {
-  height: 12px;
+  height: 20px;
   width: auto;
 }
 
 .pricingHeading {
-  height: clamp(40px, 8vw, 80px);
+  height: clamp(60px, 12vw, 120px);
   width: auto;
 }
 
 .pricingBody {
-  height: 14px;
+  height: 22px;
   width: auto;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .pricingGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  gap: 2rem;
   width: 100%;
+  max-width: 1400px;
 }
 
 @media (max-width: 1100px) {
@@ -1129,6 +1130,10 @@
     height: auto;
     padding: 6rem 0;
   }
+
+  .pricingHeading {
+    height: 80px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -1138,7 +1143,15 @@
   }
 
   .pricingHeading {
-    height: 40px;
+    height: 60px;
+  }
+
+  .pricingCategory {
+    height: 16px;
+  }
+
+  .pricingBody {
+    height: 18px;
   }
 }
 
