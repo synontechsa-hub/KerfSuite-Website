@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import styles from './marketing.module.css';
 import MarketingNav from './components/MarketingNav';
 import MarketingFooter from './components/MarketingFooter';
@@ -10,6 +11,41 @@ export const metadata: Metadata = {
   description:
     'A precision utility suite for serious workshops. Algorithmic cut optimization, real-time inventory, and unified license management.',
 };
+
+function CtaSlideshow() {
+  const [index, setIndex] = useState(0);
+  const totalSlides = 8;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 2) % totalSlides);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className={styles.ctaSlideshowContainer}>
+      <div className={styles.ctaSlideshowFrame}>
+        <div className={styles.ctaSlidePanel}>
+          <img
+            src={`/images/marketing/cta/slide-${index + 1}.jpg`}
+            alt={`Workshop View ${index + 1}`}
+            className={styles.ctaSlideImage}
+            key={`slide-${index + 1}`}
+          />
+        </div>
+        <div className={styles.ctaSlidePanel}>
+          <img
+            src={`/images/marketing/cta/slide-${index + 2}.jpg`}
+            alt={`Workshop View ${index + 2}`}
+            className={styles.ctaSlideImage}
+            key={`slide-${index + 2}`}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function LandingPage() {
   return (
@@ -427,25 +463,32 @@ export default function LandingPage() {
         <div className="cyber-divider" />
 
         {/* ====================================================
-            PORTAL CTA BANNER
+            INDUSTRIAL CTA SCREEN
         ==================================================== */}
-        <section className={styles.ctaBanner}>
-          <div className="section-inner">
-            <h2 className={styles.ctaBannerTitle}>
-              Calibrate your <span>workflow.</span>
+        <section id="cta" className={styles.ctaScreen}>
+          <div className={styles.pricingBackground} /> {/* Reuse the industrial grid */}
+
+          <div className={styles.ctaInner}>
+            <h2 className={styles.ctaHeading}>
+              Create Your <span>Workflow.</span>
             </h2>
-            <p className={styles.ctaBannerDesc}>
-              Already a licensee? Sign in to manage your workspace, machines, and users
-              from the KerfSuite command center.
+            <p className={styles.ctaBody}>
+              Already a licensee? Sign in to manage your workspace, machines, and users from the KerfSuite command center.
             </p>
-            <div className={styles.ctaBannerActions}>
-              <Link href="/login" className="btn-filled">
-                Open Portal
+
+            <div className={styles.ctaActions}>
+              <Link href="#pricing" className={styles.ctaBtnGetLicense}>
+                GET LICENSE
               </Link>
-              <Link href="#pricing" className="btn-primary">
-                Initialize License
+              <Link href="/login" className={styles.ctaBtnLogin}>
+                LOGIN
+                <svg viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 5H13M13 5L9 1M13 5L9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </Link>
             </div>
+
+            <CtaSlideshow />
           </div>
         </section>
         <MarketingFooter />

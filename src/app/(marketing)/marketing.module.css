@@ -1277,62 +1277,169 @@
 }
 
 /* ----------------------------------------------------------------
-   Portal CTA Banner
+   Industrial CTA Screen
    ---------------------------------------------------------------- */
-.ctaBanner {
+.ctaScreen {
   height: 100vh;
-  min-height: 500px;
-  padding: 5rem 0;
+  min-height: 800px;
+  padding: 0;
   display: flex;
   align-items: center;
-  background-color: var(--bg-panel-mid);
-  border-top: 1px solid var(--bg-panel-border);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+  justify-content: center;
   scroll-snap-align: start;
+  overflow: hidden;
+  position: relative;
+  background-color: #000;
 }
 
-.ctaBanner::before {
-  content: '';
+.ctaInner {
+  position: relative;
+  z-index: 2;
+  width: 1920px;
+  height: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  transform: scale(min(calc(100vw / 1920), calc(100vh / 1000)));
+  transform-origin: center center;
+}
+
+.ctaHeading {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
-}
-
-.ctaBannerTitle {
-  font-family: var(--font-base);
-  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  left: 493px;
+  top: 106px; /* text y=156, size=58.3. top approx 106 */
+  font-family: 'Orbitron', sans-serif;
+  font-size: 58.3px;
   font-weight: 900;
+  color: #fff;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
+  letter-spacing: 2px;
+  white-space: nowrap;
 }
 
-.ctaBannerTitle span {
+.ctaHeading span {
   color: var(--accent-orange);
 }
 
-.ctaBannerDesc {
-  font-family: var(--font-base);
-  font-size: 0.82rem;
-  font-weight: 300;
-  color: var(--text-secondary);
-  letter-spacing: 1px;
-  max-width: 480px;
-  margin: 0 auto 2rem;
-  line-height: 1.8;
+.ctaBody {
+  position: absolute;
+  left: 495px;
+  top: 182px; /* text y=196, size=14.6. top approx 182 */
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14.6px;
+  font-weight: 400;
+  color: #fff;
+  opacity: 0.8;
+  max-width: 950px;
+  line-height: 1.6;
 }
 
-.ctaBannerActions {
+.ctaActions {
+  position: absolute;
+  left: 805px;
+  top: 245px;
   display: flex;
-  gap: 1rem;
+  gap: 30px;
+  align-items: center;
+}
+
+.ctaBtnGetLicense {
+  width: 160px;
+  height: 35.5px;
+  background-color: var(--accent-orange);
+  color: #333;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11.3px;
+  font-weight: bold;
+  border-radius: 3px;
+  transition: filter 0.2s;
+}
+
+.ctaBtnGetLicense:hover {
+  filter: brightness(1.2);
+}
+
+.ctaBtnLogin {
+  width: 120px;
+  height: 35.5px;
+  border: 1px solid var(--accent-orange);
+  color: var(--accent-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11.3px;
+  font-weight: 400;
+  border-radius: 3px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.ctaBtnLogin:hover {
+  background-color: var(--accent-orange);
+  color: #333;
+}
+
+.ctaBtnLogin svg {
+  width: 15px;
+  height: auto;
+}
+
+/* Slideshow */
+.ctaSlideshowContainer {
+  position: absolute;
+  left: 0;
+  top: 337px;
+  width: 1920px;
+  height: 560px; /* 540 + 10 padding top/bottom */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ctaSlideshowFrame {
+  position: relative;
+  width: 1920px;
+  height: 560px;
+  border-top: 10px solid var(--accent-orange);
+  border-bottom: 10px solid var(--accent-orange);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 10px;
+  background-color: var(--accent-orange);
+}
+
+.ctaSlidePanel {
+  position: relative;
+  width: 945px;
+  height: 540px;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.ctaSlideImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Responsive Reset */
+@media (max-width: 1024px) {
+  .ctaScreen { height: auto; padding: 4rem 1rem; }
+  .ctaInner { transform: none; width: 100%; height: auto; gap: 2rem; position: relative; }
+  .ctaHeading { position: relative; left: auto; top: auto; font-size: 2.5rem; text-align: center; white-space: normal; }
+  .ctaBody { position: relative; left: auto; top: auto; text-align: center; margin: 0 auto; }
+  .ctaActions { position: relative; left: auto; top: auto; justify-content: center; width: 100%; }
+  .ctaSlideshowContainer { position: relative; left: auto; top: auto; width: 100%; height: auto; margin-top: 2rem; }
+  .ctaSlideshowFrame { width: 100%; height: auto; grid-template-columns: 1fr; border: none; background: none; padding: 0; gap: 1rem; }
+  .ctaSlidePanel { width: 100%; height: 300px; }
 }
 
 /* ----------------------------------------------------------------
