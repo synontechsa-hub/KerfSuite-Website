@@ -11,13 +11,19 @@ export default function CtaSlideshow() {
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 2) % totalSlides);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
   return (
     <div className={styles.ctaSlideshowContainer}>
-      <div className={styles.ctaFrameOverlay} />
+      {/* Primary Structural Frame from Mock-up */}
+      <img
+        src="/svg/marketing/cta/boxes.svg"
+        alt=""
+        className={styles.ctaFrameOverlay}
+        style={{ width: '1920px', height: '1000px', position: 'absolute', top: '-337px', left: 0 }}
+      />
 
       <div className={styles.ctaSlideshowFrame}>
         <div className={styles.ctaSlidePanel}>
@@ -27,7 +33,7 @@ export default function CtaSlideshow() {
             src={`/images/marketing/cta/slide-${index + 1}.jpg`}
             alt={`Workshop View ${index + 1}`}
             className={styles.ctaSlideImage}
-            key={`slide-${index + 1}`}
+            key={`left-${index}`}
           />
         </div>
         <div className={styles.ctaSlidePanel}>
@@ -37,7 +43,7 @@ export default function CtaSlideshow() {
             src={`/images/marketing/cta/slide-${index + 2}.jpg`}
             alt={`Workshop View ${index + 2}`}
             className={styles.ctaSlideImage}
-            key={`slide-${index + 2}`}
+            key={`right-${index}`}
           />
         </div>
       </div>
@@ -48,7 +54,9 @@ export default function CtaSlideshow() {
             key={p}
             className={`${styles.ctaIndicator} ${index === p ? styles.active : ''}`}
             onClick={() => setIndex(p)}
-          />
+          >
+            <span className={styles.ctaIndicatorLabel}>POS-{p/2 + 1}</span>
+          </div>
         ))}
       </div>
     </div>
