@@ -1,21 +1,149 @@
 /* ================================================================
-   KerfSuite Downloads Page CSS
+   KerfSuite Downloads Page CSS — Industrial Migration
    ================================================================ */
 
-.pageHeader {
-  padding: 5rem 0 3rem;
-  border-bottom: 1px solid var(--bg-panel-border);
+.dlScreen {
+  height: 100vh;
+  min-height: 800px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+  overflow: hidden;
+  position: relative;
+  background-color: #000;
+}
+
+.dlBackground {
+  position: absolute;
+  inset: 0;
+  /* Industrial Grid — Synced with Pricing/CTA */
+  background-image:
+    linear-gradient(to right, #333333 1px, transparent 1px),
+    linear-gradient(to bottom, #333333 1px, transparent 1px);
+  background-size: 107px 100px;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.dlInner {
+  position: relative;
+  z-index: 2;
+  width: 1920px;
+  height: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transform: scale(min(calc(100vw / 1920), calc(100vh / 1000)));
+  transform-origin: center center;
+}
+
+.dlVisualPanel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1173px;
+  height: 1000px;
+  z-index: 1;
+}
+
+.dlPhoto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8); /* Dimmed per mock-up */
+}
+
+.dlTextContainer {
+  position: absolute;
+  left: 39px;
+  top: 156px;
+  z-index: 3;
+}
+
+.dlCategoryTag {
+  color: var(--accent-orange);
+  font-size: 12.5px;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 70px;
+}
+
+.dlHeadingText {
+  font-size: 75px;
+  font-weight: 900;
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.dlHeadingText span {
+  color: var(--accent-orange);
+}
+
+.dlBodyText {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14.6px;
+  color: #fff;
+  opacity: 0.8;
+  margin-top: 50px;
+}
+
+.dlAppGrid {
+  position: absolute;
+  left: 42px;
+  top: 461px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 4;
+}
+
+.dlAppRow {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.dlAppLogo {
+  height: 40px;
+  width: auto;
+}
+
+.dlBtnDownload {
+  width: 100px;
+  height: 30px;
+  background-color: #FF8636;
+  border: 2px solid #FF6600;
+  border-radius: 10px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12.5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+.dlBtnDownload:hover {
+  filter: brightness(1.2);
+}
+
+/* Technical Sections Below Screen */
+.technicalSections {
+  background-color: var(--bg-panel);
+  padding: 5rem 0;
 }
 
 .pageSubtitle {
-  font-family: var(--font-base);
-  font-size: 0.82rem;
-  font-weight: 300;
-  color: var(--text-secondary);
-  letter-spacing: 1px;
-  line-height: 1.8;
-  margin-top: 0.75rem;
-}
+/* ...rest of existing styles for guides... */
 
 .releasesSection {
   padding: 3rem 0;

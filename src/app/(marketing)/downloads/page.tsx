@@ -40,113 +40,125 @@ export default function DownloadsPage() {
     <>
       <MarketingNav />
 
-      <main style={{ paddingTop: '64px', minHeight: '100vh' }}>
-        {/* Page Header */}
-        <section className={dlStyles.pageHeader}>
-          <div className="section-inner">
-            <p className="section-tag">Distribution</p>
-            <h1 className="section-title">Downloads</h1>
-            <p className={dlStyles.pageSubtitle}>
-              Get the latest KerfSuite applications. Requires an active license — manage yours in the{' '}
-              <Link href="/login" style={{ color: 'var(--accent-orange)' }}>Portal</Link>.
-            </p>
-          </div>
-        </section>
+      <main>
+        {/* ====================================================
+            INDUSTRIAL DOWNLOADS SCREEN
+        ==================================================== */}
+        <section className={dlStyles.dlScreen}>
+          <div className={dlStyles.dlBackground} />
 
-        <div className="cyber-divider" />
+          <div className={dlStyles.dlInner}>
+            <div className={dlStyles.dlVisualPanel}>
+              <img src="/images/marketing/downloads/photo.jpg" alt="Workshop Production" className={dlStyles.dlPhoto} />
+            </div>
 
-        {/* Release Cards */}
-        <section className={dlStyles.releasesSection}>
-          <div className="section-inner">
-            {releases.map((release) => (
-              <div key={release.app} className={dlStyles.releaseCard}>
-                <div className={dlStyles.releaseHeader}>
-                  <div className={dlStyles.releaseTitle}>
-                    <h2 className={dlStyles.releaseName}>{release.app}</h2>
-                    <span className={`${styles.versionTag} ${release.status === 'idle' ? styles.versionTagIdle : ''}`}>
-                      {release.version}
-                    </span>
-                    <span className={`badge badge-${release.status}`}>
-                      {release.status === 'active' ? 'Available Now' : 'Coming Soon'}
-                    </span>
-                  </div>
-                  <div className={dlStyles.releaseDate}>
-                    <span className="stencil-heading">Release Date</span>
-                    <span className={dlStyles.dateMono}>{release.date}</span>
-                  </div>
-                </div>
+            <div className={dlStyles.dlTextContainer}>
+              <div className={dlStyles.dlCategoryTag}>Downloads</div>
+              <h1 className={dlStyles.dlHeadingText}>
+                Currently<br /><span>Available.</span>
+              </h1>
+              <p className={dlStyles.dlBodyText}>Get the latest versions of all our tools here.</p>
+            </div>
 
-                <p className={dlStyles.releaseDesc}>{release.description}</p>
-
-                <div className={dlStyles.releaseBody}>
-                  <div className={dlStyles.requirements}>
-                    <p className="stencil-heading" style={{ marginBottom: '0.5rem' }}>System Requirements</p>
-                    <ul className={dlStyles.reqList}>
-                      {release.requirements.map((r) => (
-                        <li key={r}>{r}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className={dlStyles.downloadActions}>
-                    {release.links.length > 0 ? (
-                      release.links.map((link) => (
-                        <a
-                          key={link.href}
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={link.primary ? 'btn-filled' : 'btn-primary'}
-                        >
-                          {link.label}
-                        </a>
-                      ))
-                    ) : (
-                      <button className="btn-ghost" disabled style={{ cursor: 'not-allowed', opacity: 0.5 }}>
-                        Not Yet Available
-                      </button>
-                    )}
-                  </div>
-                </div>
+            <div className={dlStyles.dlAppGrid}>
+              {/* KerfCut Row */}
+              <div className={dlStyles.dlAppRow}>
+                <a
+                  href="https://github.com/Feed-Rate/KerfSuite/releases/tag/v1.0.0-beta"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={dlStyles.dlBtnDownload}
+                >
+                  DOWNLOAD
+                </a>
+                <img src="/svg/marketing/downloads/kerfcut-logo.svg" alt="KerfCut" className={dlStyles.dlAppLogo} />
               </div>
-            ))}
-          </div>
-        </section>
 
-        <div className="cyber-divider" />
-
-        {/* Activation Guide */}
-        <section style={{ padding: '4rem 0' }}>
-          <div className="section-inner">
-            <div style={{ maxWidth: '640px' }}>
-              <p className="section-tag">Getting Started</p>
-              <h2 className="section-title" style={{ fontSize: '1.4rem' }}>
-                Activation <span>Guide</span>
-              </h2>
-              <ol className={dlStyles.guideList}>
-                <li>
-                  <strong>Purchase a license</strong> — visit the{' '}
-                  <Link href="/#pricing" style={{ color: 'var(--accent-orange)' }}>pricing section</Link>{' '}
-                  and select a tier.
-                </li>
-                <li>
-                  <strong>Sign in to the Portal</strong> — go to{' '}
-                  <Link href="/login" style={{ color: 'var(--accent-orange)' }}>KerfPortal</Link>{' '}
-                  to manage your workspace.
-                </li>
-                <li>
-                  <strong>Generate a CDKey</strong> — in the portal dashboard, click &ldquo;+ Generate Key&rdquo; for your machine.
-                </li>
-                <li>
-                  <strong>Download KerfCut</strong> — use the links above to get the installer.
-                </li>
-                <li>
-                  <strong>Activate</strong> — launch KerfCut and enter your CDKey when prompted. Internet connection required for first activation.
-                </li>
-              </ol>
+              {/* KerfStock Row */}
+              <div className={dlStyles.dlAppRow}>
+                <button className={dlStyles.dlBtnDownload} style={{ opacity: 0.6, cursor: 'not-allowed' }} disabled>
+                  DOWNLOAD
+                </button>
+                <img src="/svg/marketing/downloads/kerfstock-logo.svg" alt="KerfStock" className={dlStyles.dlAppLogo} />
+              </div>
             </div>
           </div>
         </section>
+
+        <div className="cyber-divider" />
+
+        {/* Technical Sections */}
+        <div className={dlStyles.technicalSections}>
+          <section className={dlStyles.releasesSection}>
+            <div className="section-inner">
+              <h2 className="stencil-heading" style={{ marginBottom: '2rem', fontSize: '1.2rem' }}>Release Documentation</h2>
+              {releases.map((release) => (
+                <div key={release.app} className={dlStyles.releaseCard}>
+                  <div className={dlStyles.releaseHeader}>
+                    <div className={dlStyles.releaseTitle}>
+                      <h2 className={dlStyles.releaseName}>{release.app}</h2>
+                      <span className={`${styles.versionTag} ${release.status === 'idle' ? styles.versionTagIdle : ''}`}>
+                        {release.version}
+                      </span>
+                    </div>
+                    <div className={dlStyles.releaseDate}>
+                      <span className="stencil-heading">Release Date</span>
+                      <span className={dlStyles.dateMono}>{release.date}</span>
+                    </div>
+                  </div>
+
+                  <p className={dlStyles.releaseDesc}>{release.description}</p>
+
+                  <div className={dlStyles.releaseBody}>
+                    <div className={dlStyles.requirements}>
+                      <p className="stencil-heading" style={{ marginBottom: '0.5rem' }}>System Requirements</p>
+                      <ul className={dlStyles.reqList}>
+                        {release.requirements.map((r) => (
+                          <li key={r}>{r}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <div className="cyber-divider" />
+
+          {/* Activation Guide */}
+          <section style={{ padding: '4rem 0' }}>
+            <div className="section-inner">
+              <div style={{ maxWidth: '640px' }}>
+                <p className="section-tag">Getting Started</p>
+                <h2 className="section-title" style={{ fontSize: '1.4rem' }}>
+                  Activation <span>Guide</span>
+                </h2>
+                <ol className={dlStyles.guideList}>
+                  <li>
+                    <strong>Purchase a license</strong> — visit the{' '}
+                    <Link href="/#pricing" style={{ color: 'var(--accent-orange)' }}>pricing section</Link>{' '}
+                    and select a tier.
+                  </li>
+                  <li>
+                    <strong>Sign in to the Portal</strong> — go to{' '}
+                    <Link href="/login" style={{ color: 'var(--accent-orange)' }}>KerfPortal</Link>{' '}
+                    to manage your workspace.
+                  </li>
+                  <li>
+                    <strong>Generate a CDKey</strong> — in the portal dashboard, click &ldquo;+ Generate Key&rdquo; for your machine.
+                  </li>
+                  <li>
+                    <strong>Download KerfCut</strong> — use the links above to get the installer.
+                  </li>
+                  <li>
+                    <strong>Activate</strong> — launch KerfCut and enter your CDKey when prompted. Internet connection required for first activation.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
 
       <MarketingFooter />
