@@ -323,15 +323,9 @@ export default function LandingPage() {
 
           <div className={styles.pricingInner}>
             <div className={styles.pricingTextContainer}>
-              <ScrollReveal>
-                <img src="/svg/marketing/pricing/text-category.svg" alt="Licensing" className={styles.pricingCategory} />
-              </ScrollReveal>
-              <ScrollReveal delay={100}>
-                <img src="/svg/marketing/pricing/text-heading.svg" alt="Licensing and Ecosystem Access" className={styles.pricingHeading} />
-              </ScrollReveal>
-              <ScrollReveal delay={200}>
-                <img src="/svg/marketing/pricing/text-body.svg" alt="Prorated ecosystem upgrades, Material yield guarantee, Customer support, and Early adopter price locks." className={styles.pricingBody} />
-              </ScrollReveal>
+              <img src="/svg/marketing/pricing/text-category.svg" alt="Licensing" className={styles.pricingCategory} />
+              <img src="/svg/marketing/pricing/text-heading.svg" alt="Licensing and Ecosystem Access" className={styles.pricingHeading} />
+              <img src="/svg/marketing/pricing/text-body.svg" alt="Prorated ecosystem upgrades, Material yield guarantee, Customer support, and Early adopter price locks." className={styles.pricingBody} />
             </div>
 
             <div className={styles.pricingGrid}>

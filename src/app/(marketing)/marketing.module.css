@@ -1063,17 +1063,19 @@
   scroll-snap-align: start;
   overflow: hidden;
   position: relative;
-  background-color: var(--bg-primary);
+  background-color: #000; /* Match mock-up black background */
 }
 
 .pricingBackground {
   position: absolute;
   inset: 0;
-  background-image: url('/svg/marketing/Background.svg');
-  background-size: cover;
-  background-position: center;
+  /* Industrial Grid Implementation */
+  background-image:
+    linear-gradient(to right, #1A1A1A 1px, transparent 1px),
+    linear-gradient(to bottom, #1A1A1A 1px, transparent 1px);
+  background-size: 107px 100px; /* Exact spacing from mock-up */
   z-index: 1;
-  opacity: 0.4;
+  opacity: 0.8;
 }
 
 .pricingInner {
@@ -1095,29 +1097,30 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 3;
 }
 
 .pricingCategory {
   position: absolute;
   left: 39px;
-  top: 143px;
-  height: 13px;
+  top: 140px;
+  height: 25px;
   width: auto;
 }
 
 .pricingHeading {
   position: absolute;
   left: 37px;
-  top: 174px;
-  height: 75px;
+  top: 170px;
+  height: 100px;
   width: auto;
 }
 
 .pricingBody {
   position: absolute;
   left: 41px;
-  top: 664px;
-  height: 220px;
+  top: 660px;
+  height: 240px;
   width: auto;
 }
 
@@ -1129,6 +1132,7 @@
   grid-template-columns: 375px 375px 375px 405px;
   gap: 97px;
   width: auto;
+  z-index: 4;
 }
 
 .pricingCard {
