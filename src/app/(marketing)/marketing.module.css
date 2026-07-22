@@ -1098,30 +1098,67 @@
   inset: 0;
   pointer-events: none;
   z-index: 3;
+  text-transform: uppercase;
 }
 
-.pricingCategory {
+.pricingCategoryTag {
   position: absolute;
   left: 39px;
   top: 140px;
-  height: 25px;
-  width: auto;
+  color: var(--accent-orange);
+  font-size: 12.5px;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.05em;
 }
 
-.pricingHeading {
+.pricingHeadingText {
   position: absolute;
   left: 37px;
   top: 170px;
-  height: 100px;
-  width: auto;
+  font-size: 75px;
+  font-weight: 900;
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
-.pricingBody {
+.pricingHeadingText span {
+  color: var(--accent-orange);
+}
+
+.pricingBodyContainer {
   position: absolute;
   left: 41px;
   top: 660px;
-  height: 240px;
-  width: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1200px;
+}
+
+.pricingBodyBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pricingBodyLabel {
+  color: var(--accent-orange);
+  font-size: 12.5px;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.pricingBodyDesc {
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: normal;
+  font-family: 'Orbitron', sans-serif;
+  opacity: 0.9;
+  line-height: 1.4;
 }
 
 .pricingGrid {

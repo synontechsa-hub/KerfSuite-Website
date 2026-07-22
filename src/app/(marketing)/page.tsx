@@ -323,9 +323,37 @@ export default function LandingPage() {
 
           <div className={styles.pricingInner}>
             <div className={styles.pricingTextContainer}>
-              <img src="/svg/marketing/pricing/text-category.svg" alt="Licensing" className={styles.pricingCategory} />
-              <img src="/svg/marketing/pricing/text-heading.svg" alt="Licensing and Ecosystem Access" className={styles.pricingHeading} />
-              <img src="/svg/marketing/pricing/text-body.svg" alt="Prorated ecosystem upgrades, Material yield guarantee, Customer support, and Early adopter price locks." className={styles.pricingBody} />
+              <div className={styles.pricingCategoryTag}>Pricing</div>
+              <h2 className={styles.pricingHeadingText}>
+                Licensing and Ecosystem <span>Access.</span>
+              </h2>
+
+              <div className={styles.pricingBodyContainer}>
+                <div className={styles.pricingBodyBlock}>
+                  <span className={styles.pricingBodyLabel}>Early Adopter Prices</span>
+                  <p className={styles.pricingBodyDesc}>
+                    Prices are subject to change once the full suite launches. Early adopters lock in their current rate for life, renewal prices will never increase beyond what you paid in year one.
+                  </p>
+                </div>
+                <div className={styles.pricingBodyBlock}>
+                  <span className={styles.pricingBodyLabel}>Ecosystem Upgrade Path</span>
+                  <p className={styles.pricingBodyDesc}>
+                    Start with KerfCut today. When KerfStock launches, upgrade to the full suite at a prorated discount. your existing investment carries over fully.
+                  </p>
+                </div>
+                <div className={styles.pricingBodyBlock}>
+                  <span className={styles.pricingBodyLabel}>Precision Guarantee</span>
+                  <p className={styles.pricingBodyDesc}>
+                    Risk-free optimization. If KerfCut doesn’t improve your material yield, contact us within 14 days for a full refund.
+                  </p>
+                </div>
+                <div className={styles.pricingBodyBlock}>
+                  <span className={styles.pricingBodyLabel}>Guaranteed Support</span>
+                  <p className={styles.pricingBodyDesc}>
+                    If you have any issues with any of our tools, our customer service department is here for you.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div className={styles.pricingGrid}>
