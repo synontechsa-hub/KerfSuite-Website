@@ -18,7 +18,6 @@ export default function CtaSlideshow() {
   return (
     <div className={styles.ctaSlideshowContainer}>
       <div className={styles.ctaFrameOverlay} />
-      <div className={styles.ctaFrameDivider} />
 
       <div className={styles.ctaSlideshowFrame}>
         <div className={styles.ctaSlidePanel}>

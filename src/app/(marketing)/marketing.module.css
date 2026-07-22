@@ -1411,13 +1411,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   padding: 10px;
-  /* Replicate Element - Boxes.svg structural geometry */
-  background: var(--accent-orange);
-  clip-path: polygon(
-    0 0, 100% 0, 100% 100%, 0 100%, 0 0,
-    10px 10px, 10px 550px, 955px 550px, 955px 10px, 10px 10px,
-    965px 10px, 965px 550px, 1910px 550px, 1910px 10px, 965px 10px
-  );
+  background: transparent;
 }
 
 /* Alternative approach for the border to match SVG precisely */
@@ -1426,29 +1420,17 @@
   inset: 0;
   pointer-events: none;
   z-index: 5;
-  border-top: 10px solid var(--accent-orange);
-  border-bottom: 10px solid var(--accent-orange);
+  border: 10px solid var(--accent-orange);
 }
 
-.ctaFrameOverlay::before, .ctaFrameOverlay::after {
+.ctaFrameOverlay::after {
   content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 10px;
-  background: var(--accent-orange);
-}
-.ctaFrameOverlay::before { left: 0; }
-.ctaFrameOverlay::after { right: 0; }
-
-.ctaFrameDivider {
   position: absolute;
   left: 955px;
   top: 0;
   bottom: 0;
   width: 10px;
   background: var(--accent-orange);
-  z-index: 5;
 }
 
 .ctaSlidePanel {
@@ -1463,7 +1445,16 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+  position: relative;
+  z-index: 1;
+  animation: glitch-appear 0.4s ease-out;
+}
+
+@keyframes glitch-appear {
+  0% { opacity: 0; filter: brightness(3) contrast(1.5); transform: scale(1.02); }
+  50% { opacity: 0.8; filter: brightness(1.5) contrast(1.2); transform: scale(1.01); }
+  100% { opacity: 1; filter: brightness(1) contrast(1); transform: scale(1); }
 }
 
 .ctaMonitorOverlay {
