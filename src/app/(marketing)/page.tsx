@@ -327,10 +327,10 @@ export default function LandingPage() {
                 <img src="/svg/marketing/pricing/text-category.svg" alt="Licensing" className={styles.pricingCategory} />
               </ScrollReveal>
               <ScrollReveal delay={100}>
-                <img src="/svg/marketing/pricing/text-heading.svg" alt="Ecosystem Access" className={styles.pricingHeading} />
+                <img src="/svg/marketing/pricing/text-heading.svg" alt="Licensing and Ecosystem Access" className={styles.pricingHeading} />
               </ScrollReveal>
               <ScrollReveal delay={200}>
-                <img src="/svg/marketing/pricing/text-body.svg" alt="All licenses include 1 year of updates." className={styles.pricingBody} />
+                <img src="/svg/marketing/pricing/text-body.svg" alt="Prorated ecosystem upgrades, Material yield guarantee, Customer support, and Early adopter price locks." className={styles.pricingBody} />
               </ScrollReveal>
             </div>
 
@@ -338,7 +338,7 @@ export default function LandingPage() {
               {/* Card 1: KerfCut Single */}
               <ScrollReveal delay={300}>
                 <div className={styles.pricingCard}>
-                  <img src="/svg/marketing/pricing/card-1.svg" alt="KerfCut Single Tool" className={styles.pricingCardImg} />
+                  <img src="/svg/marketing/pricing/card-1.svg" alt="KerfCut Single Tool - $25/year" className={styles.pricingCardImg} />
                   <div className={styles.pricingAction}>
                     <form
                       action="https://www.paypal.com/cgi-bin/webscr"
@@ -366,7 +366,7 @@ export default function LandingPage() {
               {/* Card 2: KerfStock */}
               <ScrollReveal delay={400}>
                 <div className={styles.pricingCard}>
-                  <img src="/svg/marketing/pricing/card-2.svg" alt="KerfStock" className={styles.pricingCardImg} />
+                  <img src="/svg/marketing/pricing/card-2.svg" alt="KerfStock Tool - $40/year" className={styles.pricingCardImg} />
                   <div className={styles.pricingAction}>
                     <button className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', opacity: 0.5, cursor: 'not-allowed', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
                       COMING SOON
@@ -378,7 +378,7 @@ export default function LandingPage() {
               {/* Card 3: Full Suite */}
               <ScrollReveal delay={500}>
                 <div className={styles.pricingCard}>
-                  <img src="/svg/marketing/pricing/card-3.svg" alt="Full Suite" className={styles.pricingCardImg} />
+                  <img src="/svg/marketing/pricing/card-3.svg" alt="KerfSuite Full Suite - $99/year" className={styles.pricingCardImg} />
                   <div className={styles.pricingAction}>
                     <button className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', opacity: 0.5, cursor: 'not-allowed', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
                       COMING SOON
@@ -387,11 +387,11 @@ export default function LandingPage() {
                 </div>
               </ScrollReveal>
 
-              {/* Card 4: Workshop Pro */}
+              {/* Card 4: Workshop Tier */}
               <ScrollReveal delay={600}>
                 <div className={styles.pricingCard}>
-                  <img src="/svg/marketing/pricing/card-4.svg" alt="Workshop Pro" className={styles.pricingCardImg} />
-                  <div className={styles.pricingAction}>
+                  <img src="/svg/marketing/pricing/card-4.svg" alt="Workshop Tier - $299/year" className={styles.pricingCardImg} />
+                  <div className={styles.pricingAction} style={{ width: '354px' }}>
                     <button className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', opacity: 0.5, cursor: 'not-allowed', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
                       COMING SOON
                     </button>

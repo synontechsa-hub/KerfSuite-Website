@@ -1079,37 +1079,28 @@
 .pricingInner {
   position: relative;
   z-index: 2;
-  width: 100%;
-  height: 100%;
-  max-width: 1920px;
-  max-height: 1000px;
+  width: 1920px;
+  height: 1000px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Use the exact aspect ratio of the mockup 1920x1000 */
-  aspect-ratio: 1920 / 1000;
-}
-
-/* Base scaling factor for the whole section to match viewport */
-.pricingInner {
+  flex-shrink: 0;
+  /* Base scaling factor for the whole section to match viewport */
   transform: scale(min(calc(100vw / 1920), calc(100vh / 1000)));
   transform-origin: center center;
 }
 
 .pricingTextContainer {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
 }
 
 .pricingCategory {
   position: absolute;
   left: 39px;
-  top: 143px; /* text y=156, size=12.5. top approx 143 */
+  top: 143px;
   height: 13px;
   width: auto;
 }
@@ -1117,7 +1108,7 @@
 .pricingHeading {
   position: absolute;
   left: 37px;
-  top: 174px; /* text y=249, size=75. top approx 174 */
+  top: 174px;
   height: 75px;
   width: auto;
 }
@@ -1125,8 +1116,8 @@
 .pricingBody {
   position: absolute;
   left: 41px;
-  top: 664px; /* text y=677, size=12.5. top approx 664 */
-  height: 213px; /* Total height for all body groups including guarantee */
+  top: 664px;
+  height: 220px;
   width: auto;
 }
 
@@ -1136,7 +1127,7 @@
   left: 50px;
   display: grid;
   grid-template-columns: 375px 375px 375px 405px;
-  gap: 97px; /* 522 - (50+375) = 97 */
+  gap: 97px;
   width: auto;
 }
 
