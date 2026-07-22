@@ -107,11 +107,12 @@
 .dlAppRow {
   display: flex;
   align-items: center;
-  gap: 30px;
+  /* Gap is exactly calculated from mock-up: 200 (logo start) - 142 (button end) = 58px */
+  gap: 58px;
 }
 
 .dlAppLogo {
-  height: 40px;
+  height: 30px;
   width: auto;
 }
 
@@ -122,11 +123,12 @@
   border: 2px solid #FF6600;
   border-radius: 10px;
   color: #333;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Orbitron', sans-serif;
-  font-size: 12.5px;
+  font-size: 11px; /* Slightly smaller to fit the 100px width comfortably */
   font-weight: bold;
   cursor: pointer;
   transition: filter 0.2s;
