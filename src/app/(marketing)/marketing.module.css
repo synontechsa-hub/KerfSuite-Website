@@ -1309,7 +1309,7 @@
 .ctaHeading {
   position: absolute;
   left: 493px;
-  top: 106px; /* text y=156, size=58.3. top approx 106 */
+  top: 106px;
   font-family: 'Orbitron', sans-serif;
   font-size: 58.3px;
   font-weight: 900;
@@ -1326,7 +1326,7 @@
 .ctaBody {
   position: absolute;
   left: 495px;
-  top: 182px; /* text y=196, size=14.6. top approx 182 */
+  top: 182px;
   font-family: 'Orbitron', sans-serif;
   font-size: 14.6px;
   font-weight: 400;
@@ -1361,7 +1361,7 @@
 }
 
 .ctaBtnGetLicense:hover {
-  filter: brightness(1.2);
+  animation: terminal-flicker 0.15s infinite;
 }
 
 .ctaBtnLogin {
@@ -1383,6 +1383,7 @@
 .ctaBtnLogin:hover {
   background-color: var(--accent-orange);
   color: #333;
+  animation: terminal-flicker 0.15s infinite;
 }
 
 .ctaBtnLogin svg {
@@ -1390,13 +1391,13 @@
   height: auto;
 }
 
-/* Slideshow */
+/* Slideshow & Monitor Effects */
 .ctaSlideshowContainer {
   position: absolute;
   left: 0;
   top: 337px;
   width: 1920px;
-  height: 560px; /* 540 + 10 padding top/bottom */
+  height: 560px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1406,13 +1407,48 @@
   position: relative;
   width: 1920px;
   height: 560px;
-  border-top: 10px solid var(--accent-orange);
-  border-bottom: 10px solid var(--accent-orange);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  padding: 0 10px;
-  background-color: var(--accent-orange);
+  padding: 10px;
+  /* Replicate Element - Boxes.svg structural geometry */
+  background: var(--accent-orange);
+  clip-path: polygon(
+    0 0, 100% 0, 100% 100%, 0 100%, 0 0,
+    10px 10px, 10px 550px, 955px 550px, 955px 10px, 10px 10px,
+    965px 10px, 965px 550px, 1910px 550px, 1910px 10px, 965px 10px
+  );
+}
+
+/* Alternative approach for the border to match SVG precisely */
+.ctaFrameOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  border-top: 10px solid var(--accent-orange);
+  border-bottom: 10px solid var(--accent-orange);
+}
+
+.ctaFrameOverlay::before, .ctaFrameOverlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  background: var(--accent-orange);
+}
+.ctaFrameOverlay::before { left: 0; }
+.ctaFrameOverlay::after { right: 0; }
+
+.ctaFrameDivider {
+  position: absolute;
+  left: 955px;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  background: var(--accent-orange);
+  z-index: 5;
 }
 
 .ctaSlidePanel {
@@ -1430,16 +1466,83 @@
   transition: opacity 0.5s ease-in-out;
 }
 
+.ctaMonitorOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 3px, 3px 100%;
+}
+
+.ctaMonitorOverlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.4) 100%);
+}
+
+.ctaScanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, transparent 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+  z-index: 3;
+  animation: scanline 10s linear infinite;
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes terminal-flicker {
+  0% { opacity: 1; }
+  25% { opacity: 0.8; }
+  50% { opacity: 0.9; }
+  75% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* Indicators */
+.ctaIndicators {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 10;
+}
+
+.ctaIndicator {
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 102, 0, 0.2);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.ctaIndicator.active {
+  background: var(--accent-orange);
+  box-shadow: 0 0 10px var(--accent-orange);
+}
+
 /* Responsive Reset */
 @media (max-width: 1024px) {
   .ctaScreen { height: auto; padding: 4rem 1rem; }
   .ctaInner { transform: none; width: 100%; height: auto; gap: 2rem; position: relative; }
   .ctaHeading { position: relative; left: auto; top: auto; font-size: 2.5rem; text-align: center; white-space: normal; }
   .ctaBody { position: relative; left: auto; top: auto; text-align: center; margin: 0 auto; }
-  .ctaActions { position: relative; left: auto; top: auto; justify-content: center; width: 100%; }
+  .ctaActions { position: relative; left: auto; top: auto; justify-content: center; width: 100%; margin-top: 1rem; }
   .ctaSlideshowContainer { position: relative; left: auto; top: auto; width: 100%; height: auto; margin-top: 2rem; }
-  .ctaSlideshowFrame { width: 100%; height: auto; grid-template-columns: 1fr; border: none; background: none; padding: 0; gap: 1rem; }
+  .ctaSlideshowFrame { width: 100%; height: auto; grid-template-columns: 1fr; border: none; background: none; padding: 0; gap: 1rem; clip-path: none; }
   .ctaSlidePanel { width: 100%; height: 300px; }
+  .ctaFrameOverlay, .ctaFrameDivider { display: none; }
 }
 
 /* ----------------------------------------------------------------
