@@ -59,7 +59,7 @@
 .dlTextContainer {
   position: absolute;
   left: 39px;
-  top: 156px;
+  top: 135px; /* Adjusting for Orbitron ascenders to match y=156 baseline */
   z-index: 3;
 }
 
@@ -70,7 +70,7 @@
   font-family: 'Orbitron', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 70px;
+  margin-bottom: 55px; /* Precision gap to next baseline */
 }
 
 .dlHeadingText {
@@ -78,7 +78,7 @@
   font-weight: 900;
   font-family: 'Orbitron', sans-serif;
   color: #fff;
-  line-height: 1.2;
+  line-height: 1.1; /* Tighter line height for blueprint aesthetic */
   text-transform: uppercase;
 }
 
@@ -91,7 +91,7 @@
   font-size: 14.6px;
   color: #fff;
   opacity: 0.8;
-  margin-top: 50px;
+  margin-top: 35px; /* Aligns with mock-up y=397 */
 }
 
 .dlAppGrid {

@@ -75,8 +75,8 @@ export default function DownloadsPage() {
               </div>
 
               {/* KerfStock Row */}
-              <div className={dlStyles.dlAppRow}>
-                <button className={dlStyles.dlBtnDownload} style={{ opacity: 0.6, cursor: 'not-allowed' }} disabled>
+              <div className={dlStyles.dlAppRow} style={{ opacity: 0.5 }}>
+                <button className={dlStyles.dlBtnDownload} style={{ cursor: 'not-allowed' }} disabled>
                   DOWNLOAD
                 </button>
                 <img src="/svg/marketing/downloads/kerfstock-logo.svg" alt="KerfStock" className={dlStyles.dlAppLogo} />
