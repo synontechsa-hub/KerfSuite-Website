@@ -435,7 +435,7 @@ export default function LandingPage() {
 
           <div className={styles.ctaInner}>
             <h2 className={styles.ctaHeading}>
-              Create Your <span>Workflow.</span>
+              CREATE YOUR <span>WORKFLOW.</span>
             </h2>
             <p className={styles.ctaBody}>
               Already a licensee? Sign in to manage your workspace, machines, and users from the KerfSuite command center.

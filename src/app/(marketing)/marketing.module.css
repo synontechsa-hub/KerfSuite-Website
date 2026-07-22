@@ -1069,13 +1069,13 @@
 .pricingBackground {
   position: absolute;
   inset: 0;
-  /* Industrial Grid Implementation */
+  /* Industrial Grid Implementation — Calibrated to Mock-up */
   background-image:
-    linear-gradient(to right, #1A1A1A 1px, transparent 1px),
-    linear-gradient(to bottom, #1A1A1A 1px, transparent 1px);
-  background-size: 107px 100px; /* Exact spacing from mock-up */
+    linear-gradient(to right, #333333 1px, transparent 1px),
+    linear-gradient(to bottom, #333333 1px, transparent 1px);
+  background-size: 107px 100px;
   z-index: 1;
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
 .pricingInner {
@@ -1416,21 +1416,8 @@
 
 /* Alternative approach for the border to match SVG precisely */
 .ctaFrameOverlay {
-  position: absolute;
-  inset: 0;
   pointer-events: none;
   z-index: 5;
-  border: 10px solid var(--accent-orange);
-}
-
-.ctaFrameOverlay::after {
-  content: '';
-  position: absolute;
-  left: 955px;
-  top: 0;
-  bottom: 0;
-  width: 10px;
-  background: var(--accent-orange);
 }
 
 .ctaSlidePanel {
@@ -1439,6 +1426,7 @@
   height: 540px;
   background-color: #000;
   overflow: hidden;
+  box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
 }
 
 .ctaSlideImage {
@@ -1448,7 +1436,7 @@
   opacity: 1;
   position: relative;
   z-index: 1;
-  animation: glitch-appear 0.4s ease-out;
+  animation: glitch-appear 0.6s ease-out;
 }
 
 @keyframes glitch-appear {
@@ -1502,25 +1490,44 @@
 /* Indicators */
 .ctaIndicators {
   position: absolute;
-  bottom: 40px;
+  bottom: -40px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 20px;
+  gap: 15px;
   z-index: 10;
+  pointer-events: auto;
 }
 
 .ctaIndicator {
-  width: 40px;
-  height: 4px;
+  width: 80px;
+  height: 2px;
   background: rgba(255, 102, 0, 0.2);
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ctaIndicatorLabel {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  color: #666;
+  margin-top: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .ctaIndicator.active {
   background: var(--accent-orange);
-  box-shadow: 0 0 10px var(--accent-orange);
+  box-shadow: 0 0 15px var(--accent-orange);
+  height: 3px;
+}
+
+.ctaIndicator.active .ctaIndicatorLabel {
+  opacity: 1;
+  color: var(--accent-orange);
 }
 
 /* Responsive Reset */
