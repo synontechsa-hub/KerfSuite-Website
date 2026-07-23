@@ -361,7 +361,21 @@ export default function LandingPage() {
               {/* Card 1: KerfCut Single */}
               <ScrollReveal delay={300}>
                 <div className={styles.pricingCard}>
-                  <img src="/svg/marketing/pricing/card-1.svg" alt="KerfCut Single Tool - $25/year" className={styles.pricingCardImg} />
+                  <div className={styles.cardFrame}>
+                    <div className={styles.cardTag}>MOST POPULAR</div>
+                    <h3 className={styles.cardTitle}>KERFCUT SINGLE TOOL</h3>
+                    <div className={styles.cardPriceContainer}>
+                      <span className={styles.cardPrice}>$25</span>
+                      <span className={styles.cardPeriod}>/ year</span>
+                    </div>
+                    <ul className={styles.cardFeatures}>
+                      <li>Full access to KerfCut</li>
+                      <li>Standard PDF exports</li>
+                      <li>Single user license</li>
+                      <li>1 year of updates</li>
+                      <li>KerfPortal access</li>
+                    </ul>
+                  </div>
                   <div className={styles.pricingAction}>
                     <form
                       action="https://www.paypal.com/cgi-bin/webscr"
@@ -389,7 +403,21 @@ export default function LandingPage() {
               {/* Card 2: KerfStock */}
               <ScrollReveal delay={400}>
                 <div className={styles.pricingCard}>
-                  <img src="/svg/marketing/pricing/card-2.svg" alt="KerfStock Tool - $40/year" className={styles.pricingCardImg} />
+                  <div className={styles.cardFrame}>
+                    <div className={styles.cardTag}>UPCOMING</div>
+                    <h3 className={styles.cardTitle}>KERFSTOCK SINGLE TOOL</h3>
+                    <div className={styles.cardPriceContainer}>
+                      <span className={styles.cardPrice}>$40</span>
+                      <span className={styles.cardPeriod}>/ year</span>
+                    </div>
+                    <ul className={styles.cardFeatures}>
+                      <li>Full access to KerfStock</li>
+                      <li>Easy stock tracking</li>
+                      <li>Licenses for up to 5 users</li>
+                      <li>1 year of updates</li>
+                      <li>KerfPortal access</li>
+                    </ul>
+                  </div>
                   <div className={styles.pricingAction}>
                     <button className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', opacity: 0.5, cursor: 'not-allowed', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
                       COMING SOON
@@ -401,7 +429,21 @@ export default function LandingPage() {
               {/* Card 3: Full Suite */}
               <ScrollReveal delay={500}>
                 <div className={styles.pricingCard}>
-                  <img src="/svg/marketing/pricing/card-3.svg" alt="KerfSuite Full Suite - $99/year" className={styles.pricingCardImg} />
+                  <div className={styles.cardFrame}>
+                    <div className={styles.cardTag}>BEST VALUE</div>
+                    <h3 className={styles.cardTitle}>KERFSUITE FULL ACCESS</h3>
+                    <div className={styles.cardPriceContainer}>
+                      <span className={styles.cardPrice}>$99</span>
+                      <span className={styles.cardPeriod}>/ year</span>
+                    </div>
+                    <ul className={styles.cardFeatures}>
+                      <li>Full access to the entire suite</li>
+                      <li>Seamless integration between tools</li>
+                      <li>Single user license</li>
+                      <li>1 year of updates</li>
+                      <li>KerfPortal access</li>
+                    </ul>
+                  </div>
                   <div className={styles.pricingAction}>
                     <button className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', opacity: 0.5, cursor: 'not-allowed', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
                       COMING SOON
@@ -412,9 +454,23 @@ export default function LandingPage() {
 
               {/* Card 4: Workshop Tier */}
               <ScrollReveal delay={600}>
-                <div className={styles.pricingCard}>
-                  <img src="/svg/marketing/pricing/card-4.svg" alt="Workshop Tier - $299/year" className={styles.pricingCardImg} />
-                  <div className={styles.pricingAction} style={{ width: '354px' }}>
+                <div className={`${styles.pricingCard} ${styles.workshopCard}`}>
+                  <div className={styles.cardFrame}>
+                    <div className={styles.cardTag}>FOR WORKSHOPS</div>
+                    <h3 className={styles.cardTitle}>KERFSUITE WORKSHOP TIER</h3>
+                    <div className={styles.cardPriceContainer}>
+                      <span className={styles.cardPrice}>$299</span>
+                      <span className={styles.cardPeriod}>/ year</span>
+                    </div>
+                    <ul className={styles.cardFeatures}>
+                      <li>Full access to the entire suite</li>
+                      <li>Seamless integration between tools</li>
+                      <li>5 full suite licenses + 10 stock users</li>
+                      <li>1 year of updates</li>
+                      <li>KerfPortal admin privileges</li>
+                    </ul>
+                  </div>
+                  <div className={styles.pricingAction}>
                     <button className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', opacity: 0.5, cursor: 'not-allowed', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
                       COMING SOON
                     </button>
