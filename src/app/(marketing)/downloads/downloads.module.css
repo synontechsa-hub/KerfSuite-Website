@@ -112,8 +112,19 @@
 }
 
 .dlAppLogo {
-  height: 30px;
-  width: auto;
+  font-family: var(--font-orbitron), sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  color: #fff;
+  border: 1.5px solid var(--accent-orange);
+  padding: 6px 16px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.dlAppLogo span {
+  color: var(--accent-orange);
 }
 
 .dlBtnDownload {

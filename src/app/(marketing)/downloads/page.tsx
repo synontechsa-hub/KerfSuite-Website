@@ -71,7 +71,9 @@ export default function DownloadsPage() {
                 >
                   DOWNLOAD
                 </a>
-                <img src="/svg/marketing/downloads/kerfcut-logo.svg" alt="KerfCut" className={dlStyles.dlAppLogo} />
+                <div className={dlStyles.dlAppLogo}>
+                  KERF<span>CUT</span>
+                </div>
               </div>
 
               {/* KerfStock Row */}
@@ -79,7 +81,9 @@ export default function DownloadsPage() {
                 <button className={dlStyles.dlBtnDownload} style={{ cursor: 'not-allowed' }} disabled>
                   DOWNLOAD
                 </button>
-                <img src="/svg/marketing/downloads/kerfstock-logo.svg" alt="KerfStock" className={dlStyles.dlAppLogo} />
+                <div className={dlStyles.dlAppLogo}>
+                  KERF<span>STOCK</span>
+                </div>
               </div>
             </div>
           </div>
