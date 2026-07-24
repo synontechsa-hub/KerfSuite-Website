@@ -38,7 +38,7 @@ export default function WorkshopMap({ initialLocations }: { initialLocations: Lo
 
   // Helper to render tree
   const renderTree = (pid: string | null = null, indent = 0) => {
-    return locations
+    return initialLocations
       .filter(loc => loc.parentId === pid)
       .map(loc => (
         <div key={loc.id}>
@@ -89,7 +89,7 @@ export default function WorkshopMap({ initialLocations }: { initialLocations: Lo
               className={styles.select}
             >
               <option value="">SITE (TOP LEVEL)</option>
-              {locations.filter(l => l.depth < 2).map(l => (
+              {initialLocations.filter(l => l.depth < 2).map(l => (
                 <option key={l.id} value={l.id}>{l.name.toUpperCase()}</option>
               ))}
             </select>
@@ -104,7 +104,7 @@ export default function WorkshopMap({ initialLocations }: { initialLocations: Lo
       </form>
 
       <div style={{ borderTop: '1px solid var(--bg-panel-border)', marginTop: '1rem' }}>
-        {locations.length > 0 ? renderTree() : (
+        {initialLocations.length > 0 ? renderTree() : (
           <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-dim)', fontSize: '0.7rem' }}>
             NO LOCATIONS DEFINED
           </p>

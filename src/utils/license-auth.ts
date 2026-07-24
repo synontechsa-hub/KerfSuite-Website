@@ -49,7 +49,14 @@ export async function validateLicenseRequest(request: Request, expectedApp?: str
   }
 
   // ABUSE DETECTION LOGIC
-  const updates: any = {
+  const updates: {
+    last_seen_at: string,
+    last_ip: string,
+    app_version?: string,
+    os_info?: string,
+    abuse_score?: number,
+    is_flagged?: boolean
+  } = {
     last_seen_at: new Date().toISOString(),
     last_ip: currentIp,
     app_version: appVersion || undefined,

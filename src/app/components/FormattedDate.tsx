@@ -8,6 +8,7 @@ export default function FormattedDate({ date, format = 'short' }: { date: string
   useEffect(() => {
     // Only run on client after first render to ensure consistency
     if (typeof window !== 'undefined') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setMounted(true);
     }
   }, []);

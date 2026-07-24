@@ -9,7 +9,6 @@ export default function MaterialLibrary({ initialMaterials }: { initialMaterials
   const router = useRouter();
   const [name, setName] = useState('');
   const [thickness, setThickness] = useState('');
-  const [unit] = useState('mm');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +21,7 @@ export default function MaterialLibrary({ initialMaterials }: { initialMaterials
       const response = await fetch('/api/stock/materials', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, thickness: parseFloat(thickness), unit })
+        body: JSON.stringify({ name, thickness: parseFloat(thickness), unit: 'mm' })
       });
 
       if (!response.ok) throw new Error('Failed to add material');
@@ -88,14 +87,14 @@ export default function MaterialLibrary({ initialMaterials }: { initialMaterials
             </tr>
           </thead>
           <tbody>
-            {materials.map(m => (
+            {initialMaterials.map(m => (
               <tr key={m.id} className={styles.tableRow}>
                 <td style={{ fontWeight: 600 }}>{m.name.toUpperCase()}</td>
                 <td style={{ fontFamily: 'var(--font-mono)' }}>{m.thickness}</td>
                 <td>{m.unit}</td>
               </tr>
             ))}
-            {materials.length === 0 && (
+            {initialMaterials.length === 0 && (
               <tr>
                 <td colSpan={3} style={{ textAlign: 'center', padding: '1rem', color: 'var(--text-dim)', fontSize: '0.7rem' }}>
                   NO MATERIALS DEFINED

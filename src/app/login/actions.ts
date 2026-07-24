@@ -10,7 +10,7 @@ const LoginSchema = z.object({
   password: z.string().min(1, 'Password is required')
 })
 
-export async function login(prevState: any, formData: FormData) {
+export async function login(prevState: { error: string | null } | null, formData: FormData) {
   try {
     const supabase = await createClient()
 
@@ -58,8 +58,8 @@ export async function login(prevState: any, formData: FormData) {
 
     revalidatePath('/portal', 'layout')
     redirect('/portal')
-  } catch (err: any) {
-    if (err?.digest === 'NEXT_REDIRECT') throw err
+  } catch (err: unknown) {
+    if (err && typeof err === 'object' && 'digest' in err && err.digest === 'NEXT_REDIRECT') throw err
     console.error('Unhandled login error:', err)
     return { error: 'A server error occurred during authentication.' }
   }

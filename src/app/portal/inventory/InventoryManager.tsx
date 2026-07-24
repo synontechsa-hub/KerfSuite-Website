@@ -18,11 +18,10 @@ export default function InventoryManager({
   locations: Location[]
 }) {
   const router = useRouter();
-  const [assets, setAssets] = useState(initialAssets);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [printingAsset, setPrintingAsset] = useState<Asset | null>(null);
 
-  const handleAddAsset = (newAsset: any) => {
+  const handleAddAsset = () => {
     // Smoothly refresh data from server
     router.refresh();
   };
@@ -46,7 +45,7 @@ export default function InventoryManager({
 
       <div className="panel" style={{ marginTop: "1rem" }}>
         <InventoryRoster
-          initialAssets={assets}
+          initialAssets={initialAssets}
           materials={materials}
           locations={locations}
           onPrint={(asset) => setPrintingAsset(asset)}
