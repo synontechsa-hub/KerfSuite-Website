@@ -1,11 +1,18 @@
 import { createAdminClient } from '@/utils/supabase/server'
 import crypto from 'crypto'
 
+export type LicenseAuthFailure = { error: string; status: number }
+export type LicenseAuthSuccess = { success: true; workspaceId: string; isFlagged: boolean }
+export type LicenseAuthResult = LicenseAuthFailure | LicenseAuthSuccess
+
 /**
  * Validates that a request from a desktop app is authorized
  * via an active license key and updates telemetry + abuse detection.
  */
-export async function validateLicenseRequest(request: Request, expectedApp?: string) {
+export async function validateLicenseRequest(
+  request: Request,
+  expectedApp?: string
+): Promise<LicenseAuthResult> {
   const cdkey = request.headers.get('x-license-key')
   const machineId = request.headers.get('x-machine-id')
   const workspaceId = request.headers.get('x-workspace-id')

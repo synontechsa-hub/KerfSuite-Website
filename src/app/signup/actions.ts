@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { z } from 'zod'
+import { firstZodIssue } from '@/utils/api'
 
 const SignupSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -18,7 +19,7 @@ export async function signup(prevState: any, formData: FormData) {
     const result = SignupSchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
-      return { error: result.error.issues[0].message }
+      return { error: firstZodIssue(result.error) }
     }
 
     const { email, password, workshopName } = result.data

@@ -1,7 +1,9 @@
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 
-export const getRateLimit = (limit: number, windowStr: `${number} s` | `${number} m` | `${number} h` | `${number} d`) => {
+export type RateLimitWindow = `${number} s` | `${number} m` | `${number} h` | `${number} d`
+
+export const getRateLimit = (limit: number, windowStr: RateLimitWindow) => {
   if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
     return null;
   }

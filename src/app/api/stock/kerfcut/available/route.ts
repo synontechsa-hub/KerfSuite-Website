@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { validateLicenseRequest } from '@/utils/license-auth'
+import { jsonError } from '@/utils/api'
 
 export async function GET(request: Request) {
   // 1. Validate Machine License (Expect KerfCut)
   const auth = await validateLicenseRequest(request, 'kerfcut')
   if ('error' in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status })
+    return jsonError(auth.error, auth.status)
   }
 
   const { workspaceId } = auth
@@ -16,7 +17,7 @@ export async function GET(request: Request) {
   const min_height = parseFloat(searchParams.get('min_height') || '0')
 
   if (!material_id) {
-    return NextResponse.json({ error: 'Missing material_id' }, { status: 400 })
+    return jsonError('Missing material_id', 400)
   }
 
   const adminClient = createAdminClient()
@@ -30,7 +31,7 @@ export async function GET(request: Request) {
     .single()
 
   if (!material) {
-    return NextResponse.json({ error: 'Material not found' }, { status: 404 })
+    return jsonError('Material not found', 404)
   }
 
   // 2. Fetch available assets
@@ -43,7 +44,7 @@ export async function GET(request: Request) {
     .gte('width', min_width)
     .gte('height', min_height)
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return jsonError(error.message, 500)
 
   return NextResponse.json({
     material,
@@ -53,4 +54,3 @@ export async function GET(request: Request) {
     })) || []
   })
 }
-

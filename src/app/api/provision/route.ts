@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { z } from 'zod'
 import crypto from 'crypto'
+import { handleRouteError, jsonError, validateBody } from '@/utils/api'
+import { siteUrl } from '@/utils/site-url'
 
 const ProvisionSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -22,18 +24,14 @@ export async function POST(request: Request) {
     crypto.timingSafeEqual(Buffer.from(secret), Buffer.from(PROVISIONING_SECRET))
 
   if (!isAuthorized) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return jsonError('Unauthorized', 401)
   }
 
   try {
-    const body = await request.json()
-    const result = ProvisionSchema.safeParse(body)
+    const parsed = validateBody(ProvisionSchema, await request.json())
+    if ('error' in parsed) return parsed.error
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.error.issues[0].message }, { status: 400 })
-    }
-
-    const { email, workshopName } = result.data
+    const { email, workshopName } = parsed.data
     const adminClient = createAdminClient()
 
     // 2. Create Workspace
@@ -46,13 +44,12 @@ export async function POST(request: Request) {
     if (wsError) throw wsError
 
     // 3. Invite Admin User
-    const redirectUrl = new URL('/auth/callback', process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').toString()
     const { data: inviteData, error: inviteError } = await adminClient.auth.admin.inviteUserByEmail(email, {
       data: {
         workspace_id: workspace.id,
         role: 'admin'
       },
-      redirectTo: redirectUrl
+      redirectTo: siteUrl('/auth/callback')
     })
 
     if (inviteError) throw inviteError
@@ -74,9 +71,6 @@ export async function POST(request: Request) {
     })
 
   } catch (error: unknown) {
-    console.error('Provisioning error:', error)
-    const message = error instanceof Error ? error.message : 'Internal Server Error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return handleRouteError(error, { logPrefix: 'Provisioning error:' })
   }
 }
-

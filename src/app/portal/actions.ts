@@ -6,6 +6,8 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { PortalService } from '@/services/portal_service'
+import { errorMessage } from '@/utils/api'
+import { siteUrl } from '@/utils/site-url'
 import type { SupabaseClient } from '@supabase/supabase-js'
 
 const EmailSchema = z.string().email('Invalid email address')
@@ -97,7 +99,7 @@ export async function updateLicenseLabel(licenseId: string, label: string) {
     return { success: true }
   } catch (error: unknown) {
     console.error('Error updating label:', error)
-    return { error: error instanceof Error ? error.message : 'Failed to update label', success: false }
+    return { error: errorMessage(error, 'Failed to update label'), success: false }
   }
 }
 
@@ -137,10 +139,9 @@ export async function inviteUser(prevState: any, formData: FormData) {
   }
 
   const adminClient = createAdminClient()
-  const redirectUrl = new URL('/auth/callback', process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').toString()
   const { data: inviteData, error } = await adminClient.auth.admin.inviteUserByEmail(email, {
     data: { workspace_id: profile.workspaceId },
-    redirectTo: redirectUrl
+    redirectTo: siteUrl('/auth/callback')
   })
 
   if (error) {
@@ -205,7 +206,7 @@ export async function removeUser(userId: string) {
     return { success: true }
   } catch (error: unknown) {
     console.error('Error removing user:', error)
-    return { error: error instanceof Error ? error.message : 'Failed to remove user', success: false }
+    return { error: errorMessage(error, 'Failed to remove user'), success: false }
   }
 }
 
@@ -229,7 +230,7 @@ export async function revokeKey(keyId: string) {
     return { success: true }
   } catch (error: unknown) {
     console.error('Error revoking key:', error)
-    return { error: error instanceof Error ? error.message : 'Failed to revoke key', success: false }
+    return { error: errorMessage(error, 'Failed to revoke key'), success: false }
   }
 }
 

@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { z } from 'zod'
-import { getRateLimit } from '@/utils/rate-limit'
-
-const TRIAL_MAX_DAYS = 14
-const TRIAL_MAX_RUNS = 20
+import { enforceRateLimit, getClientIp, handleRouteError, jsonError, validateBody } from '@/utils/api'
+import { computeTrialTier, runsLeft } from '@/utils/trial'
 
 const TrialRunSchema = z.object({
   machine_id: z.string().min(1, 'Missing machine_id')
@@ -12,23 +10,20 @@ const TrialRunSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const result = TrialRunSchema.safeParse(body)
+    const parsed = validateBody(TrialRunSchema, await request.json())
+    if ('error' in parsed) return parsed.error
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.error.issues[0].message }, { status: 400 })
-    }
+    const { machine_id } = parsed.data
+    const currentIp = getClientIp(request)
 
-    const { machine_id } = result.data
-    const currentIp = request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1'
-
-    const ratelimit = getRateLimit(5, '1 d') // 5 trial run requests per IP per day
-    if (ratelimit) {
-      const { success } = await ratelimit.limit(`trial_${currentIp}`)
-      if (!success) {
-        return NextResponse.json({ error: 'Too many trial requests from this IP today' }, { status: 429 })
-      }
-    }
+    // 5 trial run requests per IP per day
+    const limited = await enforceRateLimit(
+      `trial_${currentIp}`,
+      5,
+      '1 d',
+      'Too many trial requests from this IP today'
+    )
+    if (limited) return limited
 
     const adminClient = createAdminClient()
 
@@ -47,30 +42,25 @@ export async function POST(request: Request) {
 
     if (rpcError) {
       console.error('Trial RPC error:', rpcError)
-      return NextResponse.json({ error: 'Failed to process trial run' }, { status: 500 })
+      return jsonError('Failed to process trial run', 500)
     }
 
     if (rpcData) {
-      const runsCount = rpcData.runs_count
+      const runsRemaining = runsLeft(rpcData.runs_count)
       const daysLeft = rpcData.days_left
-      
-      const runsLeft = Math.max(0, TRIAL_MAX_RUNS - runsCount)
-      const tier = (runsLeft > 0 && daysLeft > 0) ? 'trial' : 'free'
+      const tier = computeTrialTier(runsRemaining, daysLeft)
 
       return NextResponse.json({
         success: true,
         tier,
-        runs_left: runsLeft,
+        runs_left: runsRemaining,
         days_left: daysLeft
       })
     }
 
-    return NextResponse.json({ error: 'No data returned from trial service' }, { status: 500 })
+    return jsonError('No data returned from trial service', 500)
 
   } catch (err: unknown) {
-    console.error('Trial endpoint error:', err)
-    const message = err instanceof Error ? err.message : 'Internal server error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return handleRouteError(err, { logPrefix: 'Trial endpoint error:', fallback: 'Internal server error' })
   }
 }
-

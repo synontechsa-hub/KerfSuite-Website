@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { validateLicenseRequest } from '@/utils/license-auth'
-import crypto from 'crypto'
+import { handleRouteError, jsonError } from '@/utils/api'
 
 /**
  * KERFCUT COMMIT API
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   // 1. Validate Machine License (Expect KerfCut)
   const auth = await validateLicenseRequest(request, 'kerfcut')
   if ('error' in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status })
+    return jsonError(auth.error, auth.status)
   }
 
   const { workspaceId } = auth
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const { job_reference, consumed_assets, generated_remnants } = body
 
     if (!consumed_assets || !Array.isArray(consumed_assets) || consumed_assets.length === 0) {
-      return NextResponse.json({ error: 'Invalid consumed_assets' }, { status: 400 })
+      return jsonError('Invalid consumed_assets', 400)
     }
 
     // 2. ATOMIC COMMIT VIA RPC
@@ -48,8 +48,6 @@ export async function POST(request: Request) {
     return NextResponse.json(data)
 
   } catch (error: unknown) {
-    console.error('Commit error:', error)
-    const message = error instanceof Error ? error.message : 'Internal Server Error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return handleRouteError(error, { logPrefix: 'Commit error:' })
   }
 }

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { getAuthedWorkspace } from '@/utils/auth-helpers'
 import { z } from 'zod'
+import { handleRouteError, jsonError, requireWorkspace, validateBody } from '@/utils/api'
 
 const CreateAssetSchema = z.object({
   material_id: z.string().uuid(),
@@ -15,8 +15,9 @@ const CreateAssetSchema = z.object({
 })
 
 export async function GET() {
-  const auth = await getAuthedWorkspace()
-  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const result = await requireWorkspace()
+  if ('error' in result) return result.error
+  const { auth } = result
 
   const { data: assets, error } = await auth.supabase
     .from('assets')
@@ -24,24 +25,20 @@ export async function GET() {
     .eq('workspace_id', auth.workspaceId)
     .order('created_at', { ascending: false })
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return jsonError(error.message, 500)
 
   return NextResponse.json(assets)
 }
 
 export async function POST(request: Request) {
-  const auth = await getAuthedWorkspace()
-  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const result = await requireWorkspace()
+  if ('error' in result) return result.error
+  const { auth } = result
 
   try {
-    const rawBody = await request.json()
-    const validation = CreateAssetSchema.safeParse(rawBody)
-
-    if (!validation.success) {
-      return NextResponse.json({ error: validation.error.issues[0].message }, { status: 400 })
-    }
-
-    const body = validation.data
+    const parsed = validateBody(CreateAssetSchema, await request.json())
+    if ('error' in parsed) return parsed.error
+    const body = parsed.data
 
     // ATOMIC: Use RPC to handle sequential naming and creation in one transaction
     const { data: asset, error } = await auth.supabase
@@ -60,8 +57,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(asset)
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Internal Server Error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return handleRouteError(error)
   }
 }
-
