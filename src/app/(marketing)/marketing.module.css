@@ -279,32 +279,9 @@
   opacity: 0.9;
 }
 
-.synontechWordmark {
-  font-family: var(--font-orbitron), sans-serif;
-  font-weight: 900;
-  font-size: 1.1rem;
-  letter-spacing: 2px;
-  color: #fff;
-}
-
-.synontechWordmark span {
-  color: var(--accent-orange);
-}
-
-.feedrateWordmark {
-  font-family: var(--font-orbitron), sans-serif;
-  font-weight: 800;
-  font-size: 1.4rem;
-  letter-spacing: 3px;
-  color: var(--accent-orange);
-  border: 1.5px solid var(--accent-orange);
-  padding: 4px 12px;
-  border-radius: 4px;
-  opacity: 0.9;
-}
-
-.feedrateWordmark span {
-  color: #fff;
+.heroElementPowered {
+  height: 25px;
+  width: auto;
 }
 
 .heroPoweredBy {
