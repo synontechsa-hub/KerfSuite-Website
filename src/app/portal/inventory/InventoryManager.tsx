@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from '../page.module.css';
 import InventoryRoster from './InventoryRoster';
 import AddAssetModal from './AddAssetModal';
@@ -16,13 +17,14 @@ export default function InventoryManager({
   materials: Material[],
   locations: Location[]
 }) {
+  const router = useRouter();
   const [assets, setAssets] = useState(initialAssets);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [printingAsset, setPrintingAsset] = useState<Asset | null>(null);
 
   const handleAddAsset = (newAsset: any) => {
-    // Reload to get fresh data with joins from the server component
-    window.location.reload();
+    // Smoothly refresh data from server
+    router.refresh();
   };
 
   return (

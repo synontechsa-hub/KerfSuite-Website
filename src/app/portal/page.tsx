@@ -6,6 +6,7 @@ import GenerateKeyButton from '../components/GenerateKeyButton';
 import Link from 'next/link';
 import LicenseRoster from '../components/LicenseRoster';
 import { PortalService } from '@/services/portal_service';
+import FormattedDate from '../components/FormattedDate';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -80,7 +81,7 @@ export default async function Home() {
               {auditLogs.map((log) => (
                 <div key={log.id} className={styles.auditItem}>
                   <span className={styles.auditTime}>
-                    {new Date(log.createdAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    <FormattedDate date={log.createdAt} />
                   </span>
                   <span className={styles.auditText}>
                     <strong>{log.actorEmail}</strong> {log.description}

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Asset, Material, Location } from '@/models/portal';
 import styles from '../page.module.css';
+import FormattedDate from '../../components/FormattedDate';
 
 export default function InventoryRoster({
   initialAssets,
@@ -101,7 +102,7 @@ export default function InventoryRoster({
                   </span>
                 </td>
                 <td style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>
-                  {new Date(asset.createdAt).toLocaleDateString()}
+                  <FormattedDate date={asset.createdAt} format="dateOnly" />
                 </td>
                 <td>
                   <button

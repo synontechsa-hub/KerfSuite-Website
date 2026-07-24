@@ -5,6 +5,7 @@ import styles from '../page.module.css'
 import RoleSelector from './RoleSelector'
 import RemoveUserButton from './RemoveUserButton'
 import { UserProfile } from '@/models/portal'
+import FormattedDate from '../../components/FormattedDate'
 
 export default function UserRoster({
   initialUsers,
@@ -55,7 +56,7 @@ export default function UserRoster({
                 )}
               </td>
               <td style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
-                {new Date(u.createdAt).toLocaleDateString()}
+                <FormattedDate date={u.createdAt} format="dateOnly" />
               </td>
               <td>
                 <span className={`${styles.badge} ${styles[u.confirmed ? 'status-active' : 'status-waiting']}`}>
