@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server'
 import { getAuthedWorkspace } from '@/utils/auth-helpers'
+import { z } from 'zod'
+
+const CreateLocationSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  parent_id: z.string().uuid().nullish()
+})
 
 export async function GET() {
   const auth = await getAuthedWorkspace()
@@ -23,7 +29,14 @@ export async function POST(request: Request) {
   if (auth.role !== 'admin') return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
 
   try {
-    const body = await request.json()
+    const rawBody = await request.json()
+    const validation = CreateLocationSchema.safeParse(rawBody)
+
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error.issues[0].message }, { status: 400 })
+    }
+
+    const body = validation.data
 
     // Calculate depth based on parent
     let depth = 0
@@ -43,7 +56,8 @@ export async function POST(request: Request) {
     const { data: location, error } = await auth.supabase
       .from('locations')
       .insert({
-        ...body,
+        name: body.name,
+        parent_id: body.parent_id ?? null,
         workspace_id: auth.workspaceId,
         depth,
         created_by: auth.user.id
