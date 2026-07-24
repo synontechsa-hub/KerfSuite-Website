@@ -1,19 +1,23 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Material } from '@/models/portal';
 import styles from '../page.module.css';
 
 export default function MaterialLibrary({ initialMaterials }: { initialMaterials: Material[] }) {
+  const router = useRouter();
   const [materials, setMaterials] = useState(initialMaterials);
   const [name, setName] = useState('');
   const [thickness, setThickness] = useState('');
   const [unit, setUnit] = useState('mm');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const response = await fetch('/api/stock/materials', {
@@ -23,14 +27,12 @@ export default function MaterialLibrary({ initialMaterials }: { initialMaterials
       });
 
       if (!response.ok) throw new Error('Failed to add material');
-      const newMat = await response.json();
 
-      // Update local state (optimistic or just simple append)
-      // Since models/portal.ts has camelCase, and API returns snake_case, we should ideally map here
-      // But for simple display, we'll just reload or map manually
-      window.location.reload();
-    } catch (error) {
-      alert(error instanceof Error ? error.message : 'Unknown error');
+      router.refresh();
+      setName('');
+      setThickness('');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
@@ -41,6 +43,12 @@ export default function MaterialLibrary({ initialMaterials }: { initialMaterials
       <h3 className="stencil-heading" style={{ marginBottom: '1.5rem', color: 'var(--accent-orange)' }}>
         MATERIAL LIBRARY
       </h3>
+
+      {error && (
+        <div style={{ padding: '0.5rem', marginBottom: '1rem', backgroundColor: 'rgba(231, 76, 60, 0.1)', borderLeft: '3px solid var(--status-error)', fontSize: '0.7rem', color: 'var(--status-error)' }}>
+          {error.toUpperCase()}
+        </div>
+      )}
 
       <form onSubmit={handleAdd} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', alignItems: 'flex-end' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', flex: 2 }}>

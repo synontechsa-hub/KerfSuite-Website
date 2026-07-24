@@ -1,13 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { generateKey } from '../portal/actions'
-import SubmitButton from './SubmitButton'
 import styles from '../portal/page.module.css'
+import IndustrialModal from './IndustrialModal'
 
 export default function GenerateKeyButton({ allowedApps }: { allowedApps: string[] }) {
   const [error, setError] = useState<string | null>(null)
   const [newKey, setNewKey] = useState<string | null>(null)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
 
   if (!allowedApps || allowedApps.length === 0) {
     return (
@@ -31,7 +33,6 @@ export default function GenerateKeyButton({ allowedApps }: { allowedApps: string
           <button
             onClick={() => {
               navigator.clipboard.writeText(newKey);
-              // Simple feedback
             }}
             className="btn-primary"
             style={{ fontSize: '0.7rem', flex: 1 }}
@@ -51,39 +52,49 @@ export default function GenerateKeyButton({ allowedApps }: { allowedApps: string
   }
 
   return (
-    <form 
-      action={async (formData) => {
-        setError(null)
-        try {
-          const key = await generateKey(formData)
-          if (key) setNewKey(key)
-        } catch (e: unknown) {
-          setError(e instanceof Error ? e.message : 'Failed to generate key')
-        }
-      }} 
-      className={styles.generateForm}
-    >
-      <select name="app" className={styles.select}>
-        {allowedApps.includes('kerfcut') && <option value="kerfcut">KerfCut (Optimisation PRO)</option>}
-        {allowedApps.includes('kerfstock') && <option value="kerfstock">KerfStock (Inventory PRO)</option>}
-      </select>
-      
-      <SubmitButton
-        onClick={(e) => {
-          if (!confirm('Generate a new license key?')) {
-            e.preventDefault()
+    <>
+      <form
+        ref={formRef}
+        action={async (formData) => {
+          setError(null)
+          try {
+            const key = await generateKey(formData)
+            if (key) setNewKey(key)
+          } catch (e: unknown) {
+            setError(e instanceof Error ? e.message : 'Failed to generate key')
           }
         }}
+        className={styles.generateForm}
       >
-        + Generate Key
-      </SubmitButton>
+        <select name="app" className={styles.select}>
+          {allowedApps.includes('kerfcut') && <option value="kerfcut">KerfCut (Optimisation PRO)</option>}
+          {allowedApps.includes('kerfstock') && <option value="kerfstock">KerfStock (Inventory PRO)</option>}
+        </select>
 
-      {error && (
-        <span style={{ color: 'var(--status-error)', fontSize: '0.8rem', marginLeft: '0.5rem' }}>
-          {error}
-        </span>
-      )}
-    </form>
+        <button
+          type="button"
+          onClick={() => setShowConfirm(true)}
+          className="btn-primary"
+          style={{ fontSize: '0.75rem', padding: '0.5rem 1rem' }}
+        >
+          + Generate Key
+        </button>
+
+        {error && (
+          <span style={{ color: 'var(--status-error)', fontSize: '0.8rem', marginLeft: '0.5rem' }}>
+            {error}
+          </span>
+        )}
+      </form>
+
+      <IndustrialModal
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={() => formRef.current?.requestSubmit()}
+        title="Generate License Key"
+        message="This will create a new license slot for your workspace. You must be an admin to perform this action."
+        confirmText="Generate Now"
+      />
+    </>
   )
 }
-

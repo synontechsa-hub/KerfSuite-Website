@@ -1,18 +1,22 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Location } from '@/models/portal';
 import styles from '../page.module.css';
 
 export default function WorkshopMap({ initialLocations }: { initialLocations: Location[] }) {
+  const router = useRouter();
   const [locations, setLocations] = useState(initialLocations);
   const [name, setName] = useState('');
   const [parentId, setParentId] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const response = await fetch('/api/stock/locations', {
@@ -22,9 +26,12 @@ export default function WorkshopMap({ initialLocations }: { initialLocations: Lo
       });
 
       if (!response.ok) throw new Error('Failed to add location');
-      window.location.reload();
-    } catch (error) {
-      alert(error instanceof Error ? error.message : 'Unknown error');
+
+      router.refresh();
+      setName('');
+      setParentId('');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
@@ -55,6 +62,12 @@ export default function WorkshopMap({ initialLocations }: { initialLocations: Lo
       <h3 className="stencil-heading" style={{ marginBottom: '1.5rem', color: 'var(--accent-orange)' }}>
         WORKSHOP MAP
       </h3>
+
+      {error && (
+        <div style={{ padding: '0.5rem', marginBottom: '1rem', backgroundColor: 'rgba(231, 76, 60, 0.1)', borderLeft: '3px solid var(--status-error)', fontSize: '0.7rem', color: 'var(--status-error)' }}>
+          {error.toUpperCase()}
+        </div>
+      )}
 
       <form onSubmit={handleAdd} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-end' }}>
