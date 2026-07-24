@@ -1,36 +1,27 @@
-# Walkthrough - Pricing Screen SEO Optimization
+# Walkthrough - Industrial Footer Redesign
 
-I have successfully converted the static SVG pricing cards into dynamic HTML/CSS components. This change ensures that the pricing plans, features, and rates are now fully selectable and SEO-optimized while maintaining the high-fidelity "Industrial" design language.
+I have redesigned the footer to match the industrial aesthetic of the KerfSuite landing page. All static SVG wordmarks have been converted into dynamic, selectable HTML/CSS components for better SEO and user experience.
 
 ## Changes Implemented
 
-### 1. Dynamic Pricing Components
-- **Text Extraction:** Extracted all plan titles, prices, and feature lists from the original `card-1.svg` through `card-4.svg` and moved them into the React component structure in `page.tsx`.
-- **Selectable Text:** All text on the pricing cards, as well as the Pricing Heading, Category, and Body descriptions, can now be highlighted and copied.
+### 1. Dynamic Industrial Branding
+- **KerfSuite Wordmark:** Converted from `kerfsuite-wordmark.svg` to a styled text block. "KERF" is rendered in white and "SUITE" in safety orange, using the `Orbitron` font.
+- **Feed Rate Logo:** Replaced the publisher image with a technical boxed readout. The "FEED" text is orange and "RATE" is white, framed in a thin industrial border.
+- **Powered by Synontech:** Replaced the bottom bar logo with a matching technical wordmark, ensuring a consistent brand presence across the page.
 
-### 2. Universal Text Extraction
-- **Hero Buttons:** Converted "EXPLORE THE SUITE" and "GET STARTED" buttons from static SVGs to HTML/CSS. They now use the `Orbitron` font and maintain their industrial look (solid orange and outlined styles).
-- **Hero Logos Removed:** Removed the "SYNONTECH" and "FEED RATE" logos from the Hero section to maintain a cleaner, more focused layout.
-- **Pricing selection:** Removed `pointer-events: none` from the pricing text container, enabling interaction with the background text without blocking the pricing cards.
-- **Hover Polish:** Removed the "terminal-flicker" animation from all buttons, as it appeared jarring/glitchy. Replaced it with a cleaner brightness and elevation (`translateY`) effect for a smoother interactive feel.
+### 2. Typography & Casing
+- **Standardized Links:** Updated all footer navigation links to use consistent uppercase styling (e.g., "PRODUCTS", "PRICING", "PORTAL") to match the industrial machine-label theme.
+- **Improved Legibility:** Adjusted spacing and font weights to ensure high contrast and professional readability on the dark background.
 
-### 3. Industrial CSS Styling
-- **Precision Borders:** Replicated the orange industrial card borders using SVG data-URIs in CSS, ensuring the "notched" corners and specific line weights are preserved exactly as in the original mock-up.
-- **Typography:** Updated the styles to use the project's `--font-orbitron` variable, ensuring consistent rendering across different browsers.
-- **Interactive States:** Maintained the hover elevation effect (`translateY`) and added `terminal-flicker` animations to primary CTAs.
-
-### 3. Responsive Layout
-- **Workshop Tier Scaling:** Properly handled the unique 405px width of the Workshop Tier card.
-- **Mobile Adaptability:** The HTML-based structure now allows for smoother text wrapping and layout shifts on smaller screens compared to the previous static images.
+### 3. Responsive Polish
+- **Mobile Centering:** Updated the mobile layout (max-width: 768px) to center-align the new branding elements and links, providing a balanced look on smaller screens.
+- **Optimized Spacing:** Increased bottom padding on mobile to ensure links are easily tappable.
 
 ## Verification Results
 
-### Visual Comparison
-- The new components match the original SVGs with pixel-perfect accuracy for padding, font sizes (e.g., 42.3px for prices), and accent colors (#FF6600).
+### Visual & Interactive
+- **Selectable Text:** Verified that all brand names, links, and the copyright line can be highlighted and copied.
+- **Consistency:** The footer now uses the same typography (`--font-orbitron`) and accent colors (`--accent-orange`) as the Hero and Pricing sections.
 
-### SEO & Accessibility
-- **Indexable:** Verified that `KERFCUT SINGLE TOOL`, `$25`, and feature items are present in the page's HTML source.
-- **Selectable:** All text is now interactive.
-
-render_diffs(file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/(marketing)/page.tsx)
+render_diffs(file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/(marketing)/components/MarketingFooter.tsx)
 render_diffs(file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/(marketing)/marketing.module.css)

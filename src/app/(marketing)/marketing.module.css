@@ -1654,42 +1654,60 @@
 }
 
 .footerWordmark {
-  height: 32px;
-  width: auto;
+  font-family: var(--font-orbitron), sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #fff;
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.footerWordmark span {
+  color: var(--accent-orange);
 }
 
 .footerPublisher {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  margin-top: 0.5rem;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .footerPublisherLabel {
   font-family: var(--font-base);
-  font-size: 0.58rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--text-dim);
 }
 
 .footerPublisherLink {
-  opacity: 0.7;
+  opacity: 1;
   transition: opacity 0.2s;
   display: flex;
   align-items: center;
 }
 
 .footerPublisherLink:hover {
-  opacity: 1;
+  filter: brightness(1.1);
 }
 
 .footerFeedRateLogo {
-  height: 22px;
-  width: auto;
-  display: block;
+  font-family: var(--font-orbitron), sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  color: var(--accent-orange);
+  border: 1px solid var(--accent-orange);
+  padding: 3px 10px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.footerFeedRateLogo span {
+  color: #fff;
 }
 
 /* Bottom bar: copyright + powered by */
@@ -1705,7 +1723,7 @@
 }
 
 .footerPoweredBy {
-  opacity: 0.7;
+  opacity: 0.8;
   transition: opacity 0.2s;
   display: flex;
   align-items: center;
@@ -1716,10 +1734,17 @@
   opacity: 1;
 }
 
-.footerPoweredByImg {
-  height: 28px;
-  width: auto;
-  display: block;
+.footerPoweredByLogo {
+  font-family: var(--font-orbitron), sans-serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.footerPoweredByLogo span {
+  color: var(--accent-orange);
 }
 
 .footerBrand {
@@ -1825,6 +1850,16 @@
     flex-direction: column;
     text-align: center;
     gap: 1.5rem;
+    padding-bottom: 3rem;
+  }
+
+  .footerPublisher {
+    justify-content: center;
+  }
+
+  .footerBrandCol {
+    align-items: center;
+    text-align: center;
   }
 
   .hero {

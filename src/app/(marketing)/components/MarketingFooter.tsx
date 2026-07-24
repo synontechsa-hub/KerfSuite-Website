@@ -9,11 +9,9 @@ export default function MarketingFooter() {
       <div className={styles.footerInner}>
         {/* Brand column */}
         <div className={styles.footerBrandCol}>
-          <img
-            src="/svg/kerfsuite-wordmark.svg"
-            alt="KerfSuite"
-            className={styles.footerWordmark}
-          />
+          <div className={styles.footerWordmark}>
+            KERF<span>SUITE</span>
+          </div>
           <p className={styles.footerTagline}>Precision at every stage of production.</p>
 
           {/* Feed Rate publisher credit */}
@@ -25,28 +23,26 @@ export default function MarketingFooter() {
               rel="noopener noreferrer"
               className={styles.footerPublisherLink}
             >
-              <img
-                src="/svg/feedrate-logo.svg"
-                alt="Feed Rate"
-                className={styles.footerFeedRateLogo}
-              />
+              <div className={styles.footerFeedRateLogo}>
+                FEED <span>RATE</span>
+              </div>
             </a>
           </div>
         </div>
 
         <ul className={styles.footerLinks}>
-          <li><Link href="/#apps">products</Link></li>
-          <li><Link href="/#pricing">Pricing</Link></li>
-          <li><Link href="/downloads">Downloads</Link></li>
-          <li><Link href="/login">Portal</Link></li>
+          <li><Link href="/#apps">PRODUCTS</Link></li>
+          <li><Link href="/#pricing">PRICING</Link></li>
+          <li><Link href="/downloads">DOWNLOADS</Link></li>
+          <li><Link href="/login">PORTAL</Link></li>
           <li>
             <a href="https://synontech.github.io" target="_blank" rel="noopener noreferrer">
-              Synontech
+              SYNONTECH
             </a>
           </li>
           <li>
             <a href="https://github.com/Feed-Rate/KerfSuite" target="_blank" rel="noopener noreferrer">
-              GitHub
+              GITHUB
             </a>
           </li>
         </ul>
@@ -63,11 +59,9 @@ export default function MarketingFooter() {
           rel="noopener noreferrer"
           className={styles.footerPoweredBy}
         >
-          <img
-            src="/svg/powered-by-synontech.svg"
-            alt="Powered by Synontech"
-            className={styles.footerPoweredByImg}
-          />
+          <div className={styles.footerPoweredByLogo}>
+            SYNON<span>TECH</span>
+          </div>
         </a>
       </div>
     </footer>
