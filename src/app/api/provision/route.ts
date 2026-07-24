@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     if (inviteError) throw inviteError
 
     // 4. Log the provisioning
-    await adminClient
+    const { error: logError } = await adminClient
       .from('audit_logs')
       .insert({
         workspace_id: workspace.id,
@@ -66,6 +66,8 @@ export async function POST(request: Request) {
         action_type: 'workspace_provisioned',
         description: `Provisioned workspace for ${email}`
       })
+
+    if (logError) console.error('Failed to log workspace_provisioned action:', logError)
 
     return NextResponse.json({
       success: true,

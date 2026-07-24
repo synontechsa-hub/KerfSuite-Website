@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Location } from '@/models/portal';
+import { getApiErrorMessage } from '@/utils/fetch-helpers';
 import styles from '../page.module.css';
 
 export default function WorkshopMap({ initialLocations }: { initialLocations: Location[] }) {
@@ -21,7 +22,7 @@ export default function WorkshopMap({ initialLocations }: { initialLocations: Lo
         body: JSON.stringify({ name, parent_id: parentId || null })
       });
 
-      if (!response.ok) throw new Error('Failed to add location');
+      if (!response.ok) throw new Error(await getApiErrorMessage(response, 'Failed to add location'));
       window.location.reload();
     } catch (error) {
       alert(error instanceof Error ? error.message : 'Unknown error');

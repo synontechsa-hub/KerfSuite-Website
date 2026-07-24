@@ -38,13 +38,15 @@ export async function POST(request: Request) {
     if (error) throw error
 
     // Log administrative action
-    await auth.supabase.from('audit_logs').insert({
+    const { error: logError } = await auth.supabase.from('audit_logs').insert({
       workspace_id: auth.workspaceId,
       actor_id: auth.user.id,
       actor_email: auth.user.email,
       action_type: 'material_created',
       description: `Created material: ${body.name} (${body.thickness}${body.unit})`
     })
+
+    if (logError) console.error('Failed to log material_created action:', logError)
 
     return NextResponse.json(material)
   } catch (error: unknown) {

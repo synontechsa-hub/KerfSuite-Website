@@ -65,13 +65,15 @@ export async function validateLicenseRequest(request: Request, expectedApp?: str
       updates.is_flagged = true
 
       // Log critical security event
-      await adminClient.from('audit_logs').insert({
+      const { error: logError } = await adminClient.from('audit_logs').insert({
         workspace_id: slot.workspace_id,
         actor_email: 'SECURITY-ENGINE',
         action_type: 'potential_abuse_flagged',
         target_id: slot.id,
         description: `License ending in ...${cdkey.slice(-4)} flagged for excessive IP shifting (5+ unique origins).`
       })
+
+      if (logError) console.error('Failed to log potential_abuse_flagged security event:', logError)
     }
   }
 

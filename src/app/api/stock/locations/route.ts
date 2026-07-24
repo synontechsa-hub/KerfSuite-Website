@@ -54,13 +54,15 @@ export async function POST(request: Request) {
     if (error) throw error
 
     // Log administrative action
-    await auth.supabase.from('audit_logs').insert({
+    const { error: logError } = await auth.supabase.from('audit_logs').insert({
       workspace_id: auth.workspaceId,
       actor_id: auth.user.id,
       actor_email: auth.user.email,
       action_type: 'location_created',
       description: `Created location: ${body.name}`
     })
+
+    if (logError) console.error('Failed to log location_created action:', logError)
 
     return NextResponse.json(location)
   } catch (error: unknown) {

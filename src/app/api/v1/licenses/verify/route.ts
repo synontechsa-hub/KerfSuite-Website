@@ -40,7 +40,12 @@ export async function POST(request: Request) {
       p_cdkey: cdkey
     })
 
-    if (fetchError || !slots || slots.length === 0) {
+    if (fetchError) {
+      console.error('License verification lookup failed:', fetchError)
+      return NextResponse.json({ error: 'Failed to verify license' }, { status: 500 })
+    }
+
+    if (!slots || slots.length === 0) {
       return NextResponse.json({ error: 'License key not found' }, { status: 404 })
     }
 
@@ -48,13 +53,14 @@ export async function POST(request: Request) {
 
     // 2. Status handling
     if (slot.status === 'revoked') {
-      await adminClient.from('audit_logs').insert({
+      const { error: logError } = await adminClient.from('audit_logs').insert({
         workspace_id: slot.workspace_id,
         actor_email: 'SYSTEM',
         action_type: 'activation_failed',
         target_id: slot.id,
         description: `Failed activation attempt for revoked key from machine: ${machine_id}`
       })
+      if (logError) console.error('Failed to log activation_failed action:', logError)
       return NextResponse.json({ error: 'License has been revoked', status: 'revoked' }, { status: 403 })
     }
 
