@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from 'react'
 import { revokeKey } from '../portal/actions'
-import SubmitButton from './SubmitButton'
+import styles from '../portal/page.module.css'
+import IndustrialModal from './IndustrialModal'
 
 export default function RevokeButton({
   licenseId,
@@ -13,11 +14,9 @@ export default function RevokeButton({
 }) {
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
+  const [showConfirm, setShowConfirm] = useState(false)
 
   const handleAction = async () => {
-    if (!confirm('Revoke this key instantly? This will lock out the machine.')) {
-      return
-    }
     setError(null)
 
     startTransition(async () => {
@@ -30,20 +29,31 @@ export default function RevokeButton({
   }
 
   return (
-    <form action={handleAction}>
-      <SubmitButton 
-        variant="danger"
+    <>
+      <button
+        onClick={() => setShowConfirm(true)}
         disabled={isPending}
+        className={styles.btnDanger}
       >
         {isPending ? 'REVOKING...' : 'REVOKE'}
-      </SubmitButton>
+      </button>
       
       {error && (
         <div style={{ color: 'var(--status-error)', fontSize: '0.75rem', marginTop: '0.2rem' }}>
           {error}
         </div>
       )}
-    </form>
+
+      <IndustrialModal
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={handleAction}
+        title="Revoke License Key"
+        message="Are you sure you want to revoke this key instantly? This will lock out the machine and release the license slot for a new activation. This action cannot be undone."
+        confirmText="Revoke Instantly"
+        variant="danger"
+      />
+    </>
   )
 }
 

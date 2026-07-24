@@ -19,12 +19,14 @@ export default function AddAssetModal({ isOpen, onClose, materials, locations, o
   const [locationId, setLocationId] = useState('');
   const [assetType, setAssetType] = useState('full_sheet');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
     try {
       const response = await fetch('/api/stock/assets', {
@@ -40,7 +42,10 @@ export default function AddAssetModal({ isOpen, onClose, materials, locations, o
         })
       });
 
-      if (!response.ok) throw new Error('Failed to create asset');
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to create asset');
+      }
       const newAsset = await response.json();
       onAdd(newAsset);
 
@@ -50,8 +55,8 @@ export default function AddAssetModal({ isOpen, onClose, materials, locations, o
       setLocationId('');
 
       onClose();
-    } catch (error) {
-      alert(error instanceof Error ? error.message : 'Unknown error');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setIsSubmitting(false);
     }
@@ -66,6 +71,11 @@ export default function AddAssetModal({ isOpen, onClose, materials, locations, o
         </header>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {error && (
+            <div style={{ padding: '0.5rem', backgroundColor: 'rgba(231, 76, 60, 0.1)', borderLeft: '3px solid var(--status-error)', fontSize: '0.75rem', color: 'var(--status-error)' }}>
+              {error.toUpperCase()}
+            </div>
+          )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
             <label className="stencil-heading" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)' }}>MATERIAL</label>
             <select

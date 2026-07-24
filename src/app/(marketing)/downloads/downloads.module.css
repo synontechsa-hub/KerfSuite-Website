@@ -67,7 +67,7 @@
   color: var(--accent-orange);
   font-size: 12.5px;
   font-weight: bold;
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-base);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 55px; /* Precision gap to next baseline */
@@ -76,7 +76,7 @@
 .dlHeadingText {
   font-size: 75px;
   font-weight: 900;
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-base);
   color: #fff;
   line-height: 1.1; /* Tighter line height for blueprint aesthetic */
   text-transform: uppercase;
@@ -87,7 +87,7 @@
 }
 
 .dlBodyText {
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-base);
   font-size: 14.6px;
   color: #fff;
   opacity: 0.8;
@@ -138,7 +138,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-base);
   font-size: 11px; /* Slightly smaller to fit the 100px width comfortably */
   font-weight: bold;
   cursor: pointer;

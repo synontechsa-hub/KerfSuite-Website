@@ -6,6 +6,7 @@ import CopyButton from './CopyButton'
 import EditableLabel from './EditableLabel'
 import RevokeButton from './RevokeButton'
 import { License } from '@/models/portal'
+import FormattedDate from './FormattedDate'
 
 export default function LicenseRoster({
   initialLicenses,
@@ -103,7 +104,7 @@ export default function LicenseRoster({
                 )}
               </td>
               <td style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-                {license.redeemedAt ? new Date(license.redeemedAt).toLocaleDateString() : '—'}
+                {license.redeemedAt ? <FormattedDate date={license.redeemedAt} format="dateOnly" /> : '—'}
               </td>
               <td>
                 {license.status !== 'revoked' && userRole === 'admin' ? (

@@ -1399,7 +1399,7 @@
   position: absolute;
   left: 493px;
   top: 106px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-base);
   font-size: 58.3px;
   font-weight: 900;
   color: #fff;
@@ -1416,7 +1416,7 @@
   position: absolute;
   left: 495px;
   top: 182px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-base);
   font-size: 14.6px;
   font-weight: 400;
   color: #fff;
@@ -1442,7 +1442,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-base);
   font-size: 11.3px;
   font-weight: bold;
   border-radius: 3px;
@@ -1463,7 +1463,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-base);
   font-size: 11.3px;
   font-weight: 400;
   border-radius: 3px;
