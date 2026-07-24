@@ -6,7 +6,8 @@ import {
   Workspace, mapWorkspaceFromDb,
   Asset, mapAssetFromDb,
   Material, mapMaterialFromDb,
-  Location, mapLocationFromDb
+  Location, mapLocationFromDb,
+  DbUserProfile, DbLicense, DbAuditLog, DbWorkspace, DbMaterial, DbLocation, DbAsset
 } from '@/models/portal';
 
 /**
@@ -25,8 +26,8 @@ export class PortalService {
     if (error || !data) return null;
 
     return {
-      profile: mapUserProfileFromDb(data),
-      workspace: mapWorkspaceFromDb(data.workspaces)
+      profile: mapUserProfileFromDb(data as DbUserProfile),
+      workspace: mapWorkspaceFromDb((data as DbUserProfile).workspaces as DbWorkspace)
     };
   }
 
@@ -37,7 +38,7 @@ export class PortalService {
       .eq('workspace_id', workspaceId)
       .order('created_at', { ascending: false });
 
-    return (data || []).map(mapLicenseFromDb);
+    return (data as DbLicense[] || []).map(mapLicenseFromDb);
   }
 
   static async getAuditLogs(supabase: SupabaseClient, workspaceId: string, limit: number = 10): Promise<AuditLog[]> {
@@ -48,7 +49,7 @@ export class PortalService {
       .order('created_at', { ascending: false })
       .limit(limit);
 
-    return (data || []).map(mapAuditLogFromDb);
+    return (data as DbAuditLog[] || []).map(mapAuditLogFromDb);
   }
 
   static async getUsersCount(supabase: SupabaseClient, workspaceId: string): Promise<number> {
@@ -69,7 +70,7 @@ export class PortalService {
       return [];
     }
 
-    return (data || []).map(mapUserProfileFromDb);
+    return (data as DbUserProfile[] || []).map(mapUserProfileFromDb);
   }
 
   static async logAction(supabase: SupabaseClient, params: {
@@ -120,7 +121,7 @@ export class PortalService {
       .single();
 
     if (error) throw new Error(`DB_ERROR: ${error.message}`);
-    return mapLicenseFromDb(data);
+    return mapLicenseFromDb(data as DbLicense);
   }
 
   static async updateLicenseLabel(supabase: SupabaseClient, licenseId: string, workspaceId: string, label: string) {
@@ -137,7 +138,7 @@ export class PortalService {
     // Fetch info first for the audit log
     const { data: current } = await supabase
       .from('license_slots')
-      .select('cdkey')
+      .select('*')
       .eq('id', licenseId)
       .eq('workspace_id', workspaceId)
       .single();
@@ -150,7 +151,7 @@ export class PortalService {
 
     if (error) throw new Error(`DB_ERROR: ${error.message}`);
 
-    return current ? mapLicenseFromDb(current) : null;
+    return current ? mapLicenseFromDb(current as DbLicense) : null;
   }
 
   static async updateWorkspaceName(supabase: SupabaseClient, workspaceId: string, name: string) {
@@ -179,7 +180,7 @@ export class PortalService {
       .eq('workspace_id', workspaceId)
       .order('created_at', { ascending: false });
 
-    return (data || []).map(mapAssetFromDb);
+    return (data as DbAsset[] || []).map(mapAssetFromDb);
   }
 
   static async getMaterials(supabase: SupabaseClient, workspaceId: string): Promise<Material[]> {
@@ -190,7 +191,7 @@ export class PortalService {
       .eq('is_deleted', false)
       .order('name', { ascending: true });
 
-    return (data || []).map(mapMaterialFromDb);
+    return (data as DbMaterial[] || []).map(mapMaterialFromDb);
   }
 
   static async getLocations(supabase: SupabaseClient, workspaceId: string): Promise<Location[]> {
@@ -201,7 +202,32 @@ export class PortalService {
       .order('depth', { ascending: true })
       .order('name', { ascending: true });
 
-    return (data || []).map(mapLocationFromDb);
+    return (data as DbLocation[] || []).map(mapLocationFromDb);
+  }
+
+  static async createAsset(supabase: SupabaseClient, params: {
+    materialId: string,
+    width: number,
+    height: number,
+    assetType: string,
+    displayName?: string | null,
+    locationId?: string | null,
+    status?: string
+  }): Promise<Asset> {
+    const { data, error } = await supabase
+      .rpc('create_asset', {
+        p_material_id: params.materialId,
+        p_width: params.width,
+        p_height: params.height,
+        p_asset_type: params.assetType,
+        p_display_name: params.displayName,
+        p_location_id: params.locationId,
+        p_status: params.status
+      })
+      .single();
+
+    if (error) throw new Error(`DB_ERROR: ${error.message}`);
+    return mapAssetFromDb(data as DbAsset);
   }
 }
 

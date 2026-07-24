@@ -2,13 +2,14 @@
 
 import React, { useState } from 'react';
 import styles from '../page.module.css';
+import { Material, Location, Asset } from '@/models/portal';
 
 interface AddAssetModalProps {
   isOpen: boolean;
   onClose: () => void;
-  materials: any[];
-  locations: any[];
-  onAdd: (asset: any) => void;
+  materials: Material[];
+  locations: Location[];
+  onAdd: (asset: Asset) => void;
 }
 
 export default function AddAssetModal({ isOpen, onClose, materials, locations, onAdd }: AddAssetModalProps) {

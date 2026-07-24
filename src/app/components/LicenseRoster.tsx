@@ -7,6 +7,38 @@ import EditableLabel from './EditableLabel'
 import RevokeButton from './RevokeButton'
 import { License } from '@/models/portal'
 import FormattedDate from './FormattedDate'
+import { useState, useEffect } from 'react'
+
+function StatusIndicator({ lastSeenAt, status }: { lastSeenAt: string | null, status: string }) {
+  const [isLive, setIsLive] = useState(false)
+
+  useEffect(() => {
+    if (!lastSeenAt || status === 'revoked') return
+
+    const checkLive = () => {
+      const lastSeen = new Date(lastSeenAt).getTime()
+      const fiveMinutesAgo = Date.now() - (5 * 60 * 1000)
+      setIsLive(lastSeen > fiveMinutesAgo)
+    }
+
+    checkLive()
+    const timer = setInterval(checkLive, 30000) // Re-check every 30s
+    return () => clearInterval(timer)
+  }, [lastSeenAt, status])
+
+  return (
+    <div
+      title={lastSeenAt ? `Last seen: ${new Date(lastSeenAt).toLocaleString()}` : 'Never seen'}
+      style={{
+        width: '8px',
+        height: '8px',
+        borderRadius: '50%',
+        backgroundColor: status === 'revoked' ? 'var(--status-error)' : isLive ? 'var(--status-running)' : 'var(--status-idle)',
+        boxShadow: isLive ? '0 0 8px var(--status-running)' : 'none'
+      }}
+    />
+  )
+}
 
 export default function LicenseRoster({
   initialLicenses,
@@ -21,13 +53,6 @@ export default function LicenseRoster({
       return state.map(l => l.id === updated.id ? { ...l, ...updated } : l)
     }
   )
-
-  const isLive = (lastSeenAt: string | null) => {
-    if (!lastSeenAt) return false
-    const lastSeen = new Date(lastSeenAt).getTime()
-    const fiveMinutesAgo = Date.now() - (5 * 60 * 1000)
-    return lastSeen > fiveMinutesAgo
-  }
 
   return (
     <div className={styles.tableWrapper}>
@@ -49,16 +74,7 @@ export default function LicenseRoster({
             <tr key={license.id} style={license.isFlagged ? { backgroundColor: 'rgba(231, 76, 60, 0.05)' } : {}}>
               <td>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                   <div
-                    title={license.lastSeenAt ? `Last seen: ${new Date(license.lastSeenAt).toLocaleString()}` : 'Never seen'}
-                    style={{
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '50%',
-                      backgroundColor: license.status === 'revoked' ? 'var(--status-error)' : isLive(license.lastSeenAt) ? 'var(--status-running)' : 'var(--status-idle)',
-                      boxShadow: isLive(license.lastSeenAt) ? '0 0 8px var(--status-running)' : 'none'
-                    }}
-                  />
+                   <StatusIndicator lastSeenAt={license.lastSeenAt} status={license.status} />
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                     <span className={`${styles.badge} ${styles['status-' + license.status]}`} style={{ fontSize: '0.6rem' }}>
                       {license.status}

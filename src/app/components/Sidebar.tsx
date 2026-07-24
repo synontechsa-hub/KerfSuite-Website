@@ -49,7 +49,7 @@ export default function Sidebar({
            <p className="stencil-heading" style={{ fontSize: "0.6rem", opacity: 0.5 }}>Active Operator</p>
            <p style={{ fontSize: "0.75rem", color: "var(--accent-orange)", wordBreak: "break-all" }}>{userEmail}</p>
          </div>
-         <a href="/" style={{ fontSize: "0.65rem", color: "var(--text-secondary)", letterSpacing: "1px", textTransform: "uppercase", display: "block", marginBottom: "0.5rem" }}>← Back to Site</a>
+         <Link href="/" style={{ fontSize: "0.65rem", color: "var(--text-secondary)", letterSpacing: "1px", textTransform: "uppercase", display: "block", marginBottom: "0.5rem" }}>← Back to Site</Link>
          <form action={logout}>
            <button type="submit" className={styles.logoutBtn}>
              LOG OUT

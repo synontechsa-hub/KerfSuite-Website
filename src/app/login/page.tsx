@@ -3,6 +3,7 @@
 import { useActionState, use } from 'react'
 import { login } from './actions'
 import styles from './login.module.css'
+import Link from 'next/link'
 
 export default function LoginPage({
   searchParams,
@@ -65,12 +66,12 @@ export default function LoginPage({
             Workshop owners &amp; admins only.
           </p>
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: "1rem", alignItems: "center" }}>
-            <a href="/" style={{ fontSize: "0.65rem", color: "var(--text-secondary)", letterSpacing: "1px", textTransform: "uppercase", transition: "color 0.2s" }}>
+            <Link href="/" style={{ fontSize: "0.65rem", color: "var(--text-secondary)", letterSpacing: "1px", textTransform: "uppercase", transition: "color 0.2s" }}>
               ← Back
-            </a>
-            <a href="/signup" style={{ fontSize: "0.65rem", color: "var(--accent-orange)", letterSpacing: "1px", textTransform: "uppercase", transition: "color 0.2s", fontWeight: "bold" }}>
+            </Link>
+            <Link href="/signup" style={{ fontSize: "0.65rem", color: "var(--accent-orange)", letterSpacing: "1px", textTransform: "uppercase", transition: "color 0.2s", fontWeight: "bold" }}>
               Create Account →
-            </a>
+            </Link>
           </div>
         </div>
       </div>

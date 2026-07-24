@@ -101,7 +101,7 @@ export async function updateLicenseLabel(licenseId: string, label: string) {
   }
 }
 
-export async function inviteUser(prevState: any, formData: FormData) {
+export async function inviteUser(prevState: { error: string | null, success: string | null } | null, formData: FormData) {
   const supabase = await createClient()
   const emailResult = EmailSchema.safeParse(formData.get('email'))
   if (!emailResult.success) {
@@ -239,7 +239,7 @@ export async function logout() {
   redirect('/login')
 }
 
-export async function updatePassword(prevState: any, formData: FormData) {
+export async function updatePassword(prevState: { error: string | null, success: string | null } | null, formData: FormData) {
   const supabase = await createClient()
   const passwordResult = PasswordSchema.safeParse(formData.get('password'))
   if (!passwordResult.success) {
@@ -263,7 +263,7 @@ export async function updatePassword(prevState: any, formData: FormData) {
   return { error: null, success: 'Password updated successfully' }
 }
 
-export async function updateWorkspaceName(prevState: any, formData: FormData) {
+export async function updateWorkspaceName(prevState: { error: string | null, success: string | null } | null, formData: FormData) {
   const supabase = await createClient()
   const nameResult = WorkspaceNameSchema.safeParse(formData.get('name'))
   if (!nameResult.success) {

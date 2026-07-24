@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig.json');
+/* eslint-enable @typescript-eslint/no-require-imports */
 
 module.exports = {
   preset: 'ts-jest',

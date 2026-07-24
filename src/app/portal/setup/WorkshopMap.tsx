@@ -7,7 +7,6 @@ import styles from '../page.module.css';
 
 export default function WorkshopMap({ initialLocations }: { initialLocations: Location[] }) {
   const router = useRouter();
-  const [locations, setLocations] = useState(initialLocations);
   const [name, setName] = useState('');
   const [parentId, setParentId] = useState('');
   const [loading, setLoading] = useState(false);

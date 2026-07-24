@@ -7,10 +7,9 @@ import styles from '../page.module.css';
 
 export default function MaterialLibrary({ initialMaterials }: { initialMaterials: Material[] }) {
   const router = useRouter();
-  const [materials, setMaterials] = useState(initialMaterials);
   const [name, setName] = useState('');
   const [thickness, setThickness] = useState('');
-  const [unit, setUnit] = useState('mm');
+  const [unit] = useState('mm');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

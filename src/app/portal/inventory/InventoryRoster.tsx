@@ -7,8 +7,6 @@ import FormattedDate from '../../components/FormattedDate';
 
 export default function InventoryRoster({
   initialAssets,
-  materials,
-  locations,
   onPrint
 }: {
   initialAssets: Asset[],

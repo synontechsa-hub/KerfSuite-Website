@@ -1,70 +1,92 @@
 import { loadFeature, defineFeature } from 'jest-cucumber';
 import { createMockSupabase } from '../../helpers/mockSupabase';
+import { PortalService } from '@/services/portal_service';
+import { Asset } from '@/models/portal';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 const feature = loadFeature('tests/features/inventory.feature');
 
 defineFeature(feature, (test) => {
-  let mockAsset: any;
-  let mockResults: any[] = [];
-
   test('Adding a new MDF sheet', ({ given, when, then, and }) => {
+    let resultAsset: Asset;
+
     given('a workshop with no assets', () => {
-      // In a real integration test we'd check the DB, here we prepare the mock
+      // Setup state if needed
     });
 
-    when(/^the admin adds a "(.*)" of "(.*)" with dimensions (\d+)x(\d+)$/, (type, material, width, height) => {
-      // We simulate the RPC behavior for the test
-      mockAsset = {
-        system_name: type === 'full_sheet' ? 'SHEET-0001' : 'CUSTOM-0001',
-        asset_type: type,
-        status: 'available',
+    when(/^the admin adds a "(.*)" of "(.*)" with dimensions (\d+)x(\d+)$/, async (type, material, width, height) => {
+      const mockDb = createMockSupabase([{
+        data: {
+          id: 'new-id',
+          workspace_id: 'ws-1',
+          material_id: 'm-1',
+          system_name: 'SHEET-0001',
+          asset_type: type,
+          status: 'available',
+          width: parseInt(width),
+          height: parseInt(height)
+        }
+      }]);
+
+      resultAsset = await PortalService.createAsset(mockDb as unknown as SupabaseClient, {
+        materialId: 'm-1',
         width: parseInt(width),
-        height: parseInt(height)
-      };
+        height: parseInt(height),
+        assetType: type,
+        status: 'available'
+      });
     });
 
     then(/^the system should generate a name starting with "(.*)"$/, (prefix) => {
-      expect(mockAsset.system_name).toMatch(new RegExp(`^${prefix}`));
+      expect(resultAsset.systemName).toMatch(new RegExp(`^${prefix}`));
     });
 
     and(/^the asset status should be "(.*)"$/, (status) => {
-      expect(mockAsset.status).toBe(status);
+      expect(resultAsset.status).toBe(status);
     });
   });
 
   test('Classifying a small offcut', ({ given, when, then, and }) => {
+    let resultAsset: Asset;
+
     given('an MDF material exists', () => {
-      // Setup logic
+      // Mock setup
     });
 
-    when(/^the admin adds a "(.*)" piece of "(.*)" with dimensions (\d+)x(\d+)$/, (type, material, width, height) => {
+    when(/^the admin adds a "(.*)" piece of "(.*)" with dimensions (\d+)x(\d+)$/, async (type, material, width, height) => {
       const w = parseInt(width);
       const h = parseInt(height);
       const area = w * h;
+      const expectedType = area < 400 * 400 ? 'offcut' : 'remnant';
+      const expectedPrefix = area < 400 * 400 ? 'OFFCUT' : 'REMNANT';
 
-      // Industrial threshold logic: < 160000 mm2 is an offcut
-      let system_name = '';
-      if (area < 400 * 400) {
-        system_name = 'OFFCUT-0001';
-      } else {
-        system_name = 'REMNANT-0001';
-      }
+      const mockDb = createMockSupabase([{
+        data: {
+          id: 'new-id',
+          workspace_id: 'ws-1',
+          material_id: 'm-1',
+          system_name: `${expectedPrefix}-0001`,
+          asset_type: expectedType,
+          status: 'available',
+          width: w,
+          height: h
+        }
+      }]);
 
-      mockAsset = {
-        system_name,
-        area
-      };
+      resultAsset = await PortalService.createAsset(mockDb as unknown as SupabaseClient, {
+        materialId: 'm-1',
+        width: w,
+        height: h,
+        assetType: type
+      });
     });
 
-    then(/^the asset should be classified as an "(.*)"$/, (type) => {
-      if (type === 'offcut') {
-        expect(mockAsset.area).toBeLessThan(400 * 400);
-      }
+    then(/^the asset should be classified as an "(.*)"$/, (type: string) => {
+      expect(resultAsset.assetType).toBe(type as 'offcut' | 'remnant');
     });
 
     and(/^the system name should start with "(.*)"$/, (prefix) => {
-      expect(mockAsset.system_name).toMatch(new RegExp(`^${prefix}`));
+      expect(resultAsset.systemName).toMatch(new RegExp(`^${prefix}`));
     });
   });
 });

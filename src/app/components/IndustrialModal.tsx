@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import styles from '../portal/page.module.css';
 
 interface IndustrialModalProps {
   isOpen: boolean;

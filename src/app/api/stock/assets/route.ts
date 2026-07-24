@@ -1,31 +1,23 @@
 import { NextResponse } from 'next/server'
 import { getAuthedWorkspace } from '@/utils/auth-helpers'
+import { PortalService } from '@/services/portal_service'
 import { z } from 'zod'
 
 const CreateAssetSchema = z.object({
   material_id: z.string().uuid(),
-  display_name: z.string().optional(),
+  display_name: z.string().nullable().optional(),
   width: z.number().positive(),
   height: z.number().positive(),
   asset_type: z.enum(['full_sheet', 'remnant', 'offcut', 'custom']).default('full_sheet'),
   status: z.enum(['available', 'reserved', 'consumed', 'disposed', 'damaged', 'missing']).default('available'),
-  location_id: z.string().uuid().optional(),
-  job_reference: z.string().optional(),
-  system_name: z.string().optional()
+  location_id: z.string().uuid().nullable().optional()
 })
 
 export async function GET() {
   const auth = await getAuthedWorkspace()
   if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: assets, error } = await auth.supabase
-    .from('assets')
-    .select('*, materials(name, thickness), locations(name)')
-    .eq('workspace_id', auth.workspaceId)
-    .order('created_at', { ascending: false })
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-
+  const assets = await PortalService.getAssets(auth.supabase, auth.workspaceId);
   return NextResponse.json(assets)
 }
 
@@ -43,20 +35,15 @@ export async function POST(request: Request) {
 
     const body = validation.data
 
-    // ATOMIC: Use RPC to handle sequential naming and creation in one transaction
-    const { data: asset, error } = await auth.supabase
-      .rpc('create_asset', {
-        p_material_id: body.material_id,
-        p_width: body.width,
-        p_height: body.height,
-        p_asset_type: body.asset_type,
-        p_display_name: body.display_name,
-        p_location_id: body.location_id,
-        p_status: body.status
-      })
-      .single()
-
-    if (error) throw error
+    const asset = await PortalService.createAsset(auth.supabase, {
+      materialId: body.material_id,
+      width: body.width,
+      height: body.height,
+      assetType: body.asset_type,
+      displayName: body.display_name,
+      locationId: body.location_id,
+      status: body.status
+    });
 
     return NextResponse.json(asset)
   } catch (error: unknown) {

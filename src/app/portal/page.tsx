@@ -42,7 +42,7 @@ export default async function Home() {
           <div className={styles.headerActions}>
             {profile.role === 'admin' && workspace.allowedApps.length > 0 && <GenerateKeyButton allowedApps={workspace.allowedApps} />}
             {profile.role === 'admin' && workspace.allowedApps.length === 0 && (
-              <a href="/#pricing" className="btn-primary" style={{ padding: '0.6rem 1rem', fontSize: '0.8rem', textDecoration: 'none' }}>Buy License</a>
+              <Link href="/#pricing" className="btn-primary" style={{ padding: '0.6rem 1rem', fontSize: '0.8rem', textDecoration: 'none' }}>Buy License</Link>
             )}
           </div>
         </header>

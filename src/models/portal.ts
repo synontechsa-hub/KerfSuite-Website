@@ -89,11 +89,101 @@ export type Asset = {
 };
 
 /**
+ * DB Row Definitions (PostgreSQL snake_case)
+ * Internal usage only for mapping.
+ */
+export interface DbLicense {
+  id: string;
+  cdkey: string;
+  app: string;
+  label: string | null;
+  status: string;
+  redeemed_at: string | null;
+  bound_machine_id: string | null;
+  last_seen_at: string | null;
+  app_version: string | null;
+  os_info: string | null;
+  is_flagged: boolean;
+  abuse_score: number;
+  last_ip: string | null;
+}
+
+export interface DbUserProfile {
+  id: string;
+  email: string;
+  role: string;
+  workspace_id: string;
+  created_at: string;
+  confirmed?: boolean;
+  email_confirmed_at?: string | null;
+  workspaces?: DbWorkspace;
+}
+
+export interface DbAuditLog {
+  id: string;
+  workspace_id: string;
+  actor_id: string | null;
+  actor_email: string | null;
+  action_type: string;
+  target_id: string | null;
+  description: string;
+  created_at: string;
+}
+
+export interface DbWorkspace {
+  id: string;
+  name: string;
+  allowed_apps: string[];
+  created_at: string;
+}
+
+export interface DbMaterial {
+  id: string;
+  workspace_id: string;
+  name: string;
+  thickness: number | null;
+  unit: string;
+  created_at: string;
+}
+
+export interface DbLocation {
+  id: string;
+  workspace_id: string;
+  name: string;
+  parent_id: string | null;
+  depth: number;
+}
+
+export interface DbAsset {
+  id: string;
+  workspace_id: string;
+  material_id: string;
+  system_name: string;
+  display_name: string | null;
+  width: number;
+  height: number;
+  asset_type: 'full_sheet' | 'remnant' | 'offcut' | 'custom';
+  status: 'available' | 'reserved' | 'consumed' | 'disposed' | 'damaged' | 'missing';
+  location_id: string | null;
+  source_asset_id: string | null;
+  job_reference: string | null;
+  created_at: string;
+  updated_at: string;
+  materials?: {
+    name: string;
+    thickness: number | null;
+  };
+  locations?: {
+    name: string;
+  };
+}
+
+/**
  * MAPPERS: PostgreSQL (snake_case) <-> Runtime (camelCase)
  * Required by Rule 3.4
  */
 
-export function mapLicenseFromDb(db: any): License {
+export function mapLicenseFromDb(db: DbLicense): License {
   return {
     id: db.id,
     cdkey: db.cdkey,
@@ -111,7 +201,7 @@ export function mapLicenseFromDb(db: any): License {
   };
 }
 
-export function mapUserProfileFromDb(db: any): UserProfile {
+export function mapUserProfileFromDb(db: DbUserProfile): UserProfile {
   return {
     id: db.id,
     email: db.email,
@@ -122,7 +212,7 @@ export function mapUserProfileFromDb(db: any): UserProfile {
   };
 }
 
-export function mapAuditLogFromDb(db: any): AuditLog {
+export function mapAuditLogFromDb(db: DbAuditLog): AuditLog {
   return {
     id: db.id,
     workspaceId: db.workspace_id,
@@ -135,7 +225,7 @@ export function mapAuditLogFromDb(db: any): AuditLog {
   };
 }
 
-export function mapWorkspaceFromDb(db: any): Workspace {
+export function mapWorkspaceFromDb(db: DbWorkspace): Workspace {
   return {
     id: db.id,
     name: db.name,
@@ -144,7 +234,7 @@ export function mapWorkspaceFromDb(db: any): Workspace {
   };
 }
 
-export function mapMaterialFromDb(db: any): Material {
+export function mapMaterialFromDb(db: DbMaterial): Material {
   return {
     id: db.id,
     workspaceId: db.workspace_id,
@@ -155,7 +245,7 @@ export function mapMaterialFromDb(db: any): Material {
   };
 }
 
-export function mapLocationFromDb(db: any): Location {
+export function mapLocationFromDb(db: DbLocation): Location {
   return {
     id: db.id,
     workspaceId: db.workspace_id,
@@ -165,7 +255,7 @@ export function mapLocationFromDb(db: any): Location {
   };
 }
 
-export function mapAssetFromDb(db: any): Asset {
+export function mapAssetFromDb(db: DbAsset): Asset {
   return {
     id: db.id,
     workspaceId: db.workspace_id,
