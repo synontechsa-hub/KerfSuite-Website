@@ -149,7 +149,7 @@ ALTER TABLE public.asset_events ENABLE ROW LEVEL SECURITY;
 
 -- Helper to retrieve current user's workspace ID bypassing RLS
 CREATE OR REPLACE FUNCTION public.get_user_workspace()
-RETURNS uuid SECURITY DEFINER LANGUAGE plpgsql AS $$
+RETURNS uuid SECURITY DEFINER LANGUAGE plpgsql SET search_path = public AS $$
 BEGIN
   RETURN (SELECT workspace_id FROM public.users WHERE id = auth.uid());
 END;
@@ -157,7 +157,7 @@ $$;
 
 -- Helper to check if current user is admin bypassing RLS
 CREATE OR REPLACE FUNCTION public.is_user_admin()
-RETURNS boolean SECURITY DEFINER LANGUAGE plpgsql AS $$
+RETURNS boolean SECURITY DEFINER LANGUAGE plpgsql SET search_path = public AS $$
 BEGIN
   RETURN EXISTS (
     SELECT 1 FROM public.users 
