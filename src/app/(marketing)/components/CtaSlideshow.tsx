@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import styles from '../marketing.module.css';
 
 export default function CtaSlideshow() {
@@ -18,32 +19,39 @@ export default function CtaSlideshow() {
   return (
     <div className={styles.ctaSlideshowContainer}>
       {/* Primary Structural Frame from Mock-up */}
-      <img
-        src="/svg/marketing/cta/boxes.svg"
-        alt=""
-        className={styles.ctaFrameOverlay}
-        style={{ width: '1920px', height: '1000px', position: 'absolute', top: '-337px', left: 0 }}
-      />
+      <div className={styles.ctaFrameOverlay} style={{ width: '1920px', height: '1000px', position: 'absolute', top: '-337px', left: 0 }}>
+        <Image
+          src="/svg/marketing/cta/boxes.svg"
+          alt=""
+          fill
+        />
+      </div>
 
       <div className={styles.ctaSlideshowFrame}>
         <div className={styles.ctaSlidePanel}>
           <div className={styles.ctaMonitorOverlay} />
           <div className={styles.ctaScanline} />
-          <img
+          <Image
             src={`/images/marketing/cta/slide-${index + 1}.jpg`}
             alt={`Workshop View ${index + 1}`}
             className={styles.ctaSlideImage}
             key={`left-${index}`}
+            fill
+            sizes="945px"
+            style={{ objectFit: 'cover' }}
           />
         </div>
         <div className={styles.ctaSlidePanel}>
           <div className={styles.ctaMonitorOverlay} />
           <div className={styles.ctaScanline} />
-          <img
+          <Image
             src={`/images/marketing/cta/slide-${index + 2}.jpg`}
             alt={`Workshop View ${index + 2}`}
             className={styles.ctaSlideImage}
             key={`right-${index}`}
+            fill
+            sizes="945px"
+            style={{ objectFit: 'cover' }}
           />
         </div>
       </div>

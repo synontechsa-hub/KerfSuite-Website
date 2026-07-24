@@ -65,10 +65,11 @@ export async function validateLicenseRequest(request: Request, expectedApp?: str
 
   // Detect IP shifting
   if (slot.last_ip && slot.last_ip !== currentIp) {
-    updates.abuse_score = (slot.abuse_score || 0) + 1
+    const newScore = (slot.abuse_score || 0) + 1;
+    updates.abuse_score = newScore;
 
     // Auto-flag if score gets high
-    if (updates.abuse_score >= 5 && !slot.is_flagged) {
+    if (newScore >= 5 && !slot.is_flagged) {
       updates.is_flagged = true
 
       // Log critical security event

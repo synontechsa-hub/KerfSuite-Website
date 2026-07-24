@@ -1,16 +1,19 @@
-# Professionalism & Safety Sweep Task List
+# Industrial Optimization & UI Testing Task List
 
-- `[/]` Hydration & Rendering Fixes
-    - `[ ]` Fix `FormattedDate.tsx` setState in effect
-    - `[ ]` Fix `LicenseRoster.tsx` impure Date.now() in render
-- `[/]` Interaction Logic Cleanup
-    - `[ ]` Remove redundant form from `RevokeButton.tsx`
-- `[/]` Linting & Type Safety
-    - `[ ]` Define strict DB row interfaces in `portal.ts`
-    - `[ ]` Disable lint rule inline for `jest.config.js`
-    - `[ ]` Fix `any[]` types in `AddAssetModal.tsx`
-- `[ ]` BDD Strength Integration
-    - `[ ]` Refactor `inventory.steps.test.ts` to use real service mocks
+- `[/]` Next.js Image Optimization
+    - `[ ]` Update `page.tsx` marketing images
+    - `[ ]` Update `CtaSlideshow.tsx` and frames
+    - `[ ]` Update `downloads/page.tsx` assets
+- `[ ]` Middleware & Infrastructure Hardening
+    - `[ ]` Refactor `proxy.ts` error handling
+    - `[ ]` Clean up unused API variables
+- `[ ]` UI Component Testing
+    - `[ ]` Setup Testing Library for React
+    - `[ ]` Implement `IndustrialModal.test.tsx`
+    - `[ ]` Implement `FormattedDate.test.tsx`
+- `[ ]` Advanced Audit Filtering
+    - `[ ]` Refactor `/portal/audit` with filter state
 - `[ ]` Final Verification
     - `[ ]` Run `npm run lint`
-    - `[ ]` Run `npm test -- --coverage`
+    - `[ ]` Run `npm test`
+    - `[ ]` Run `npm run build`

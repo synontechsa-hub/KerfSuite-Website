@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { validateLicenseRequest } from '@/utils/license-auth'
-import crypto from 'crypto'
 
 /**
  * KERFCUT COMMIT API

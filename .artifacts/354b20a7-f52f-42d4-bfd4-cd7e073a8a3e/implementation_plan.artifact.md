@@ -1,59 +1,54 @@
-# Implementation Plan - Professionalism & Safety Sweep
+# Implementation Plan - Industrial Optimization & UI Testing
 
-This plan addresses technical debt, hydration bugs, and design inconsistencies identified during the safety audit. The goal is to bring the codebase up to professional production standards.
+This plan focuses on high-level performance optimization (Next.js Image), hardening the infrastructure, and introducing UI component testing to ensure a professional, stable production environment.
 
 ## User Review Required
 
-> [!WARNING]
-> **Breaking Test Changes:** I will be refactoring the BDD tests to use actual mocks. This ensures they verify the *implementation* (service calls) rather than just the *logic* (simulations).
+> [!TIP]
+> **Performance Optimization:** Switching to `next/image` will improve page load speeds and SEO by automatically serving optimized image formats and sizes. I will need to determine fixed dimensions or layout strategies for existing marketing images.
 
 ## Proposed Changes
 
-### 1. Hydration & Rendering Fixes
-Fix "impure" rendering and hydration mismatches to ensure a stable UI.
+### 1. Performance & Linting (Next.js Image Migration)
+Standardize image delivery and resolve remaining build warnings.
 
-#### [MODIFY] [FormattedDate.tsx](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/components/FormattedDate.tsx)
-- Add a `mounted` state to ensure the date only renders on the client. This prevents the "Hydration failed" error in Next.js.
+#### [MODIFY] Marketing Components
+- **[page.tsx](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/(marketing)/page.tsx):** Replace all `<img>` tags with `<Image />`.
+- **[CtaSlideshow.tsx](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/(marketing)/components/CtaSlideshow.tsx):** Migrate background frames and slide images to `<Image />`.
+- **[downloads/page.tsx](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/(marketing)/downloads/page.tsx):** Update technical documentation images.
 
-#### [MODIFY] [LicenseRoster.tsx](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/components/LicenseRoster.tsx)
-- Refactor the "isLive" logic to calculate the status inside an effect or a safe component, avoiding `Date.now()` during the render phase.
+#### [MODIFY] API & Cleanup
+- Resolve "unused variable" warnings in `src/app/api/stock/kerfcut/commit/route.ts` and other reported files.
 
----
+### 2. Infrastructure & Auth Hardening
+Remove remaining `any` types and improve error resilience.
 
-### 2. Interaction Logic Cleanup
-Simplify the event model for better performance and clarity.
+#### [MODIFY] [proxy.ts](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/proxy.ts)
+- Replace `any` in catch blocks with `unknown` and proper type checks.
+- Enhance rate-limiting logs to include masked IPs for debugging without PII exposure.
 
-#### [MODIFY] [RevokeButton.tsx](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/components/RevokeButton.tsx)
-- Remove the redundant `<form>` wrapper. Since we now use a custom modal for confirmation, a direct button click handler is cleaner and more reliable.
+### 3. UI Component Testing
+Establish a quality baseline for the frontend.
 
----
+#### [NEW] `tests/components/IndustrialModal.test.tsx`
+- Test suite to verify the custom modal lifecycle (open, close, confirm callbacks).
 
-### 3. Linting & Type Safety
-Eliminate "code rot" and improve developer experience by fixing the 30+ linting errors.
+#### [NEW] `tests/components/FormattedDate.test.tsx`
+- Test suite to verify hydration safety and locale rendering.
 
-#### [MODIFY] [portal.ts](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/models/portal.ts)
-- Define proper `DbRow` interfaces for each database table to replace `any` in the mapping functions.
+### 4. Advanced Audit Filtering
+Enhance the portal's diagnostic capabilities.
 
-#### [MODIFY] [jest.config.js](file:///D:/Coding/Synontech/Websites/Kerf_Suite/jest.config.js)
-- Fix the `require()` warnings by using standard imports or specifically disabling the lint rule for the config file.
-
-#### [MODIFY] [AddAssetModal.tsx](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/portal/inventory/AddAssetModal.tsx)
-- Replace `any[]` with `Material[]` and `Location[]` for strict prop-type checking.
-
----
-
-### 4. BDD Strength Integration
-Make the feature tests "meaningful" by verifying actual data access.
-
-#### [MODIFY] [inventory.steps.test.ts](file:///D:/Coding/Synontech/Websites/Kerf_Suite/tests/features/steps/inventory.steps.test.ts)
-- Use `createMockSupabase` to verify that `PortalService.createAsset` is called with the correct parameters during the "When the admin adds a sheet" step.
+#### [MODIFY] [portal/audit/page.tsx](file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/portal/audit/page.tsx)
+- Implement a filter UI to categorize logs by "System", "License", "Security", and "User" events.
 
 ## Verification Plan
 
 ### Automated Tests
-- `npm run lint`: Confirm **0 errors**.
-- `npm test -- --coverage`: Confirm **100% test pass rate** and verified coverage.
+- `npm run lint`: Target **0 warnings**.
+- `npm test`: Run unified logic and UI test suite.
+- `npm run build`: Final production build verification.
 
 ### Manual Verification
-- **Interaction Check:** Verify that clicking "Revoke" on a license still triggers the industrial modal and correctly revokes the key.
-- **Console Check:** Verify that navigating the dashboard no longer logs "Hydration mismatch" errors in the browser console.
+- **Lighthouse Check:** Confirm "Image" warnings are gone and LCP (Largest Contentful Paint) is improved.
+- **Audit Stress Test:** Verify filters work correctly with large log datasets.

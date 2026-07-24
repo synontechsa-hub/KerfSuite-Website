@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import MarketingNav from '../components/MarketingNav';
 import MarketingFooter from '../components/MarketingFooter';
 import styles from '../marketing.module.css';
@@ -49,7 +50,15 @@ export default function DownloadsPage() {
 
           <div className={dlStyles.dlInner}>
             <div className={dlStyles.dlVisualPanel}>
-              <img src="/images/marketing/downloads/photo.jpg" alt="Workshop Production" className={dlStyles.dlPhoto} />
+              <Image
+                src="/images/marketing/downloads/photo.jpg"
+                alt="Workshop Production"
+                className={dlStyles.dlPhoto}
+                fill
+                priority
+                sizes="1173px"
+                style={{ objectFit: 'cover' }}
+              />
             </div>
 
             <div className={dlStyles.dlTextContainer}>

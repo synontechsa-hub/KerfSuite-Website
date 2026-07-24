@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './marketing.module.css';
 import MarketingNav from './components/MarketingNav';
 import MarketingFooter from './components/MarketingFooter';
@@ -25,10 +26,14 @@ export default function LandingPage() {
           <div className={styles.heroBackground} />
 
           <div className={styles.heroPhotoWrap}>
-            <img
+            <Image
               src="/images/marketing/hero/hero-photo.jpg"
               alt="CNC laser cutting metal on the production floor"
               className={styles.heroPhoto}
+              fill
+              priority
+              sizes="61.1vw"
+              style={{ objectFit: 'cover' }}
             />
           </div>
 
@@ -76,10 +81,13 @@ export default function LandingPage() {
           <div className={styles.aboutBackground} />
 
           <div className={styles.aboutPhotoWrap}>
-            <img
+            <Image
               src="/images/marketing/about/about-photo.png"
               alt="CNC machinery in a workshop"
               className={styles.aboutPhoto}
+              fill
+              sizes="50vw"
+              style={{ objectFit: 'cover' }}
             />
           </div>
 
@@ -137,10 +145,13 @@ export default function LandingPage() {
 
           {/* Right-side photo panel */}
           <div className={styles.philosophyPhotoWrap}>
-            <img
+            <Image
               src="/images/marketing/philosophy/philosophy-photo.jpg"
               alt="Engineer operating CNC machinery"
               className={styles.philosophyPhoto}
+              fill
+              sizes="55vw"
+              style={{ objectFit: 'cover' }}
             />
           </div>
 
@@ -200,10 +211,13 @@ export default function LandingPage() {
 
           {/* Left-side photo panel */}
           <div className={styles.productsPhotoWrap}>
-            <img
+            <Image
               src="/images/marketing/products/products-photo.jpg"
               alt="Industrial controller with operator finger pressing button"
               className={styles.productsPhoto}
+              fill
+              sizes="50vw"
+              style={{ objectFit: 'cover' }}
             />
           </div>
 
