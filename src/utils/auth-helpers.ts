@@ -18,11 +18,13 @@ export async function getAuthedWorkspace(): Promise<AuthedWorkspace | null> {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const { data: userData } = await supabase
+  const { data: userData, error } = await supabase
     .from('users')
     .select('workspace_id, role')
     .eq('id', user.id)
     .single()
+
+  if (error) console.error('Error fetching workspace context for user:', error)
 
   if (!userData) return null
 

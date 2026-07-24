@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Material } from '@/models/portal';
+import { getApiErrorMessage } from '@/utils/fetch-helpers';
 import styles from '../page.module.css';
 
 export default function MaterialLibrary({ initialMaterials }: { initialMaterials: Material[] }) {
@@ -22,7 +23,7 @@ export default function MaterialLibrary({ initialMaterials }: { initialMaterials
         body: JSON.stringify({ name, thickness: parseFloat(thickness), unit })
       });
 
-      if (!response.ok) throw new Error('Failed to add material');
+      if (!response.ok) throw new Error(await getApiErrorMessage(response, 'Failed to add material'));
       const newMat = await response.json();
 
       // Update local state (optimistic or just simple append)

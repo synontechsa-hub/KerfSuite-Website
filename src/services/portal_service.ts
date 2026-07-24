@@ -31,31 +31,37 @@ export class PortalService {
   }
 
   static async getLicenses(supabase: SupabaseClient, workspaceId: string): Promise<License[]> {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('license_slots')
       .select('*')
       .eq('workspace_id', workspaceId)
       .order('created_at', { ascending: false });
 
+    if (error) console.error('Error in getLicenses:', error);
+
     return (data || []).map(mapLicenseFromDb);
   }
 
   static async getAuditLogs(supabase: SupabaseClient, workspaceId: string, limit: number = 10): Promise<AuditLog[]> {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('audit_logs')
       .select('*')
       .eq('workspace_id', workspaceId)
       .order('created_at', { ascending: false })
       .limit(limit);
 
+    if (error) console.error('Error in getAuditLogs:', error);
+
     return (data || []).map(mapAuditLogFromDb);
   }
 
   static async getUsersCount(supabase: SupabaseClient, workspaceId: string): Promise<number> {
-    const { count } = await supabase
+    const { count, error } = await supabase
       .from('users')
       .select('*', { count: 'exact', head: true })
       .eq('workspace_id', workspaceId);
+
+    if (error) console.error('Error in getUsersCount:', error);
 
     return count || 0;
   }
@@ -135,12 +141,14 @@ export class PortalService {
 
   static async revokeLicense(supabase: SupabaseClient, licenseId: string, workspaceId: string): Promise<License | null> {
     // Fetch info first for the audit log
-    const { data: current } = await supabase
+    const { data: current, error: fetchError } = await supabase
       .from('license_slots')
       .select('cdkey')
       .eq('id', licenseId)
       .eq('workspace_id', workspaceId)
       .single();
+
+    if (fetchError) console.error('Error fetching license for revoke audit:', fetchError);
 
     const { error } = await supabase
       .from('license_slots')
@@ -173,33 +181,39 @@ export class PortalService {
   }
 
   static async getAssets(supabase: SupabaseClient, workspaceId: string): Promise<Asset[]> {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('assets')
       .select('*, materials(name, thickness), locations(name)')
       .eq('workspace_id', workspaceId)
       .order('created_at', { ascending: false });
 
+    if (error) console.error('Error in getAssets:', error);
+
     return (data || []).map(mapAssetFromDb);
   }
 
   static async getMaterials(supabase: SupabaseClient, workspaceId: string): Promise<Material[]> {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('materials')
       .select('*')
       .eq('workspace_id', workspaceId)
       .eq('is_deleted', false)
       .order('name', { ascending: true });
 
+    if (error) console.error('Error in getMaterials:', error);
+
     return (data || []).map(mapMaterialFromDb);
   }
 
   static async getLocations(supabase: SupabaseClient, workspaceId: string): Promise<Location[]> {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('locations')
       .select('*')
       .eq('workspace_id', workspaceId)
       .order('depth', { ascending: true })
       .order('name', { ascending: true });
+
+    if (error) console.error('Error in getLocations:', error);
 
     return (data || []).map(mapLocationFromDb);
   }

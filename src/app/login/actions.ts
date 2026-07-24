@@ -46,13 +46,14 @@ export async function login(prevState: any, formData: FormData) {
         console.error('Error fetching user data after login:', userError.message)
         // Even if logging fails, we proceed with the login
       } else if (userData?.workspace_id) {
-        await adminClient.from('audit_logs').insert({
+        const { error: logError } = await adminClient.from('audit_logs').insert({
           workspace_id: userData.workspace_id,
           actor_id: data.user.id,
           actor_email: email,
           action_type: 'login_success',
           description: 'User logged into the portal'
         })
+        if (logError) console.error('Failed to log login_success action:', logError.message)
       }
     }
 

@@ -22,12 +22,17 @@ export async function GET(request: Request) {
   const adminClient = createAdminClient()
 
   // 1. Fetch material details
-  const { data: material } = await adminClient
+  const { data: material, error: materialError } = await adminClient
     .from('materials')
     .select('*')
     .eq('id', material_id)
     .eq('workspace_id', workspaceId)
     .single()
+
+  if (materialError && materialError.code !== 'PGRST116') {
+    console.error('Material lookup failed:', materialError)
+    return NextResponse.json({ error: materialError.message }, { status: 500 })
+  }
 
   if (!material) {
     return NextResponse.json({ error: 'Material not found' }, { status: 404 })

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { getApiErrorMessage } from '@/utils/fetch-helpers';
 import styles from '../page.module.css';
 
 interface AddAssetModalProps {
@@ -40,7 +41,7 @@ export default function AddAssetModal({ isOpen, onClose, materials, locations, o
         })
       });
 
-      if (!response.ok) throw new Error('Failed to create asset');
+      if (!response.ok) throw new Error(await getApiErrorMessage(response, 'Failed to create asset'));
       const newAsset = await response.json();
       onAdd(newAsset);
 

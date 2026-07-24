@@ -29,7 +29,13 @@ export async function GET(request: Request) {
       .eq('machine_id', machine_id)
       .maybeSingle()
 
-    if (error || !existing) {
+    // A genuine DB error must not be silently masked as a "free" tier response.
+    if (error) {
+      console.error('Trial status lookup failed:', error)
+      return NextResponse.json({ error: 'Failed to fetch trial status' }, { status: 500 })
+    }
+
+    if (!existing) {
       return NextResponse.json({
         success: true,
         tier: 'free',
