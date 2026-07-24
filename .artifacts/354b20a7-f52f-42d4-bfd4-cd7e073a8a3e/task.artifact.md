@@ -7,4 +7,5 @@
 - `[x]` Convert Hero "Explore" and "Get Started" buttons to HTML/CSS
 - `[x]` Extract text from Hero buttons ("Explore", "Get Started")
 - `[x]` Remove Hero section logos ("Powered by Synontech" and "Feed Rate")
+- `[x]` Remove "glitchy" hover flicker from all buttons
 - `[x]` Verify global text selectability across all sections

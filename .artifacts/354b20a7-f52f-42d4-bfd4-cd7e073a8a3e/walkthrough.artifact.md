@@ -9,9 +9,10 @@ I have successfully converted the static SVG pricing cards into dynamic HTML/CSS
 - **Selectable Text:** All text on the pricing cards, as well as the Pricing Heading, Category, and Body descriptions, can now be highlighted and copied.
 
 ### 2. Universal Text Extraction
-- **Hero Buttons:** Converted "EXPLORE THE SUITE" and "GET STARTED" buttons from static SVGs to HTML/CSS. They now use the `Orbitron` font and maintain their industrial look (solid orange and outlined styles) with hover flicker animations.
+- **Hero Buttons:** Converted "EXPLORE THE SUITE" and "GET STARTED" buttons from static SVGs to HTML/CSS. They now use the `Orbitron` font and maintain their industrial look (solid orange and outlined styles).
 - **Hero Logos Removed:** Removed the "SYNONTECH" and "FEED RATE" logos from the Hero section to maintain a cleaner, more focused layout.
 - **Pricing selection:** Removed `pointer-events: none` from the pricing text container, enabling interaction with the background text without blocking the pricing cards.
+- **Hover Polish:** Removed the "terminal-flicker" animation from all buttons, as it appeared jarring/glitchy. Replaced it with a cleaner brightness and elevation (`translateY`) effect for a smoother interactive feel.
 
 ### 3. Industrial CSS Styling
 - **Precision Borders:** Replicated the orange industrial card borders using SVG data-URIs in CSS, ensuring the "notched" corners and specific line weights are preserved exactly as in the original mock-up.

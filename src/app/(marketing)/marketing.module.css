@@ -241,8 +241,8 @@
 }
 
 .heroBtnExplore:hover {
-  filter: brightness(1.2);
-  animation: terminal-flicker 0.15s infinite;
+  filter: brightness(1.1);
+  transform: translateY(-1px);
 }
 
 .heroBtnStarted {
@@ -255,7 +255,7 @@
 .heroBtnStarted:hover {
   background-color: var(--accent-orange);
   color: #333;
-  animation: terminal-flicker 0.15s infinite;
+  transform: translateY(-1px);
 }
 
 .heroBtnStarted svg {
@@ -1450,7 +1450,8 @@
 }
 
 .ctaBtnGetLicense:hover {
-  animation: terminal-flicker 0.15s infinite;
+  filter: brightness(1.1);
+  transform: translateY(-1px);
 }
 
 .ctaBtnLogin {
@@ -1472,7 +1473,7 @@
 .ctaBtnLogin:hover {
   background-color: var(--accent-orange);
   color: #333;
-  animation: terminal-flicker 0.15s infinite;
+  transform: translateY(-1px);
 }
 
 .ctaBtnLogin svg {
@@ -1566,14 +1567,6 @@
 @keyframes scanline {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(100%); }
-}
-
-@keyframes terminal-flicker {
-  0% { opacity: 1; }
-  25% { opacity: 0.8; }
-  50% { opacity: 0.9; }
-  75% { opacity: 0.7; }
-  100% { opacity: 1; }
 }
 
 /* Indicators */
