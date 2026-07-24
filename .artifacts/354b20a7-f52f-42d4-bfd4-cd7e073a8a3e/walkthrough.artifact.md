@@ -1,27 +1,34 @@
-# Walkthrough - Industrial Footer Redesign
+# Walkthrough - Portal & UX Refinement
 
-I have redesigned the footer to match the industrial aesthetic of the KerfSuite landing page. All static SVG wordmarks have been converted into dynamic, selectable HTML/CSS components for better SEO and user experience.
+I have completed a comprehensive refinement of the KerfSuite Portal and marketing pages. This sweep focused on branding consistency, technical reliability (hydration fixes), and polishing the industrial user experience.
 
 ## Changes Implemented
 
-### 1. Dynamic Industrial Branding
-- **KerfSuite Wordmark:** Converted from `kerfsuite-wordmark.svg` to a styled text block. "KERF" is rendered in white and "SUITE" in safety orange, using the `Orbitron` font.
-- **Feed Rate Logo:** Replaced the publisher image with a technical boxed readout. The "FEED" text is orange and "RATE" is white, framed in a thin industrial border.
-- **Powered by Synontech:** Replaced the bottom bar logo with a matching technical wordmark, ensuring a consistent brand presence across the page.
+### 1. Unified Industrial Branding
+- **Marketing Navigation:** Converted the "KERFSUITE" wordmark to dynamic HTML. It now uses the project's signature white/orange split and is fully selectable/SEO-ready.
+- **Downloads Section:** Replaced static SVG logos for KerfCut and KerfStock with styled industrial wordmarks, matching the "boxed" theme used in the footer.
 
-### 2. Typography & Casing
-- **Standardized Links:** Updated all footer navigation links to use consistent uppercase styling (e.g., "PRODUCTS", "PRICING", "PORTAL") to match the industrial machine-label theme.
-- **Improved Legibility:** Adjusted spacing and font weights to ensure high contrast and professional readability on the dark background.
+### 2. Technical & Hydration Reliability
+- **Hydration-Safe Dates:** Created a new `FormattedDate` component that handles the SSR/CSR handshake gracefully. This eliminates Next.js "Hydration failed" warnings caused by locale-specific date formatting during initial renders.
+- **Font Variable Standardization:** Audited all CSS and standardized typography to use the centralized `--font-base` (Orbitron) and `--font-mono` variables, ensuring consistent rendering and easier maintenance.
 
-### 3. Responsive Polish
-- **Mobile Centering:** Updated the mobile layout (max-width: 768px) to center-align the new branding elements and links, providing a balanced look on smaller screens.
-- **Optimized Spacing:** Increased bottom padding on mobile to ensure links are easily tappable.
+### 3. Industrial UX & Interaction Polish
+- **Smooth Data Refresh:** Replaced jarring `window.location.reload()` calls with Next.js `router.refresh()`. The portal now updates lists (Inventory, Licenses, etc.) silently without a full page flash.
+- **Industrial Modals:** Replaced browser-native `confirm()` popups with a custom `IndustrialModal` component. These modals feature bold industrial borders, orange accents, and uppercase "blueprint" typography.
+- **Enhanced Feedback:** Replaced browser `alert()` calls with inline industrial-themed error and status banners, providing a more integrated "High-End CNC Controller" feel.
+- **Badge Consistency:** Standardized status badges across all roster views (Inventory, Users, Licenses) to use the centralized status colors from `globals.css`.
 
 ## Verification Results
 
-### Visual & Interactive
-- **Selectable Text:** Verified that all brand names, links, and the copyright line can be highlighted and copied.
-- **Consistency:** The footer now uses the same typography (`--font-orbitron`) and accent colors (`--accent-orange`) as the Hero and Pricing sections.
+### Technical Audit
+- **Hydration:** Verified that navigating between marketing and portal pages no longer triggers React hydration mismatches.
+- **Interaction:** Confirmed that generating a key or adding an asset refreshes the data grid smoothly via the Next.js router.
 
-render_diffs(file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/(marketing)/components/MarketingFooter.tsx)
-render_diffs(file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/(marketing)/marketing.module.css)
+### UX & Aesthetic
+- **Branding:** All "KERF" and "SUITE" references across the site now use consistent styling and selectable text.
+- **Feedback:** The new industrial modals provide a professional, themed experience for critical actions like user removal or key revocation.
+
+render_diffs(file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/(marketing)/components/MarketingNav.tsx)
+render_diffs(file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/components/FormattedDate.tsx)
+render_diffs(file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/components/IndustrialModal.tsx)
+render_diffs(file:///D:/Coding/Synontech/Websites/Kerf_Suite/src/app/portal/inventory/InventoryManager.tsx)

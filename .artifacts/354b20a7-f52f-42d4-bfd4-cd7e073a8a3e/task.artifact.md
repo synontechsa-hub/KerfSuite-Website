@@ -1,12 +1,12 @@
 # Portal & UX Refinement Task List
 
-- `[/]` Standardizing Industrial Branding (Nav & Downloads)
-    - `[ ]` Convert MarketingNav wordmark to HTML
-    - `[ ]` Convert Downloads page app logos to HTML/CSS components
-- `[ ]` Technical & Hydration Fixes
-    - `[ ]` Implement hydration-safe date formatting
-    - `[ ]` Standardize Orbitron font usage via CSS variables
-- `[ ]` Portal UX & Interaction Polish
-    - `[ ]` Replace `window.location.reload` with `router.refresh`
-    - `[ ]` Standardize status badge styles across all roster components
-    - `[ ]` Replace browser `alert()` with industrial-themed feedback
+- `[x]` Standardizing Industrial Branding (Nav & Downloads)
+    - `[x]` Convert MarketingNav wordmark to HTML
+    - `[x]` Convert Downloads page app logos to HTML/CSS components
+- `[x]` Technical & Hydration Fixes
+    - `[x]` Implement hydration-safe date formatting
+    - `[x]` Standardize Orbitron font usage via CSS variables
+- `[x]` Portal UX & Interaction Polish
+    - `[x]` Replace `window.location.reload` with `router.refresh`
+    - `[x]` Standardize status badge styles across all roster components
+    - `[x]` Replace browser `alert()` and `confirm()` with industrial-themed modal and inline feedback
