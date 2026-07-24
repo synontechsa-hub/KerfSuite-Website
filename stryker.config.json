@@ -1,0 +1,18 @@
+{
+  "$schema": "https://help.stryker-mutator.io/rs/stryker-config.schema.json",
+  "packageManager": "npm",
+  "reporters": ["html", "clear-text", "progress"],
+  "testRunner": "jest",
+  "testRunner_comment": "Using the jest runner which automatically handles TypeScript via ts-jest",
+  "coverageAnalysis": "perTest",
+  "mutate": [
+    "src/services/**/*.ts",
+    "src/app/api/v1/licenses/verify/route.ts",
+    "src/app/api/stock/kerfcut/commit/route.ts"
+  ],
+  "jest": {
+    "projectType": "custom",
+    "configFile": "jest.config.js",
+    "enableFindRelatedTests": true
+  }
+}
