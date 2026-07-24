@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient, createAdminClient } from '@/utils/supabase/server'
 import { z } from 'zod'
+import { firstZodIssue } from '@/utils/api'
 
 const LoginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -17,7 +18,7 @@ export async function login(prevState: any, formData: FormData) {
     const result = LoginSchema.safeParse(Object.fromEntries(formData))
 
     if (!result.success) {
-      return { error: result.error.issues[0].message }
+      return { error: firstZodIssue(result.error) }
     }
 
     const { email, password } = result.data

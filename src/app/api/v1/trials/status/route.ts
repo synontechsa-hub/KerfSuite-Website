@@ -1,26 +1,22 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { z } from 'zod'
+import { handleRouteError, validateBody } from '@/utils/api'
+import { computeTrialTier, daysLeft, elapsedDays, runsLeft } from '@/utils/trial'
 
 const StatusSchema = z.object({
   machine_id: z.string().min(1, 'Missing machine_id')
 })
 
-const TRIAL_MAX_DAYS = 14
-const TRIAL_MAX_RUNS = 20
-
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
-    const result = StatusSchema.safeParse({
+    const parsed = validateBody(StatusSchema, {
       machine_id: searchParams.get('machine_id')
     })
+    if ('error' in parsed) return parsed.error
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.error.issues[0].message }, { status: 400 })
-    }
-
-    const { machine_id } = result.data
+    const { machine_id } = parsed.data
     const adminClient = createAdminClient()
 
     const { data: existing, error } = await adminClient
@@ -38,29 +34,18 @@ export async function GET(request: Request) {
       })
     }
 
-    const runsCount = existing.runs_count
-    const startedAt = new Date(existing.started_at)
-    const now = new Date()
-    
-    // Calculate days elapsed (matching the RPC logic)
-    const elapsedDays = Math.floor((now.getTime() - startedAt.getTime()) / (1000 * 60 * 60 * 24))
-    
-    const runsLeft = Math.max(0, TRIAL_MAX_RUNS - runsCount)
-    const daysLeft = Math.max(0, TRIAL_MAX_DAYS - elapsedDays)
-
-    const tier = (runsLeft > 0 && daysLeft > 0) ? 'trial' : 'free'
+    const runsRemaining = runsLeft(existing.runs_count)
+    const daysRemaining = daysLeft(elapsedDays(new Date(existing.started_at)))
+    const tier = computeTrialTier(runsRemaining, daysRemaining)
 
     return NextResponse.json({
       success: true,
       tier,
-      runs_left: runsLeft,
-      days_left: daysLeft
+      runs_left: runsRemaining,
+      days_left: daysRemaining
     })
 
   } catch (err: unknown) {
-    console.error('Trial status endpoint error:', err)
-    const message = err instanceof Error ? err.message : 'Internal server error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return handleRouteError(err, { logPrefix: 'Trial status endpoint error:', fallback: 'Internal server error' })
   }
 }
-

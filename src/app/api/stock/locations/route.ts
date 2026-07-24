@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server'
-import { getAuthedWorkspace } from '@/utils/auth-helpers'
+import { handleRouteError, jsonError, requireAdmin, requireWorkspace } from '@/utils/api'
+import { PortalService } from '@/services/portal_service'
 
 export async function GET() {
-  const auth = await getAuthedWorkspace()
-  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const result = await requireWorkspace()
+  if ('error' in result) return result.error
+  const { auth } = result
 
   const { data: locations, error } = await auth.supabase
     .from('locations')
@@ -11,16 +13,18 @@ export async function GET() {
     .eq('workspace_id', auth.workspaceId)
     .order('name', { ascending: true })
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return jsonError(error.message, 500)
 
   return NextResponse.json(locations)
 }
 
 export async function POST(request: Request) {
-  const auth = await getAuthedWorkspace()
-  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const result = await requireWorkspace()
+  if ('error' in result) return result.error
+  const { auth } = result
 
-  if (auth.role !== 'admin') return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
+  const adminError = requireAdmin(auth)
+  if (adminError) return adminError
 
   try {
     const body = await request.json()
@@ -35,7 +39,7 @@ export async function POST(request: Request) {
         .single()
 
       if (!parent || parent.workspace_id !== auth.workspaceId) {
-        return NextResponse.json({ error: 'Invalid parent location' }, { status: 400 })
+        return jsonError('Invalid parent location', 400)
       }
       depth = (parent?.depth || 0) + 1
     }
@@ -53,18 +57,16 @@ export async function POST(request: Request) {
 
     if (error) throw error
 
-    // Log administrative action
-    await auth.supabase.from('audit_logs').insert({
-      workspace_id: auth.workspaceId,
-      actor_id: auth.user.id,
-      actor_email: auth.user.email,
-      action_type: 'location_created',
+    await PortalService.logAction(auth.supabase, {
+      workspaceId: auth.workspaceId,
+      actorId: auth.user.id,
+      actorEmail: auth.user.email ?? '',
+      actionType: 'location_created',
       description: `Created location: ${body.name}`
     })
 
     return NextResponse.json(location)
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Internal Server Error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return handleRouteError(error)
   }
 }

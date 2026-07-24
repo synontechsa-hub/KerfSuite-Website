@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { z } from 'zod'
 import crypto from 'crypto'
-import { getRateLimit } from '@/utils/rate-limit'
+import { enforceRateLimit, getClientIp, handleRouteError, jsonError, validateBody } from '@/utils/api'
 
 const VerifySchema = z.object({
   cdkey: z.string().min(1, 'Missing cdkey'),
@@ -15,23 +15,15 @@ const LEASE_DURATION_HOURS = 48
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const result = VerifySchema.safeParse(body)
+    const parsed = validateBody(VerifySchema, await request.json())
+    if ('error' in parsed) return parsed.error
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.error.issues[0].message }, { status: 400 })
-    }
+    const { cdkey, machine_id, app_version, os_info } = parsed.data
+    const currentIp = getClientIp(request)
 
-    const { cdkey, machine_id, app_version, os_info } = result.data
-    const currentIp = request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1'
-
-    const ratelimit = getRateLimit(10, '1 m') // 10 requests per minute
-    if (ratelimit) {
-      const { success } = await ratelimit.limit(`verify_${currentIp}`)
-      if (!success) {
-        return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
-      }
-    }
+    // 10 requests per minute
+    const limited = await enforceRateLimit(`verify_${currentIp}`, 10, '1 m')
+    if (limited) return limited
 
     const adminClient = createAdminClient()
 
@@ -41,7 +33,7 @@ export async function POST(request: Request) {
     })
 
     if (fetchError || !slots || slots.length === 0) {
-      return NextResponse.json({ error: 'License key not found' }, { status: 404 })
+      return jsonError('License key not found', 404)
     }
 
     const slot = slots[0]
@@ -55,7 +47,7 @@ export async function POST(request: Request) {
         target_id: slot.id,
         description: `Failed activation attempt for revoked key from machine: ${machine_id}`
       })
-      return NextResponse.json({ error: 'License has been revoked', status: 'revoked' }, { status: 403 })
+      return jsonError('License has been revoked', 403, { status: 'revoked' })
     }
 
     // 3. Bind the machine via RPC (handles activation and verification)
@@ -69,9 +61,9 @@ export async function POST(request: Request) {
 
     if (bindError) {
       if (bindError.message.includes('already bound')) {
-        return NextResponse.json({ error: 'License bound to another machine', status: 'active' }, { status: 403 })
+        return jsonError('License bound to another machine', 403, { status: 'active' })
       }
-      return NextResponse.json({ error: bindError.message }, { status: 500 })
+      return jsonError(bindError.message, 500)
     }
 
     // 4. GENERATE OFFLINE LEASE (The Lease Model)
@@ -86,7 +78,7 @@ export async function POST(request: Request) {
     const leaseSecret = process.env.LEASE_SECRET
     if (!leaseSecret) {
       console.error('CRITICAL: LEASE_SECRET environment variable is not set')
-      return NextResponse.json({ error: 'System configuration error' }, { status: 500 })
+      return jsonError('System configuration error', 500)
     }
 
     const base64Payload = Buffer.from(payload).toString('base64url')
@@ -112,9 +104,7 @@ export async function POST(request: Request) {
     })
 
   } catch (err: unknown) {
-    console.error('License verification error:', err)
-    const message = err instanceof Error ? err.message : 'Internal server error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return handleRouteError(err, { logPrefix: 'License verification error:', fallback: 'Internal server error' })
   }
 }
 
