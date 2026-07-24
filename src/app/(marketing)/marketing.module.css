@@ -1871,18 +1871,6 @@
     margin: 0 auto;
   }
 
-  .heroElements {
-    align-items: center;
-  }
-
-  .heroElementFeedRate {
-    align-self: center;
-  }
-
-  .heroPoweredBy {
-    justify-content: center;
-  }
-
   .footerLinks {
     gap: 1.2rem;
   }
