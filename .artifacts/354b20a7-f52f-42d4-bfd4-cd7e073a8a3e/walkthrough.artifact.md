@@ -6,13 +6,17 @@ I have successfully converted the static SVG pricing cards into dynamic HTML/CSS
 
 ### 1. Dynamic Pricing Components
 - **Text Extraction:** Extracted all plan titles, prices, and feature lists from the original `card-1.svg` through `card-4.svg` and moved them into the React component structure in `page.tsx`.
-- **Selectable Text:** All text on the pricing cards can now be highlighted, copied, and indexed by search engine crawlers.
+- **Selectable Text:** All text on the pricing cards, as well as the Pricing Heading, Category, and Body descriptions, can now be highlighted and copied.
 
-### 2. Industrial CSS Styling
+### 2. Universal Text Extraction
+- **Hero Buttons:** Converted "EXPLORE THE SUITE" and "GET STARTED" buttons from static SVGs to HTML/CSS. They now use the `Orbitron` font and maintain their industrial look (solid orange and outlined styles) with hover flicker animations.
+- **Technical Readouts:** Replaced `element-powered.svg` and `element-feedrate.svg` with selectable HTML text. "SYNONTECH" and "FEED RATE" are now searchable and selectable.
+- **Pricing selection:** Removed `pointer-events: none` from the pricing text container, enabling interaction with the background text without blocking the pricing cards.
+
+### 3. Industrial CSS Styling
 - **Precision Borders:** Replicated the orange industrial card borders using SVG data-URIs in CSS, ensuring the "notched" corners and specific line weights are preserved exactly as in the original mock-up.
 - **Typography:** Updated the styles to use the project's `--font-orbitron` variable, ensuring consistent rendering across different browsers.
-- **Interactive States:** Maintained the hover elevation effect (`translateY`) and the PayPal integration for the KerfCut Single tier.
-- **Card Tags:** Implemented the "MOST POPULAR", "UPCOMING", and "BEST VALUE" tags using CSS `clip-path` for a sharp, technical look.
+- **Interactive States:** Maintained the hover elevation effect (`translateY`) and added `terminal-flicker` animations to primary CTAs.
 
 ### 3. Responsive Layout
 - **Workshop Tier Scaling:** Properly handled the unique 405px width of the Workshop Tier card.

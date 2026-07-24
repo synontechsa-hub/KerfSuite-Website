@@ -53,16 +53,23 @@ export default function LandingPage() {
                 </p>
 
                 <div className={styles.heroCtas}>
-                  <Link href="#apps" className={styles.heroBtnExplore} aria-label="Explore the Suite" />
-                  <Link href="/signup" className={styles.heroBtnStarted} aria-label="Get Started" />
+                  <Link href="#apps" className={styles.heroBtnExplore}>
+                    EXPLORE THE SUITE
+                  </Link>
+                  <Link href="/signup" className={styles.heroBtnStarted}>
+                    GET STARTED
+                    <svg viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 5H13M13 5L9 1M13 5L9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </Link>
                 </div>
 
                 <div className={styles.heroElements}>
                   <div className={styles.heroPoweredBy}>
                     <span>Powered by</span>
-                    <img src="/svg/marketing/hero/element-powered.svg" alt="Synontech" className={styles.heroElementPowered} />
+                    <div className={styles.synontechWordmark}>SYNON<span>TECH</span></div>
                   </div>
-                  <img src="/svg/marketing/hero/element-feedrate.svg" alt="Feed Rate" className={styles.heroElementFeedRate} />
+                  <div className={styles.feedrateWordmark}>FEED <span>RATE</span></div>
                 </div>
               </ScrollReveal>
             </div>
