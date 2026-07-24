@@ -65,10 +65,7 @@ export default function LandingPage() {
                 </div>
 
                 <div className={styles.heroElements}>
-                  <div className={styles.heroPoweredBy}>
-                    <span>Powered by</span>
-                    <img src="/svg/marketing/hero/element-powered.svg" alt="Synontech" className={styles.heroElementPowered} />
-                  </div>
+                  <img src="/svg/marketing/hero/element-powered.svg" alt="Synontech" className={styles.heroElementPowered} />
                   <img src="/svg/marketing/hero/element-feedrate.svg" alt="Feed Rate" className={styles.heroElementFeedRate} />
                 </div>
               </ScrollReveal>

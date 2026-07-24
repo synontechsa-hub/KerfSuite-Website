@@ -274,26 +274,13 @@
 }
 
 .heroElementFeedRate {
-  height: 40px;
+  height: 45px;
   width: auto;
-  opacity: 0.9;
 }
 
 .heroElementPowered {
-  height: 25px;
+  height: 35px;
   width: auto;
-}
-
-.heroPoweredBy {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-base);
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--text-secondary);
-  opacity: 0.8;
 }
 
 .heroVisualPanel {

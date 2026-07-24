@@ -6,5 +6,5 @@
 - `[x]` Fix selection in the Pricing section by removing `pointer-events: none`
 - `[x]` Convert Hero "Explore" and "Get Started" buttons to HTML/CSS
 - `[x]` Extract text from Hero buttons ("Explore", "Get Started")
-- `[ ]` Extract text from industrial readouts (REVERTED: Keeping original SVGs for "Powered by Synontech" and "Feed Rate")
+- `[x]` Remove "Powered by" text and fix SVG logos (tightly crop viewBox for visibility)
 - `[x]` Verify global text selectability across all sections
