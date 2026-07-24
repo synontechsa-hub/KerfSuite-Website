@@ -1,12 +1,6 @@
-# Portal & UX Refinement Task List
+# Analytics Configuration & Security Fix
 
-- `[x]` Standardizing Industrial Branding (Nav & Downloads)
-    - `[x]` Convert MarketingNav wordmark to HTML
-    - `[x]` Convert Downloads page app logos to HTML/CSS components
-- `[x]` Technical & Hydration Fixes
-    - `[x]` Implement hydration-safe date formatting
-    - `[x]` Standardize Orbitron font usage via CSS variables
-- `[x]` Portal UX & Interaction Polish
-    - `[x]` Replace `window.location.reload` with `router.refresh`
-    - `[x]` Standardize status badge styles across all roster components
-    - `[x]` Replace browser `alert()` and `confirm()` with industrial-themed modal and inline feedback
+- `[x]` Updating CSP in `next.config.ts` for Google and Vercel Analytics
+- `[x]` Adding GA Measurement ID to `.env.example`
+- `[x]` Modernizing `layout.tsx` analytics implementation
+- `[x]` Verifying hits are not blocked in development mode
