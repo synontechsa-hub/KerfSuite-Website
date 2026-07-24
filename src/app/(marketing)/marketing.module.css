@@ -263,26 +263,6 @@
   height: auto;
 }
 
-.heroElements {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 520px;
-  gap: 1rem;
-}
-
-.heroElementFeedRate {
-  height: 58px;
-  width: auto;
-}
-
-.heroElementPowered {
-  height: 45px;
-  width: auto;
-}
-
 .heroVisualPanel {
   width: 80%;
   height: 100%;
