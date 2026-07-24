@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from 'react'
 import { removeUser } from '../actions'
-import SubmitButton from '../../components/SubmitButton'
 import styles from '../page.module.css'
+import IndustrialModal from '../../components/IndustrialModal'
 
 export default function RemoveUserButton({
   userId,
@@ -16,6 +16,7 @@ export default function RemoveUserButton({
 }) {
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
+  const [showConfirm, setShowConfirm] = useState(false)
   const isSelf = userId === currentUserId
 
   if (isSelf) {
@@ -27,9 +28,6 @@ export default function RemoveUserButton({
   }
 
   const handleAction = async () => {
-    if (!confirm('Are you sure you want to remove this user from the workspace?')) {
-      return
-    }
     setError(null)
 
     startTransition(async () => {
@@ -42,20 +40,31 @@ export default function RemoveUserButton({
   }
 
   return (
-    <form action={handleAction}>
-      <SubmitButton 
-        variant="danger"
+    <>
+      <button
+        onClick={() => setShowConfirm(true)}
         disabled={isPending}
+        className={styles.btnDanger}
       >
         {isPending ? 'REMOVING...' : 'Remove'}
-      </SubmitButton>
+      </button>
 
       {error && (
         <div style={{ color: 'var(--status-error)', fontSize: '0.75rem', marginTop: '0.2rem' }}>
           {error}
         </div>
       )}
-    </form>
+
+      <IndustrialModal
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={handleAction}
+        title="Remove User"
+        message="Are you sure you want to remove this user from the workspace? Their access to all applications and the portal will be terminated immediately."
+        confirmText="Remove User"
+        variant="danger"
+      />
+    </>
   )
 }
 
