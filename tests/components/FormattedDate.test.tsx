@@ -15,9 +15,9 @@ describe('FormattedDate', () => {
 
   it('renders a formatted date string', () => {
     render(<FormattedDate date={testDate} />);
-    // Format: month short, day numeric, hour:2-digit, minute:2-digit
-    // exact string depends on local timezone, so we'll check for components
-    expect(screen.getByText(/Jun 11/i)).toBeInTheDocument();
+    // Expect "Jun" and "11" to be present (order depends on locale)
+    expect(screen.getByText(/Jun/i)).toBeInTheDocument();
+    expect(screen.getByText(/11/)).toBeInTheDocument();
   });
 
   it('respects the dateOnly format', () => {

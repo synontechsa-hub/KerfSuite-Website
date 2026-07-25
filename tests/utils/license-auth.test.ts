@@ -1,4 +1,6 @@
 /**
+ * @jest-environment node
+ *
  * Unit tests for src/utils/license-auth.ts validateLicenseRequest.
  * The admin Supabase client is mocked so the header validation, license
  * state checks and IP-based abuse detection logic can be exercised.
