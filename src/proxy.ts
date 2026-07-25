@@ -85,7 +85,8 @@ export async function proxy(request: NextRequest) {
 
     return await updateSession(request)
   } catch (err: unknown) {
-    console.error('Unhandled proxy error:', err)
+    const error = err instanceof Error ? err.message : 'Unknown proxy error'
+    console.error(`Unhandled proxy error: ${error}`)
     // Fail safe to standard response if proxy logic itself crashes
     return NextResponse.next({ request })
   }

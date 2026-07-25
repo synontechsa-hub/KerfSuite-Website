@@ -3,7 +3,6 @@ import { createAdminClient } from '@/utils/supabase/server'
 import { z } from 'zod'
 import { getRateLimit } from '@/utils/rate-limit'
 
-const TRIAL_MAX_DAYS = 14
 const TRIAL_MAX_RUNS = 20
 
 const TrialRunSchema = z.object({

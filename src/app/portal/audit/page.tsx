@@ -1,10 +1,22 @@
 import styles from "../page.module.css";
-import { createClient, createAdminClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Sidebar from '../../components/Sidebar';
 
-export default async function AuditPage() {
+import styles from "../page.module.css";
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
+import Sidebar from '../../components/Sidebar';
+import FormattedDate from '../../components/FormattedDate';
+import Link from 'next/link';
+
+export default async function AuditPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ action?: string }>
+}) {
   const supabase = await createClient();
+  const params = await searchParams;
 
   // 1. Authenticate & get workspace
   const { data: { user } } = await supabase.auth.getUser();
@@ -18,13 +30,28 @@ export default async function AuditPage() {
 
   const workspaceId = userData?.workspace_id;
 
-  // 2. Fetch Audit Logs (Paginated or just top 100 for now)
-  const { data: auditLogs } = await supabase
+  // 2. Build Query
+  let query = supabase
     .from('audit_logs')
     .select('*')
     .eq('workspace_id', workspaceId)
     .order('created_at', { ascending: false })
     .limit(100);
+
+  if (params.action && params.action !== 'all') {
+    query = query.eq('action_type', params.action);
+  }
+
+  const { data: auditLogs } = await query;
+
+  const filters = [
+    { label: 'ALL ACTIONS', value: 'all' },
+    { label: 'LICENSE GEN', value: 'key_generated' },
+    { label: 'LICENSE REVOKE', value: 'key_revoked' },
+    { label: 'USER INVITE', value: 'user_invited' },
+    { label: 'LOGIN', value: 'login_success' },
+    { label: 'WORKSPACE', value: 'workspace_renamed' },
+  ];
 
   return (
     <div className={styles.container}>
@@ -38,7 +65,22 @@ export default async function AuditPage() {
         </header>
 
         <div className="panel" style={{ flex: 1 }}>
-          <h3 className="stencil-heading" style={{ marginBottom: "1.5rem" }}>Security & Action History</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: "1.5rem", flexWrap: 'wrap', gap: '1rem' }}>
+            <h3 className="stencil-heading">Security & Action History</h3>
+
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              {filters.map((f) => (
+                <Link
+                  key={f.value}
+                  href={`/portal/audit${f.value === 'all' ? '' : `?action=${f.value}`}`}
+                  className={`${styles.badge} ${params.action === f.value || (!params.action && f.value === 'all') ? styles['status-active'] : styles['status-waiting']}`}
+                  style={{ fontSize: '0.6rem', textDecoration: 'none' }}
+                >
+                  {f.label}
+                </Link>
+              ))}
+            </div>
+          </div>
 
           <div className={styles.tableWrapper}>
             <table className={styles.table}>
@@ -53,15 +95,9 @@ export default async function AuditPage() {
               </thead>
               <tbody>
                 {auditLogs?.map((log) => (
-                  <tr key={log.id}>
+                  <tr key={log.id} className={styles.tableRow}>
                     <td style={{ fontSize: "0.85rem", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
-                      {new Date(log.created_at).toLocaleString([], {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
+                      <FormattedDate date={log.created_at} format="long" />
                     </td>
                     <td style={{ fontSize: "0.85rem", fontWeight: "600" }}>{log.actor_email}</td>
                     <td>
@@ -77,8 +113,8 @@ export default async function AuditPage() {
                 ))}
                 {(!auditLogs || auditLogs.length === 0) && (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: "center", padding: "2rem", color: "var(--text-secondary)" }}>
-                      No activity recorded in this workspace.
+                    <td colSpan={5} style={{ textAlign: "center", padding: "4rem", color: "var(--text-secondary)" }}>
+                      NO MATCHING ACTIVITY RECORDED.
                     </td>
                   </tr>
                 )}

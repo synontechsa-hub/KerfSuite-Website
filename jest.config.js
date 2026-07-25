@@ -5,12 +5,13 @@ const { compilerOptions } = require('./tsconfig.json');
 
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   rootDir: '.',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '\\.module\\.css$': 'identity-obj-proxy',
   },
-  testMatch: ['**/tests/**/*.test.ts'],
+  testMatch: ['**/tests/**/*.test.{ts,tsx}'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   collectCoverage: true,
   coverageDirectory: 'coverage',
