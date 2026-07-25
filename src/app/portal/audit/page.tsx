@@ -2,11 +2,6 @@ import styles from "../page.module.css";
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Sidebar from '../../components/Sidebar';
-
-import styles from "../page.module.css";
-import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
-import Sidebar from '../../components/Sidebar';
 import FormattedDate from '../../components/FormattedDate';
 import Link from 'next/link';
 
