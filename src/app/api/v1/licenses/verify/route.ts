@@ -2,11 +2,11 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { z } from 'zod'
 import crypto from 'crypto'
-import { getRateLimit } from '@/utils/rate-limit'
 
 const VerifySchema = z.object({
   cdkey: z.string().min(1, 'Missing cdkey'),
   machine_id: z.string().min(1, 'Missing machine_id'),
+  app: z.enum(['kerfcut', 'kerfstock']).default('kerfcut'),
   app_version: z.string().optional(),
   os_info: z.string().optional()
 })
@@ -22,22 +22,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: result.error.issues[0].message }, { status: 400 })
     }
 
-    const { cdkey, machine_id, app_version, os_info } = result.data
+    const { cdkey, machine_id, app, app_version, os_info } = result.data
     const currentIp = request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1'
 
-    const ratelimit = getRateLimit(10, '1 m') // 10 requests per minute
-    if (ratelimit) {
-      const { success } = await ratelimit.limit(`verify_${currentIp}`)
-      if (!success) {
-        return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
-      }
-    }
 
     const adminClient = createAdminClient()
 
     // 1. Fetch the license status via RPC
     const { data: slots, error: fetchError } = await adminClient.rpc('verify_license', {
-      p_cdkey: cdkey
+      p_cdkey: cdkey,
+      p_app: app
     })
 
     if (fetchError || !slots || slots.length === 0) {
@@ -62,6 +56,7 @@ export async function POST(request: Request) {
     const { error: bindError } = await adminClient.rpc('bind_machine', {
       p_cdkey: cdkey,
       p_machine_id: machine_id,
+      p_app: app,
       p_app_version: app_version,
       p_os_info: os_info,
       p_ip: currentIp
@@ -80,6 +75,7 @@ export async function POST(request: Request) {
       sub: slot.id,
       mid: machine_id,
       wid: slot.workspace_id,
+      app,
       exp: expiresAt
     })
 
@@ -103,6 +99,7 @@ export async function POST(request: Request) {
       success: true,
       status: 'active',
       bound_machine_id: machine_id,
+      app,
       message: isActivation ? 'License activated' : 'License verified',
       lease: {
         token: leaseToken,

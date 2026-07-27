@@ -73,7 +73,7 @@ export default async function Home() {
           <div className="panel" style={{ flex: 1 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
               <h3 className="stencil-heading">Recent Activity Log</h3>
-              <Link href="/audit" style={{ fontSize: "0.7rem", color: "var(--accent-orange)", fontWeight: "600", textDecoration: "underline" }}>
+              <Link href="/portal/audit" style={{ fontSize: "0.7rem", color: "var(--accent-orange)", fontWeight: "600", textDecoration: "underline" }}>
                 VIEW FULL LOG →
               </Link>
             </div>
@@ -100,10 +100,10 @@ export default async function Home() {
               Download Software
             </h3>
             <div style={{ fontSize: "0.85rem", lineHeight: "1.4" }}>
-              <p><strong>Current Version:</strong> v0.1.0-alpha (2026-06-11)</p>
-              <p><strong>Status:</strong> Internal Testing</p>
+              <p><strong>Current Version:</strong> KerfCut v1.0.1 Beta (2026-07-27)</p>
+              <p><strong>Status:</strong> Public Beta</p>
               <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <a href="https://synontech.itch.io/kerfsuite" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ textAlign: "center", fontSize: "0.75rem" }}>
+                <a href="https://github.com/Feed-Rate/KerfSuite/releases/download/KerfCut-v1.0.1-Beta/KerfCut_Setup_v1.0.1_beta.exe" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ textAlign: "center", fontSize: "0.75rem" }} download>
                   Get KerfCut (Desktop)
                 </a>
                 <a href="https://synontech.itch.io/kerfsuite" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ textAlign: "center", fontSize: "0.75rem" }}>
@@ -112,7 +112,7 @@ export default async function Home() {
               </div>
               <div style={{ marginTop: "1rem", borderTop: "1px solid var(--bg-panel-border)", paddingTop: "0.5rem" }}>
                 <p className="stencil-heading" style={{ fontSize: "0.6rem" }}>Requirements</p>
-                <p style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>• Windows 10/11 (x64)<br/>• .NET 8.0 Runtime<br/>• Persistent Internet for Activation</p>
+                <p style={{ fontSize: "0.7rem", color: "var(--text-secondary)" }}>* Windows 10/11 (x64)<br/>* Internet for First Activation<br/>* 90-day Beta License Key</p>
               </div>
             </div>
           </div>

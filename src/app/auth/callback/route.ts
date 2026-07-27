@@ -21,7 +21,7 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   const token_hash = searchParams.get('token_hash')
   const type = searchParams.get('type')
-  const next = '/account?message=Welcome! Please set your security code (password) below.'
+  const next = '/portal/account?message=Welcome! Please set your security code (password) below.'
 
   if (token_hash && type) {
     const supabase = await createClient()

@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-const { pathsToModuleNameMapper } = require('ts-jest');
-const { compilerOptions } = require('./tsconfig.json');
-/* eslint-enable @typescript-eslint/no-require-imports */
-
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
@@ -20,7 +15,7 @@ module.exports = {
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
     '!src/**/_*.{ts,tsx}',
-    '!src/app/api/provision/route.ts', // Exclude setup helpers
+    '!src/app/api/provision/route.ts',
   ],
   coverageThreshold: {
     global: {

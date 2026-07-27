@@ -261,14 +261,14 @@ export default function LandingPage() {
                     <div className={styles.appPopup}>
                       <div className={styles.popupHeader}>
                         <span className={styles.popupName}>Kerf<span>Cut</span></span>
-                        <span className={styles.popupBadge}>v1.0.0-Beta // ACTIVE</span>
+                        <span className={styles.popupBadge}>v1.0.1 Beta // ACTIVE</span>
                       </div>
                       <p className={styles.popupDesc}>
                         KerfCut is built for CNC flatbeds, guillotines, and cut-off saws. Its optimized cut layouts minimize material waste so your operators can stop doing mental maths and get back to cutting.
                       </p>
                       <div className={styles.popupActions}>
                         <a
-                          href="https://github.com/Feed-Rate/KerfSuite/releases/tag/v1.0.0-beta"
+                          href="https://github.com/Feed-Rate/KerfSuite/releases/download/KerfCut-v1.0.1-Beta/KerfCut_Setup_v1.0.1_beta.exe"
                           target="_blank"
                           rel="noopener noreferrer"
                           className={styles.popupBtn}

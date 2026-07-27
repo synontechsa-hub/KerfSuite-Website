@@ -6,23 +6,25 @@ import MarketingFooter from '../components/MarketingFooter';
 import styles from '../marketing.module.css';
 import dlStyles from './downloads.module.css';
 
+const KERFCUT_RELEASE_URL = 'https://github.com/Feed-Rate/KerfSuite/releases/tag/KerfCut-v1.0.1-Beta';
+const KERFCUT_INSTALLER_URL = 'https://github.com/Feed-Rate/KerfSuite/releases/download/KerfCut-v1.0.1-Beta/KerfCut_Setup_v1.0.1_beta.exe';
 
 export const metadata: Metadata = {
   title: 'Downloads',
-  description: 'Download the latest KerfSuite applications. KerfCut v1.0.0-Beta available now on Windows x64.',
+  description: 'Download the latest KerfSuite applications. KerfCut v1.0.1 Beta available now on Windows x64.',
 };
 
 const releases = [
   {
     app: 'KerfCut',
-    version: 'v1.0.0-Beta',
-    date: '2026-06-11',
+    version: 'v1.0.1 Beta',
+    date: '2026-07-27',
     status: 'active' as const,
-    description: 'Algorithmic cut-list optimizer for sheet goods. MaxRects + Guillotine packing, PDF export, grain lock.',
-    requirements: ['Windows 10/11 (x64)', '.NET 8.0 Runtime', 'Internet connection for activation'],
+    description: 'Beta cut-list optimizer for sheet goods. MaxRects + Guillotine packing, PDF/CSV export, grain lock, and 90-day beta license activation.',
+    requirements: ['Windows 10/11 (x64)', 'Internet connection for first activation', '90-day beta license key'],
     links: [
-      { label: 'Download on itch.io', href: 'https://synontech.itch.io/kerfsuite', primary: true },
-      { label: 'GitHub Release', href: 'https://github.com/Feed-Rate/KerfSuite/releases/tag/v1.0.0-beta', primary: false },
+      { label: 'Installer', href: KERFCUT_INSTALLER_URL, primary: true },
+      { label: 'Release', href: KERFCUT_RELEASE_URL, primary: false },
     ],
   },
   {
@@ -42,9 +44,6 @@ export default function DownloadsPage() {
       <MarketingNav />
 
       <main>
-        {/* ====================================================
-            INDUSTRIAL DOWNLOADS SCREEN
-        ==================================================== */}
         <section className={dlStyles.dlScreen}>
           <div className={dlStyles.dlBackground} />
 
@@ -70,13 +69,14 @@ export default function DownloadsPage() {
             </div>
 
             <div className={dlStyles.dlAppGrid}>
-              {/* KerfCut Row */}
               <div className={dlStyles.dlAppRow}>
                 <a
-                  href="https://github.com/Feed-Rate/KerfSuite/releases/tag/v1.0.0-beta"
+                  href={KERFCUT_INSTALLER_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={dlStyles.dlBtnDownload}
+                  download
+                  aria-label="Download KerfCut v1.0.1 Beta installer"
                 >
                   DOWNLOAD
                 </a>
@@ -85,7 +85,6 @@ export default function DownloadsPage() {
                 </div>
               </div>
 
-              {/* KerfStock Row */}
               <div className={dlStyles.dlAppRow} style={{ opacity: 0.5 }}>
                 <button className={dlStyles.dlBtnDownload} style={{ cursor: 'not-allowed' }} disabled>
                   DOWNLOAD
@@ -100,7 +99,6 @@ export default function DownloadsPage() {
 
         <div className="cyber-divider" />
 
-        {/* Technical Sections */}
         <div className={dlStyles.technicalSections}>
           <section className={dlStyles.releasesSection}>
             <div className="section-inner">
@@ -131,6 +129,22 @@ export default function DownloadsPage() {
                         ))}
                       </ul>
                     </div>
+                    {release.links.length > 0 && (
+                      <div className={dlStyles.downloadActions}>
+                        {release.links.map((link) => (
+                          <a
+                            key={link.label}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={dlStyles.dlBtnDownload}
+                            download={link.primary || undefined}
+                          >
+                            {link.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -139,7 +153,6 @@ export default function DownloadsPage() {
 
           <div className="cyber-divider" />
 
-          {/* Activation Guide */}
           <section style={{ padding: '4rem 0' }}>
             <div className="section-inner">
               <div style={{ maxWidth: '640px' }}>
@@ -149,23 +162,21 @@ export default function DownloadsPage() {
                 </h2>
                 <ol className={dlStyles.guideList}>
                   <li>
-                    <strong>Purchase a license</strong> — visit the{' '}
-                    <Link href="/#pricing" style={{ color: 'var(--accent-orange)' }}>pricing section</Link>{' '}
-                    and select a tier.
-                  </li>
-                  <li>
-                    <strong>Sign in to the Portal</strong> — go to{' '}
+                    <strong>Sign in to the Portal</strong> - go to{' '}
                     <Link href="/login" style={{ color: 'var(--accent-orange)' }}>KerfPortal</Link>{' '}
                     to manage your workspace.
                   </li>
                   <li>
-                    <strong>Generate a CDKey</strong> — in the portal dashboard, click &ldquo;+ Generate Key&rdquo; for your machine.
+                    <strong>Create or request a beta key</strong> - generate a 90-day KerfCut beta license key for the tester machine.
                   </li>
                   <li>
-                    <strong>Download KerfCut</strong> — use the links above to get the installer.
+                    <strong>Download KerfCut</strong> - use the Download button above to get the Windows installer.
                   </li>
                   <li>
-                    <strong>Activate</strong> — launch KerfCut and enter your CDKey when prompted. Internet connection required for first activation.
+                    <strong>Launch KerfCut</strong> - copy the Machine ID shown on the activation screen if the portal requests it.
+                  </li>
+                  <li>
+                    <strong>Activate</strong> - paste the beta license key into KerfCut and click Activate. Internet connection is required for first activation.
                   </li>
                 </ol>
               </div>

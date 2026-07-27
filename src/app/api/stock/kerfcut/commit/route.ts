@@ -1,7 +1,21 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { validateLicenseRequest } from '@/utils/license-auth'
+import { z } from 'zod'
 
+const GeneratedRemnantSchema = z.object({
+  material_id: z.string().uuid(),
+  width: z.number().positive(),
+  height: z.number().positive(),
+  location_id: z.string().uuid().nullable().optional(),
+  source_asset_id: z.string().uuid()
+}).strict()
+
+const CommitSchema = z.object({
+  job_reference: z.string().trim().min(1).max(200),
+  consumed_assets: z.array(z.string().uuid()).min(1),
+  generated_remnants: z.array(GeneratedRemnantSchema).default([])
+}).strict()
 /**
  * KERFCUT COMMIT API
  * Standard: AGENTS.md v1.2
@@ -18,12 +32,11 @@ export async function POST(request: Request) {
   const adminClient = createAdminClient()
 
   try {
-    const body = await request.json()
-    const { job_reference, consumed_assets, generated_remnants } = body
-
-    if (!consumed_assets || !Array.isArray(consumed_assets) || consumed_assets.length === 0) {
-      return NextResponse.json({ error: 'Invalid consumed_assets' }, { status: 400 })
+    const validation = CommitSchema.safeParse(await request.json())
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error.issues[0].message }, { status: 400 })
     }
+    const { job_reference, consumed_assets, generated_remnants } = validation.data
 
     // 2. ATOMIC COMMIT VIA RPC
     // Moves all logic (consumption, remnants, events) into a single DB transaction.

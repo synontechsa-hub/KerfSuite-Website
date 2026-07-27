@@ -88,6 +88,22 @@ describe('PortalService.getUsersCount', () => {
   });
 });
 
+describe('PortalService.getAdminsCount', () => {
+  it('returns the administrator count', async () => {
+    expect(await PortalService.getAdminsCount(client({ count: 2 }), 'ws-1')).toBe(2);
+  });
+
+  it('returns 0 when the administrator count is null', async () => {
+    expect(await PortalService.getAdminsCount(client({ count: null }), 'ws-1')).toBe(0);
+  });
+
+  it('throws a DB_ERROR when the count query fails', async () => {
+    await expect(
+      PortalService.getAdminsCount(client({ error: { message: 'denied' } }), 'ws-1'),
+    ).rejects.toThrow('DB_ERROR: denied');
+  });
+});
+
 describe('PortalService.getWorkspaceUsers', () => {
   it('maps rpc results', async () => {
     const supabase = client({
@@ -223,13 +239,13 @@ describe('PortalService.updateWorkspaceName', () => {
 describe('PortalService.changeUserRole', () => {
   it('resolves on success', async () => {
     await expect(
-      PortalService.changeUserRole(client({ error: null }), 'u-1', 'ws-1', 'admin'),
+      PortalService.changeUserRole(client({ error: null }), 'u-1', 'admin'),
     ).resolves.toBeUndefined();
   });
 
   it('throws a DB_ERROR on failure', async () => {
     await expect(
-      PortalService.changeUserRole(client({ error: { message: 'denied' } }), 'u-1', 'ws-1', 'admin'),
+      PortalService.changeUserRole(client({ error: { message: 'denied' } }), 'u-1', 'admin'),
     ).rejects.toThrow('DB_ERROR: denied');
   });
 });

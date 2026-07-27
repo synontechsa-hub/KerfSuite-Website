@@ -6,7 +6,7 @@ const StatusSchema = z.object({
   machine_id: z.string().min(1, 'Missing machine_id')
 })
 
-const TRIAL_MAX_DAYS = 14
+const TRIAL_MAX_DAYS = 90
 const TRIAL_MAX_RUNS = 20
 
 export async function GET(request: Request) {

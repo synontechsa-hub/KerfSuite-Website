@@ -12,6 +12,7 @@ const EmailSchema = z.string().email('Invalid email address')
 const PasswordSchema = z.string().min(8, 'Password must be at least 8 characters')
 const WorkspaceNameSchema = z.string().min(1, 'Workspace name cannot be empty').trim()
 const AppSchema = z.enum(['kerfcut', 'kerfstock']).default('kerfcut')
+const LicenseLabelSchema = z.string().trim().max(100, 'Machine label cannot exceed 100 characters')
 
 /**
  * Authorization & MFA Guard
@@ -69,31 +70,31 @@ export async function generateKey(formData: FormData) {
     description: `Generated ${app} key ending in ...${cdkey.slice(-4)}`
   })
 
-  revalidatePath('/')
+  revalidatePath('/portal')
   return cdkey
 }
 
 export async function updateLicenseLabel(licenseId: string, label: string) {
   try {
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return { error: 'Unauthorized', success: false }
+    const labelResult = LicenseLabelSchema.safeParse(label)
+    if (!labelResult.success) {
+      return { error: labelResult.error.issues[0].message, success: false }
+    }
 
-    const result = await PortalService.getUserProfile(supabase, user.id);
-    if (!result) return { error: 'User data not found', success: false }
-
-    await PortalService.updateLicenseLabel(supabase, licenseId, result.profile.workspaceId, label);
+    const { user, profile } = await ensureAdminWithMFA(supabase)
+    await PortalService.updateLicenseLabel(supabase, licenseId, profile.workspaceId, labelResult.data);
 
     await PortalService.logAction(supabase, {
-      workspaceId: result.profile.workspaceId,
+      workspaceId: profile.workspaceId,
       actorId: user.id,
-      actorEmail: result.profile.email,
+      actorEmail: profile.email,
       actionType: 'label_updated',
       targetId: licenseId,
-      description: `Updated machine label to: ${label}`
+      description: `Updated machine label to: ${labelResult.data}`
     })
 
-    revalidatePath('/')
+    revalidatePath('/portal')
     return { success: true }
   } catch (error: unknown) {
     console.error('Error updating label:', error)
@@ -139,7 +140,6 @@ export async function inviteUser(prevState: { error: string | null, success: str
   const adminClient = createAdminClient()
   const redirectUrl = new URL('/auth/callback', process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').toString()
   const { data: inviteData, error } = await adminClient.auth.admin.inviteUserByEmail(email, {
-    data: { workspace_id: profile.workspaceId },
     redirectTo: redirectUrl
   })
 
@@ -148,6 +148,16 @@ export async function inviteUser(prevState: { error: string | null, success: str
     return { error: error.message, success: null }
   }
 
+  const { error: assignmentError } = await adminClient.rpc('assign_invited_user', {
+    p_user_id: inviteData.user.id,
+    p_workspace_id: profile.workspaceId,
+    p_role: 'member'
+  })
+
+  if (assignmentError) {
+    console.error('Error assigning invited user:', assignmentError)
+    return { error: 'Invitation created, but workspace assignment failed', success: null }
+  }
   await PortalService.logAction(supabase, {
     workspaceId: profile.workspaceId,
     actorId: user.id,
@@ -157,7 +167,7 @@ export async function inviteUser(prevState: { error: string | null, success: str
     description: `Invited user: ${email}`
   })
 
-  revalidatePath('/users')
+  revalidatePath('/portal/users')
   return { error: null, success: `Invitation sent to ${email}` }
 }
 
@@ -178,7 +188,7 @@ export async function removeUser(userId: string) {
     if (!targetUser) return { error: 'User not found in your workspace', success: false }
 
     if (targetUser.role === 'admin') {
-      const adminCount = await PortalService.getUsersCount(supabase, adminProfile.workspaceId);
+      const adminCount = await PortalService.getAdminsCount(supabase, adminProfile.workspaceId);
       if (adminCount <= 1) {
         return { error: 'Cannot remove the last admin of the workspace', success: false }
       }
@@ -201,7 +211,7 @@ export async function removeUser(userId: string) {
       description: `Removed user: ${targetUser?.email || userId}`
     })
 
-    revalidatePath('/users')
+    revalidatePath('/portal/users')
     return { success: true }
   } catch (error: unknown) {
     console.error('Error removing user:', error)
@@ -225,7 +235,7 @@ export async function revokeKey(keyId: string) {
       description: `Revoked key: ${keyInfo?.cdkey ? '...' + keyInfo.cdkey.slice(-4) : 'REDACTED'}`
     })
 
-    revalidatePath('/')
+    revalidatePath('/portal')
     return { success: true }
   } catch (error: unknown) {
     console.error('Error revoking key:', error)
@@ -259,7 +269,7 @@ export async function updatePassword(prevState: { error: string | null, success:
     return { error: error.message, success: null }
   }
 
-  revalidatePath('/account')
+  revalidatePath('/portal/account')
   return { error: null, success: 'Password updated successfully' }
 }
 
@@ -283,7 +293,7 @@ export async function updateWorkspaceName(prevState: { error: string | null, suc
     description: `Renamed workspace to: ${name.trim()}`
   })
 
-  revalidatePath('/', 'layout')
+  revalidatePath('/portal', 'layout')
   return { error: null, success: 'Workspace name updated successfully' }
 }
 
@@ -303,13 +313,13 @@ export async function changeUserRole(userId: string, newRole: 'admin' | 'member'
   if (!targetUser) return { error: 'User not found in your workspace' }
 
   if (newRole === 'member' && targetUser.role === 'admin') {
-    const adminCount = await PortalService.getUsersCount(supabase, adminProfile.workspaceId);
+    const adminCount = await PortalService.getAdminsCount(supabase, adminProfile.workspaceId);
     if (adminCount <= 1) {
       return { error: 'Cannot demote the last admin of the workspace' }
     }
   }
 
-  await PortalService.changeUserRole(supabase, userId, adminProfile.workspaceId, newRole);
+  await PortalService.changeUserRole(supabase, userId, newRole);
 
   await PortalService.logAction(supabase, {
     workspaceId: adminProfile.workspaceId,
@@ -320,6 +330,6 @@ export async function changeUserRole(userId: string, newRole: 'admin' | 'member'
     description: `Changed role of ${targetUser.email} to ${newRole}`
   })
 
-  revalidatePath('/users')
+  revalidatePath('/portal/users')
 }
 

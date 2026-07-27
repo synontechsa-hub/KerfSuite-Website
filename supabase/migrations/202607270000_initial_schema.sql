@@ -1,6 +1,5 @@
--- LEGACY REFERENCE ONLY (schema version 1.1.0).
--- For new databases and upgrades, use the ordered files in supabase/migrations.
--- Do not apply this file directly.
+-- KerfSuite initial database objects
+-- Migration baseline: 1.1.0 objects without legacy grants
 
 -- ==========================================================
 -- KERFSUITE MASTER DATABASE SCHEMA
@@ -567,37 +566,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
--- 8. PERMISSIONS (Strict hardening)
 
--- Revoke all from PUBLIC by default
-REVOKE ALL ON ALL TABLES IN SCHEMA public FROM PUBLIC;
-REVOKE ALL ON ALL FUNCTIONS IN SCHEMA public FROM PUBLIC;
-
--- Grant to Authenticated (standard portal users)
-GRANT SELECT ON public.workspaces TO authenticated;
-GRANT SELECT ON public.users TO authenticated;
-GRANT UPDATE (role) ON public.users TO authenticated;
-GRANT SELECT, INSERT, UPDATE, DELETE ON public.license_slots TO authenticated;
-GRANT SELECT, INSERT ON public.audit_logs TO authenticated;
-GRANT SELECT, INSERT, UPDATE, DELETE ON public.materials TO authenticated;
-GRANT SELECT, INSERT, UPDATE, DELETE ON public.locations TO authenticated;
-GRANT SELECT, INSERT, UPDATE, DELETE ON public.assets TO authenticated;
-GRANT SELECT, INSERT, UPDATE, DELETE ON public.asset_events TO authenticated;
-
--- Grant execution of new RPCs
-GRANT EXECUTE ON FUNCTION public.create_asset TO authenticated;
-GRANT EXECUTE ON FUNCTION public.commit_kerfcut_job TO authenticated;
-
--- Revoke from Authenticated (desktop app RPCs don't need portal user access)
-REVOKE EXECUTE ON FUNCTION public.increment_trial_run(TEXT) FROM authenticated;
-REVOKE EXECUTE ON FUNCTION public.verify_license(TEXT) FROM authenticated;
-REVOKE EXECUTE ON FUNCTION public.bind_machine(TEXT, TEXT) FROM authenticated;
-
--- Grant to Anon (desktop app via RPC)
-GRANT EXECUTE ON FUNCTION public.increment_trial_run(TEXT) TO anon;
-GRANT EXECUTE ON FUNCTION public.verify_license(TEXT) TO anon;
-GRANT EXECUTE ON FUNCTION public.bind_machine(TEXT, TEXT) TO anon;
-GRANT EXECUTE ON FUNCTION public.commit_kerfcut_job TO anon;
+-- Privileges are intentionally defined by the following security migration.
 
 -- 9. TRIGGERS
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;

@@ -5,7 +5,7 @@
 
 export type License = {
   id: string;
-  cdkey: string;
+  cdkey: string | null;
   app: string;
   label: string | null;
   status: string;
@@ -35,7 +35,7 @@ export type AuditLog = {
   actorEmail: string | null;
   actionType: string;
   targetId: string | null;
-  description: string;
+  description: string | null;
   createdAt: string;
 };
 
@@ -94,7 +94,7 @@ export type Asset = {
  */
 export interface DbLicense {
   id: string;
-  cdkey: string;
+  cdkey: string | null;
   app: string;
   label: string | null;
   status: string;
@@ -126,14 +126,14 @@ export interface DbAuditLog {
   actor_email: string | null;
   action_type: string;
   target_id: string | null;
-  description: string;
+  description: string | null;
   created_at: string;
 }
 
 export interface DbWorkspace {
   id: string;
   name: string;
-  allowed_apps: string[];
+  allowed_apps: string[] | null;
   created_at: string;
 }
 

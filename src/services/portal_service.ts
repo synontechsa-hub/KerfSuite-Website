@@ -61,6 +61,17 @@ export class PortalService {
     return count || 0;
   }
 
+  static async getAdminsCount(supabase: SupabaseClient, workspaceId: string): Promise<number> {
+    const { count, error } = await supabase
+      .from('users')
+      .select('*', { count: 'exact', head: true })
+      .eq('workspace_id', workspaceId)
+      .eq('role', 'admin');
+
+    if (error) throw new Error(`DB_ERROR: ${error.message}`);
+    return count || 0;
+  }
+
   static async getWorkspaceUsers(supabase: SupabaseClient, workspaceId: string): Promise<UserProfile[]> {
     const { data, error } = await supabase
       .rpc('get_workspace_users', { p_workspace_id: workspaceId });
@@ -163,12 +174,11 @@ export class PortalService {
     if (error) throw new Error(`DB_ERROR: ${error.message}`);
   }
 
-  static async changeUserRole(supabase: SupabaseClient, userId: string, workspaceId: string, newRole: string) {
-    const { error } = await supabase
-      .from('users')
-      .update({ role: newRole })
-      .eq('id', userId)
-      .eq('workspace_id', workspaceId);
+  static async changeUserRole(supabase: SupabaseClient, userId: string, newRole: string) {
+    const { error } = await supabase.rpc('change_workspace_user_role', {
+      p_user_id: userId,
+      p_new_role: newRole
+    });
 
     if (error) throw new Error(`DB_ERROR: ${error.message}`);
   }

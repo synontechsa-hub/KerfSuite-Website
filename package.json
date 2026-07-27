@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --coverage=false",
+    "test:watch": "jest --watch",
+    "backup:dev-db": "node scripts/backup-dev-database.mjs",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.58.0",

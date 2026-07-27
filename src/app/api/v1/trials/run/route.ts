@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { z } from 'zod'
-import { getRateLimit } from '@/utils/rate-limit'
 
 const TRIAL_MAX_RUNS = 20
 
@@ -21,13 +20,6 @@ export async function POST(request: Request) {
     const { machine_id } = result.data
     const currentIp = request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1'
 
-    const ratelimit = getRateLimit(5, '1 d') // 5 trial run requests per IP per day
-    if (ratelimit) {
-      const { success } = await ratelimit.limit(`trial_${currentIp}`)
-      if (!success) {
-        return NextResponse.json({ error: 'Too many trial requests from this IP today' }, { status: 429 })
-      }
-    }
 
     const adminClient = createAdminClient()
 

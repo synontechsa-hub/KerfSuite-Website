@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server'
 import { getAuthedWorkspace } from '@/utils/auth-helpers'
+import { z } from 'zod'
 
+const MaterialSchema = z.object({
+  name: z.string().trim().min(1).max(100),
+  thickness: z.number().positive().max(10000),
+  unit: z.enum(['mm', 'in']).default('mm')
+}).strict()
 export async function GET() {
   const auth = await getAuthedWorkspace()
   if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -24,11 +30,18 @@ export async function POST(request: Request) {
   if (auth.role !== 'admin') return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
 
   try {
-    const body = await request.json()
+    const validation = MaterialSchema.safeParse(await request.json())
+    if (!validation.success) {
+      return NextResponse.json({ error: validation.error.issues[0].message }, { status: 400 })
+    }
+    const body = validation.data
+
     const { data: material, error } = await auth.supabase
       .from('materials')
       .insert({
-        ...body,
+        name: body.name,
+        thickness: body.thickness,
+        unit: body.unit,
         workspace_id: auth.workspaceId,
         created_by: auth.user.id
       })

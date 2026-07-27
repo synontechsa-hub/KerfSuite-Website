@@ -48,7 +48,7 @@ export async function proxy(request: NextRequest) {
       }
     }
 
-    if (path.startsWith('/api/v1/trials') && trialRatelimit) {
+    if (path.startsWith('/api/v1/trials/run') && trialRatelimit) {
       try {
         const { success } = await trialRatelimit.limit(`trial_${ip}`)
         if (!success) {

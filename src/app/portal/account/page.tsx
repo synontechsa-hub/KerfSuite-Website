@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import Sidebar from '../../components/Sidebar';
 import WorkspaceForm from './WorkspaceForm';
 import PasswordForm from './PasswordForm';
+import MfaSetupPanel from './MfaSetupPanel';
 
 export default async function AccountPage() {
   const supabase = await createClient();
@@ -19,13 +20,11 @@ export default async function AccountPage() {
 
   const workspaceName = ((userData?.workspaces as unknown) as { name: string })?.name || '';
 
-  // Check MFA Status
   const { data: mfaData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   const isMfaEnabled = mfaData?.currentLevel === 'aal2';
 
   return (
     <div className={styles.container}>
-      {/* Sidebar */}
       <Sidebar activeItem="account" userEmail={user.email || ''} />
 
       <main className={styles.main}>
@@ -52,17 +51,12 @@ export default async function AccountPage() {
               <p style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
                 {isMfaEnabled
                   ? "Your account is protected by an additional security layer."
-                  : "MFA is highly recommended for administrators to prevent unauthorized access."}
+                  : "MFA is required for administrators before generating keys or removing users."}
               </p>
             </div>
           </div>
-          {userData?.role === 'admin' && !isMfaEnabled && (
-            <div style={{ marginTop: "1rem", padding: "0.8rem", backgroundColor: "rgba(231, 76, 60, 0.1)", borderLeft: "4px solid var(--status-error)" }}>
-              <p style={{ fontSize: "0.8rem", color: "var(--status-error)" }}>
-                <strong>Admin Notice:</strong> MFA is REQUIRED for sensitive operations like generating keys or removing users.
-              </p>
-            </div>
-          )}
+
+          <MfaSetupPanel isMfaEnabled={isMfaEnabled} />
         </div>
 
         <div className="panel" style={{ maxWidth: "500px", marginBottom: "1rem" }}>
@@ -81,4 +75,3 @@ export default async function AccountPage() {
     </div>
   );
 }
-

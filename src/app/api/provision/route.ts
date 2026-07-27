@@ -45,17 +45,28 @@ export async function POST(request: Request) {
 
     if (wsError) throw wsError
 
-    // 3. Invite Admin User
+    // 3. Invite the Auth user. The database trigger creates a temporary personal
+    // workspace; the server-only RPC then assigns the intended workspace and role.
     const redirectUrl = new URL('/auth/callback', process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').toString()
     const { data: inviteData, error: inviteError } = await adminClient.auth.admin.inviteUserByEmail(email, {
-      data: {
-        workspace_id: workspace.id,
-        role: 'admin'
-      },
       redirectTo: redirectUrl
     })
 
-    if (inviteError) throw inviteError
+    if (inviteError) {
+      await adminClient.from('workspaces').delete().eq('id', workspace.id)
+      throw inviteError
+    }
+
+    const { error: assignmentError } = await adminClient.rpc('assign_invited_user', {
+      p_user_id: inviteData.user.id,
+      p_workspace_id: workspace.id,
+      p_role: 'admin'
+    })
+
+    if (assignmentError) {
+      await adminClient.from('workspaces').delete().eq('id', workspace.id)
+      throw assignmentError
+    }
 
     // 4. Log the provisioning
     await adminClient
