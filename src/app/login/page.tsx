@@ -4,6 +4,7 @@ import { useActionState, use } from 'react'
 import { login } from './actions'
 import styles from './login.module.css'
 import Link from 'next/link'
+import GoogleAuthButton from '../components/GoogleAuthButton'
 
 export default function LoginPage({
   searchParams,
@@ -21,6 +22,11 @@ export default function LoginPage({
             Kerf<span style={{ color: "var(--accent-orange)" }}>Suite</span>
           </h1>
           <p className="stencil-heading" style={{ marginTop: "0.4rem", letterSpacing: "3px" }}>Portal Access</p>
+        </div>
+
+        <GoogleAuthButton className={styles.googleButton} />
+        <div className={styles.authDivider}>
+          <span>or use your portal password</span>
         </div>
 
         <form className={styles.form} action={formAction}>

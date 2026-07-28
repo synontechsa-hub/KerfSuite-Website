@@ -4,6 +4,7 @@ import { useActionState } from 'react'
 import { signup } from './actions'
 import styles from '../login/login.module.css'
 import Link from 'next/link'
+import GoogleAuthButton from '../components/GoogleAuthButton'
 
 export default function SignupPage() {
   const [state, formAction, isPending] = useActionState(signup, null)
@@ -16,6 +17,18 @@ export default function SignupPage() {
             Kerf<span style={{ color: "var(--accent-orange)" }}>Suite</span>
           </h1>
           <p className="stencil-heading" style={{ marginTop: "0.4rem", letterSpacing: "3px" }}>Workshop Registration</p>
+        </div>
+
+        <GoogleAuthButton
+          className={styles.googleButton}
+          label="Create account with Google"
+        />
+        <p className={styles.oauthHint}>
+          Google creates a secure personal workspace. You can rename it from Account Settings.
+        </p>
+
+        <div className={styles.authDivider}>
+          <span>or use email and password</span>
         </div>
 
         <form className={styles.form} action={formAction}>

@@ -37,9 +37,6 @@ export default async function UsersPage({
           <h2 className="stencil-heading" style={{ fontSize: "1rem", color: "var(--text-primary)" }}>
             USER ROSTER
           </h2>
-          <div className={styles.headerActions}>
-            {profile.role === 'admin' && <InviteUserButton />}
-          </div>
         </header>
 
         {params?.message && (
@@ -58,6 +55,8 @@ export default async function UsersPage({
 
         <div className="panel" style={{ flex: 1 }}>
           <h3 className="stencil-heading" style={{ marginBottom: "1.5rem" }}>Workshop Personnel</h3>
+          {profile.role === 'admin' && <InviteUserButton />}
+
 
           <UserRoster
             initialUsers={usersWithStatus}

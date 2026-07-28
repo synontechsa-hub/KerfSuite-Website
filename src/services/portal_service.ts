@@ -23,7 +23,11 @@ export class PortalService {
       .eq('id', userId)
       .single();
 
-    if (error || !data) return null;
+    if (error) {
+      console.error('Failed to load portal user profile:', error.message);
+      return null;
+    }
+    if (!data) return null;
 
     return {
       profile: mapUserProfileFromDb(data as DbUserProfile),
@@ -82,6 +86,20 @@ export class PortalService {
     }
 
     return (data as DbUserProfile[] || []).map(mapUserProfileFromDb);
+  }
+
+  static async createWorkspaceInvite(supabase: SupabaseClient, params: {
+    email: string,
+    tokenHash: string
+  }): Promise<string> {
+    const { data, error } = await supabase.rpc('create_workspace_invite', {
+      p_email: params.email,
+      p_token_hash: params.tokenHash
+    });
+
+    if (error) throw new Error(`DB_ERROR: ${error.message}`);
+    if (typeof data !== 'string') throw new Error('DB_ERROR: Invitation ID was not returned');
+    return data;
   }
 
   static async logAction(supabase: SupabaseClient, params: {

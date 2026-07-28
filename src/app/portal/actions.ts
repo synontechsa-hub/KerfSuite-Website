@@ -102,73 +102,95 @@ export async function updateLicenseLabel(licenseId: string, label: string) {
   }
 }
 
-export async function inviteUser(prevState: { error: string | null, success: string | null } | null, formData: FormData) {
-  const supabase = await createClient()
-  const emailResult = EmailSchema.safeParse(formData.get('email'))
-  if (!emailResult.success) {
-    return { error: 'Invalid email address', success: null }
+type InviteUserState = {
+  error: string | null
+  success: string | null
+  inviteUrl: string | null
+}
+
+export async function inviteUser(
+  prevState: InviteUserState | null,
+  formData: FormData,
+): Promise<InviteUserState> {
+  try {
+    const supabase = await createClient()
+    const emailResult = EmailSchema.safeParse(formData.get('email'))
+    if (!emailResult.success) {
+      return { error: 'Enter a valid email address.', success: null, inviteUrl: null }
+    }
+    const email = emailResult.data.trim().toLowerCase()
+
+    const { user, profile } = await ensureAdminWithMFA(supabase)
+
+    const { data: existingUser } = await supabase
+      .from('users')
+      .select('id')
+      .ilike('email', email)
+      .eq('workspace_id', profile.workspaceId)
+      .maybeSingle()
+
+    if (existingUser) {
+      return {
+        error: `${email} is already in this workspace.`,
+        success: null,
+        inviteUrl: null,
+      }
+    }
+
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    const { count: recentInvites } = await supabase
+      .from('audit_logs')
+      .select('*', { count: 'exact', head: true })
+      .eq('actor_id', user.id)
+      .eq('action_type', 'workspace_invite_created')
+      .gte('created_at', twentyFourHoursAgo)
+
+    if (recentInvites && recentInvites >= 10) {
+      return {
+        error: 'Daily invitation limit reached. Try again tomorrow.',
+        success: null,
+        inviteUrl: null,
+      }
+    }
+
+    const rawToken = crypto.randomBytes(32).toString('base64url')
+    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex')
+    const inviteId = await PortalService.createWorkspaceInvite(supabase, {
+      email,
+      tokenHash,
+    })
+    const siteUrl = new URL(
+      process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    )
+    const inviteUrl = new URL('/join', siteUrl)
+    inviteUrl.searchParams.set('token', rawToken)
+
+    await PortalService.logAction(supabase, {
+      workspaceId: profile.workspaceId,
+      actorId: user.id,
+      actorEmail: profile.email,
+      actionType: 'workspace_invite_created',
+      targetId: inviteId,
+      description: `Created a 7-day workspace invitation for ${email}`,
+    })
+
+    revalidatePath('/portal/users')
+    return {
+      error: null,
+      success: `Invitation link created for ${email}.`,
+      inviteUrl: inviteUrl.toString(),
+    }
+  } catch (error: unknown) {
+    console.error('Error creating workspace invitation:', error)
+    const message = error instanceof Error ? error.message : ''
+    return {
+      error: message.includes('MFA_REQUIRED')
+        ? 'Verify MFA from Account Settings before inviting a member.'
+        : 'The invitation link could not be created.',
+      success: null,
+      inviteUrl: null,
+    }
   }
-  const email = emailResult.data
-
-  const { user, profile } = await ensureAdminWithMFA(supabase)
-
-  // Check if user is already in the workspace
-  const { data: existingUser } = await supabase
-    .from('users')
-    .select('id')
-    .eq('email', email)
-    .eq('workspace_id', profile.workspaceId)
-    .maybeSingle()
-
-  if (existingUser) {
-    return { error: `User ${email} is already in the workspace`, success: null }
-  }
-
-  // Rate limiting check
-  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-  const { count: recentInvites } = await supabase
-    .from('audit_logs')
-    .select('*', { count: 'exact', head: true })
-    .eq('actor_id', user.id)
-    .eq('action_type', 'user_invited')
-    .gte('created_at', twentyFourHoursAgo)
-  
-  if (recentInvites && recentInvites >= 10) {
-    return { error: 'Daily invitation limit reached', success: null }
-  }
-
-  const adminClient = createAdminClient()
-  const redirectUrl = new URL('/auth/callback', process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').toString()
-  const { data: inviteData, error } = await adminClient.auth.admin.inviteUserByEmail(email, {
-    redirectTo: redirectUrl
-  })
-
-  if (error) {
-    console.error('Error inviting user:', error)
-    return { error: error.message, success: null }
-  }
-
-  const { error: assignmentError } = await adminClient.rpc('assign_invited_user', {
-    p_user_id: inviteData.user.id,
-    p_workspace_id: profile.workspaceId,
-    p_role: 'member'
-  })
-
-  if (assignmentError) {
-    console.error('Error assigning invited user:', assignmentError)
-    return { error: 'Invitation created, but workspace assignment failed', success: null }
-  }
-  await PortalService.logAction(supabase, {
-    workspaceId: profile.workspaceId,
-    actorId: user.id,
-    actorEmail: profile.email,
-    actionType: 'user_invited',
-    targetId: inviteData.user.id,
-    description: `Invited user: ${email}`
-  })
-
-  revalidatePath('/portal/users')
-  return { error: null, success: `Invitation sent to ${email}` }
 }
 
 export async function removeUser(userId: string) {
