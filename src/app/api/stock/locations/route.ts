@@ -4,7 +4,8 @@ import { z } from 'zod'
 
 const LocationSchema = z.object({
   name: z.string().trim().min(1).max(100),
-  parent_id: z.string().uuid().nullable().default(null)
+  parent_id: z.string().uuid().nullable().default(null),
+  job_reference: z.string().trim().max(200).nullable().default(null)
 }).strict()
 export async function GET(request: Request) {
   const auth = await getAuthedStockWorkspace(request)
@@ -14,6 +15,7 @@ export async function GET(request: Request) {
     .from('locations')
     .select('*')
     .eq('workspace_id', auth.workspaceId)
+    .eq('is_deleted', false)
     .order('name', { ascending: true })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -56,6 +58,8 @@ export async function POST(request: Request) {
         parent_id: body.parent_id,
         workspace_id: auth.workspaceId,
         depth,
+        job_reference: body.job_reference,
+        is_deleted: false,
         created_by: auth.user.id
       })
       .select()

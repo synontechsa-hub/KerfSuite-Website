@@ -11,7 +11,9 @@ const CreateAssetSchema = z.object({
   height: z.number().positive(),
   asset_type: z.enum(['full_sheet', 'remnant', 'offcut', 'custom']).default('full_sheet'),
   status: z.enum(['available', 'reserved', 'consumed', 'disposed', 'damaged', 'missing']).default('available'),
-  location_id: z.string().uuid().nullable().optional()
+  location_id: z.string().uuid().nullable().optional(),
+  job_reference: z.string().trim().max(200).nullable().optional(),
+  quantity: z.number().int().min(1).max(500).default(1)
 })
 
 export async function GET(request: Request) {
@@ -39,19 +41,22 @@ export async function POST(request: Request) {
 
     const body = validation.data
 
-    const asset = await PortalService.createAsset(auth.supabase, {
+    const assets = await PortalService.createAssets(auth.supabase, {
       materialId: body.material_id,
       width: body.width,
       height: body.height,
       assetType: body.asset_type,
+      quantity: body.quantity,
       displayName: body.display_name,
       locationId: body.location_id,
-      status: body.status
+      status: body.status,
+      jobReference: body.job_reference
     });
 
-    const response = request.headers.has('authorization')
-      ? serializeDesktopAsset(asset)
-      : asset
+    const responseAssets = request.headers.has('authorization')
+      ? assets.map(serializeDesktopAsset)
+      : assets
+    const response = body.quantity === 1 ? responseAssets[0] : responseAssets
     return NextResponse.json(response)
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Internal Server Error'
