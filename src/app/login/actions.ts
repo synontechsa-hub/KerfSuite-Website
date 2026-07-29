@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient, createAdminClient } from '@/utils/supabase/server'
+import { isNextRedirectError } from '@/utils/next-redirect'
 import { z } from 'zod'
 
 const LoginSchema = z.object({
@@ -59,7 +60,7 @@ export async function login(prevState: { error: string | null } | null, formData
     revalidatePath('/portal', 'layout')
     redirect('/portal')
   } catch (err: unknown) {
-    if (err && typeof err === 'object' && 'digest' in err && err.digest === 'NEXT_REDIRECT') throw err
+    if (isNextRedirectError(err)) throw err
     console.error('Unhandled login error:', err)
     return { error: 'A server error occurred during authentication.' }
   }
