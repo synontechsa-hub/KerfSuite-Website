@@ -258,7 +258,7 @@ export class PortalService {
     if (error) throw new Error(`DB_ERROR: ${error.message}`);
     return mapAssetFromDb(data as DbAsset);
   }
-  static async createAssets(supabase: SupabaseClient, params: {
+  static async createInventoryAsset(supabase: SupabaseClient, params: {
     materialId: string,
     width: number,
     height: number,
@@ -268,21 +268,23 @@ export class PortalService {
     locationId?: string | null,
     status?: string,
     jobReference?: string | null
-  }): Promise<Asset[]> {
-    const { data, error } = await supabase.rpc('create_assets_batch', {
-      p_material_id: params.materialId,
-      p_width: params.width,
-      p_height: params.height,
-      p_asset_type: params.assetType,
-      p_quantity: params.quantity,
-      p_display_name: params.displayName,
-      p_location_id: params.locationId,
-      p_status: params.status,
-      p_job_reference: params.jobReference
-    });
+  }): Promise<Asset> {
+    const { data, error } = await supabase
+      .rpc('create_inventory_asset', {
+        p_material_id: params.materialId,
+        p_width: params.width,
+        p_height: params.height,
+        p_asset_type: params.assetType,
+        p_quantity: params.quantity,
+        p_display_name: params.displayName,
+        p_location_id: params.locationId,
+        p_status: params.status,
+        p_job_reference: params.jobReference
+      })
+      .single();
 
     if (error) throw new Error(`DB_ERROR: ${error.message}`);
-    return (data as DbAsset[] || []).map(mapAssetFromDb);
+    return mapAssetFromDb(data as DbAsset);
   }
 
   static async updateAsset(supabase: SupabaseClient, params: {
@@ -290,22 +292,36 @@ export class PortalService {
     materialId: string,
     width: number,
     height: number,
+    quantity: number,
     displayName?: string | null,
     locationId?: string | null,
     status: string,
     jobReference?: string | null
   }): Promise<Asset> {
     const { data, error } = await supabase
-      .rpc('update_asset_details', {
+      .rpc('update_inventory_asset', {
         p_asset_id: params.assetId,
         p_material_id: params.materialId,
         p_width: params.width,
         p_height: params.height,
+        p_quantity: params.quantity,
         p_display_name: params.displayName,
         p_location_id: params.locationId,
         p_status: params.status,
         p_job_reference: params.jobReference
       })
+      .single();
+
+    if (error) throw new Error(`DB_ERROR: ${error.message}`);
+    return mapAssetFromDb(data as DbAsset);
+  }
+
+  static async archiveAsset(
+    supabase: SupabaseClient,
+    assetId: string
+  ): Promise<Asset> {
+    const { data, error } = await supabase
+      .rpc('archive_asset', { p_asset_id: assetId })
       .single();
 
     if (error) throw new Error(`DB_ERROR: ${error.message}`);

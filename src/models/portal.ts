@@ -71,6 +71,7 @@ export type Asset = {
   displayName: string | null;
   width: number;
   height: number;
+  quantity: number;
   assetType: 'full_sheet' | 'remnant' | 'offcut' | 'custom';
   status: 'available' | 'reserved' | 'consumed' | 'disposed' | 'damaged' | 'missing';
   locationId: string | null;
@@ -162,6 +163,7 @@ export interface DbAsset {
   display_name: string | null;
   width: number;
   height: number;
+  quantity: number;
   asset_type: 'full_sheet' | 'remnant' | 'offcut' | 'custom';
   status: 'available' | 'reserved' | 'consumed' | 'disposed' | 'damaged' | 'missing';
   location_id: string | null;
@@ -264,6 +266,7 @@ export function mapAssetFromDb(db: DbAsset): Asset {
     displayName: db.display_name,
     width: db.width,
     height: db.height,
+    quantity: db.quantity ?? 1,
     assetType: db.asset_type,
     status: db.status,
     locationId: db.location_id,

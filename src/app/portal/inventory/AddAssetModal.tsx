@@ -17,6 +17,7 @@ export default function AddAssetModal({ isOpen, onClose, materials, locations, o
   const [displayName, setDisplayName] = useState('');
   const [width, setWidth] = useState(2440);
   const [height, setHeight] = useState(1220);
+  const [quantity, setQuantity] = useState(1);
   const [locationId, setLocationId] = useState('');
   const [assetType, setAssetType] = useState('full_sheet');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,6 +39,7 @@ export default function AddAssetModal({ isOpen, onClose, materials, locations, o
           display_name: displayName || null,
           width,
           height,
+          quantity,
           location_id: locationId || null,
           asset_type: assetType
         })
@@ -53,6 +55,7 @@ export default function AddAssetModal({ isOpen, onClose, materials, locations, o
       // Reset
       setMaterialId('');
       setDisplayName('');
+      setQuantity(1);
       setLocationId('');
 
       onClose();
@@ -124,6 +127,18 @@ export default function AddAssetModal({ isOpen, onClose, materials, locations, o
                 className={styles.select}
               />
             </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+            <label className="stencil-heading" style={{ fontSize: '0.6rem', color: 'var(--text-secondary)' }}>QUANTITY</label>
+            <input
+              type="number"
+              min={1}
+              value={quantity}
+              onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+              required
+              className={styles.select}
+            />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>

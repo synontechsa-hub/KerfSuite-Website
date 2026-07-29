@@ -14,6 +14,7 @@ export function serializeDesktopAsset(asset: Asset) {
     display_name: asset.displayName,
     width: asset.width,
     height: asset.height,
+    quantity: asset.quantity,
     asset_type: asset.assetType,
     status: asset.status,
     location_id: asset.locationId,

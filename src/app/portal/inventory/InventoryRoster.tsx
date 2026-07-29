@@ -64,6 +64,7 @@ export default function InventoryRoster({
               <th className="stencil-heading">TYPE</th>
               <th className="stencil-heading">MATERIAL</th>
               <th className="stencil-heading">DIMENSIONS (mm)</th>
+              <th className="stencil-heading">QUANTITY</th>
               <th className="stencil-heading">LOCATION</th>
               <th className="stencil-heading">JOB REF</th>
               <th className="stencil-heading">STATUS</th>
@@ -87,6 +88,9 @@ export default function InventoryRoster({
                 </td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
                   {asset.width} x {asset.height}
+                </td>
+                <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+                  {asset.quantity}
                 </td>
                 <td style={{ fontSize: '0.75rem' }}>
                   {asset.location?.name || '---'}
@@ -116,7 +120,7 @@ export default function InventoryRoster({
             ))}
             {filteredAssets.length === 0 && (
               <tr>
-                <td colSpan={9} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-dim)' }}>
+                <td colSpan={10} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-dim)' }}>
                   NO ASSETS MATCHING CRITERIA
                 </td>
               </tr>
