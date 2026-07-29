@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getAuthedWorkspace } from '@/utils/auth-helpers'
+import { getAuthedStockWorkspace } from '@/utils/auth-helpers'
 import { PortalService } from '@/services/portal_service'
 import { z } from 'zod'
 
@@ -13,17 +13,17 @@ const CreateAssetSchema = z.object({
   location_id: z.string().uuid().nullable().optional()
 })
 
-export async function GET() {
-  const auth = await getAuthedWorkspace()
-  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+export async function GET(request: Request) {
+  const auth = await getAuthedStockWorkspace(request)
+  if ('error' in auth) return NextResponse.json({ error: auth.error }, { status: auth.status })
 
   const assets = await PortalService.getAssets(auth.supabase, auth.workspaceId);
   return NextResponse.json(assets)
 }
 
 export async function POST(request: Request) {
-  const auth = await getAuthedWorkspace()
-  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await getAuthedStockWorkspace(request)
+  if ('error' in auth) return NextResponse.json({ error: auth.error }, { status: auth.status })
 
   try {
     const rawBody = await request.json()

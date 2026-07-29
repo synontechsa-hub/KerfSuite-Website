@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server'
-import { getAuthedWorkspace } from '@/utils/auth-helpers'
+import { getAuthedStockWorkspace } from '@/utils/auth-helpers'
 import { z } from 'zod'
 
 const LocationSchema = z.object({
   name: z.string().trim().min(1).max(100),
   parent_id: z.string().uuid().nullable().default(null)
 }).strict()
-export async function GET() {
-  const auth = await getAuthedWorkspace()
-  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+export async function GET(request: Request) {
+  const auth = await getAuthedStockWorkspace(request)
+  if ('error' in auth) return NextResponse.json({ error: auth.error }, { status: auth.status })
 
   const { data: locations, error } = await auth.supabase
     .from('locations')
@@ -22,8 +22,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const auth = await getAuthedWorkspace()
-  if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await getAuthedStockWorkspace(request)
+  if ('error' in auth) return NextResponse.json({ error: auth.error }, { status: auth.status })
 
   if (auth.role !== 'admin') return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
 

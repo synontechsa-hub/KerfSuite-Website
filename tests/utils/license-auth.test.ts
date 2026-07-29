@@ -130,6 +130,18 @@ describe('validateLicenseRequest license lookup', () => {
 });
 
 describe('validateLicenseRequest success + telemetry', () => {
+  it('uses a trusted authenticated workspace when the desktop omits the workspace header', async () => {
+    const headers = { ...validHeaders } as Record<string, string>;
+    delete headers['x-workspace-id'];
+    const { admin, eqWorkspace } = makeAdmin(activeSlot());
+    createAdminClient.mockReturnValue(admin);
+
+    const result = await validateLicenseRequest(makeRequest(headers), 'kerfcut', 'ws-1');
+
+    expect(eqWorkspace).toHaveBeenCalledWith('workspace_id', 'ws-1');
+    expect(result).toMatchObject({ success: true, workspaceId: 'ws-1' });
+  });
+
   it('hashes the incoming key with sha256 to look up the slot', async () => {
     const { admin, eqHash, eqWorkspace } = makeAdmin(activeSlot());
     createAdminClient.mockReturnValue(admin);

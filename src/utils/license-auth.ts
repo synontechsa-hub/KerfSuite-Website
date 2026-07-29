@@ -5,10 +5,14 @@ import crypto from 'crypto'
  * Validates that a request from a desktop app is authorized
  * via an active license key and updates telemetry + abuse detection.
  */
-export async function validateLicenseRequest(request: Request, expectedApp?: string) {
+export async function validateLicenseRequest(
+  request: Request,
+  expectedApp?: string,
+  trustedWorkspaceId?: string
+) {
   const cdkey = request.headers.get('x-license-key')
   const machineId = request.headers.get('x-machine-id')
-  const workspaceId = request.headers.get('x-workspace-id')
+  const workspaceId = trustedWorkspaceId || request.headers.get('x-workspace-id')
   const appVersion = request.headers.get('x-app-version')
   const osInfo = request.headers.get('x-os-info')
 
