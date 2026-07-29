@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getAuthedStockWorkspace } from '@/utils/auth-helpers'
 import { PortalService } from '@/services/portal_service'
 import { z } from 'zod'
+import { serializeDesktopAsset } from '@/utils/stock-api'
 
 const CreateAssetSchema = z.object({
   material_id: z.string().uuid(),
@@ -18,7 +19,10 @@ export async function GET(request: Request) {
   if ('error' in auth) return NextResponse.json({ error: auth.error }, { status: auth.status })
 
   const assets = await PortalService.getAssets(auth.supabase, auth.workspaceId);
-  return NextResponse.json(assets)
+  const response = request.headers.has('authorization')
+    ? assets.map(serializeDesktopAsset)
+    : assets
+  return NextResponse.json(response)
 }
 
 export async function POST(request: Request) {
@@ -45,7 +49,10 @@ export async function POST(request: Request) {
       status: body.status
     });
 
-    return NextResponse.json(asset)
+    const response = request.headers.has('authorization')
+      ? serializeDesktopAsset(asset)
+      : asset
+    return NextResponse.json(response)
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Internal Server Error'
     return NextResponse.json({ error: message }, { status: 500 })
