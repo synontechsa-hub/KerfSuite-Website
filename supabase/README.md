@@ -6,6 +6,9 @@ The database is managed as an ordered migration sequence.
 
 1. `202607270000_initial_schema.sql` creates the original KerfSuite tables, enums, functions, and trigger without the legacy permission block.
 2. `202607270001_security_baseline.sql` upgrades the schema to version 1.2.0 and defines the authoritative constraints, RLS policies, RPCs, triggers, and grants.
+3. The `20260728*` and `20260729*` migrations apply workspace invitations, licence-hash compatibility, safe asset numbering, the native Stock workflow, batch quantities, retirement, and quantity-aware KerfCut integration in filename order.
+
+`202607290400_kerfcut_stock_integration.sql` is additive: it creates an idempotency ledger and a new service-role-only transaction function. It does not replace the legacy KerfCut commit function or rewrite existing inventory rows.
 
 Do not run the repository-root `schema.sql` against a new database. It is retained as the pre-hardening 1.1.0 reference.
 
@@ -33,11 +36,12 @@ WHERE specific_schema = 'public'
     'increment_trial_run',
     'verify_license',
     'bind_machine',
-    'commit_kerfcut_job'
+    'commit_kerfcut_job',
+    'commit_kerfcut_stock_job'
   );
 ```
 
-The service role should have `EXECUTE` on those five server-only functions. Authenticated users should have access only to the portal helper functions explicitly granted at the end of the security migration.
+The service role should have `EXECUTE` on those server-only functions. Authenticated users should have access only to the portal helper functions explicitly granted at the end of the security migration.
 
 ## Backup
 

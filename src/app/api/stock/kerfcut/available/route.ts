@@ -3,7 +3,6 @@ import { createAdminClient } from '@/utils/supabase/server'
 import { validateLicenseRequest } from '@/utils/license-auth'
 
 export async function GET(request: Request) {
-  // 1. Validate Machine License (Expect KerfCut)
   const auth = await validateLicenseRequest(request, 'kerfcut')
   if ('error' in auth) {
     return NextResponse.json({ error: auth.error }, { status: auth.status })
@@ -11,46 +10,49 @@ export async function GET(request: Request) {
 
   const { workspaceId } = auth
   const { searchParams } = new URL(request.url)
-  const material_id = searchParams.get('material_id')
-  const min_width = parseFloat(searchParams.get('min_width') || '0')
-  const min_height = parseFloat(searchParams.get('min_height') || '0')
+  const materialId = searchParams.get('material_id')
+  const minWidth = Number(searchParams.get('min_width') || '0')
+  const minHeight = Number(searchParams.get('min_height') || '0')
 
-  if (!material_id) {
-    return NextResponse.json({ error: 'Missing material_id' }, { status: 400 })
+  if (!Number.isFinite(minWidth) || !Number.isFinite(minHeight) || minWidth < 0 || minHeight < 0) {
+    return NextResponse.json({ error: 'Invalid minimum dimensions' }, { status: 400 })
   }
 
   const adminClient = createAdminClient()
-
-  // 1. Fetch material details
-  const { data: material } = await adminClient
-    .from('materials')
-    .select('*')
-    .eq('id', material_id)
-    .eq('workspace_id', workspaceId)
-    .single()
-
-  if (!material) {
-    return NextResponse.json({ error: 'Material not found' }, { status: 404 })
-  }
-
-  // 2. Fetch available assets
-  const { data: assets, error } = await adminClient
+  let query = adminClient
     .from('assets')
-    .select('id, system_name, display_name, width, height, status, locations(name)')
+    .select(`
+      id, material_id, system_name, display_name, width, height, quantity,
+      asset_type, status, location_id, job_reference,
+      materials(name, thickness, unit), locations(name)
+    `)
     .eq('workspace_id', workspaceId)
-    .eq('material_id', material_id)
     .eq('status', 'available')
-    .gte('width', min_width)
-    .gte('height', min_height)
+    .gte('width', minWidth)
+    .gte('height', minHeight)
+    .gt('quantity', 0)
+    .order('system_name', { ascending: true })
 
+  if (materialId) query = query.eq('material_id', materialId)
+
+  const { data: assets, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
   return NextResponse.json({
-    material,
-    assets: assets?.map(a => ({
-      ...a,
-      location: a.locations?.[0]?.name || null
-    })) || []
+    assets: assets?.map(asset => ({
+      id: asset.id,
+      material_id: asset.material_id,
+      system_name: asset.system_name,
+      display_name: asset.display_name,
+      width: Number(asset.width),
+      height: Number(asset.height),
+      quantity: asset.quantity,
+      asset_type: asset.asset_type,
+      status: asset.status,
+      location_id: asset.location_id,
+      job_reference: asset.job_reference,
+      material: asset.materials?.[0] || null,
+      location: asset.locations?.[0]?.name || null,
+    })) || [],
   })
 }
-

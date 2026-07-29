@@ -38,7 +38,7 @@ function makeAdmin(slot: Slot, slotError: unknown = null): AdminSpies {
   // Stable spies for the select chain so filters can be asserted.
   const single = jest.fn(() => Promise.resolve({ data: slot, error: slotError }));
   const eqWorkspace = jest.fn(() => ({ single }));
-  const eqHash = jest.fn(() => ({ eq: eqWorkspace }));
+  const eqHash = jest.fn(() => ({ eq: eqWorkspace, single }));
   const select = jest.fn(() => ({ eq: eqHash }));
 
   const admin = {
@@ -89,7 +89,6 @@ describe('validateLicenseRequest header validation', () => {
   it.each([
     ['x-license-key'],
     ['x-machine-id'],
-    ['x-workspace-id'],
   ])('returns 401 when %s is missing', async (missing) => {
     const headers = { ...validHeaders } as Record<string, string>;
     delete headers[missing];
@@ -100,6 +99,18 @@ describe('validateLicenseRequest header validation', () => {
 });
 
 describe('validateLicenseRequest license lookup', () => {
+  it('derives the workspace from a globally unique bound licence', async () => {
+    const headers = { ...validHeaders } as Record<string, string>;
+    delete headers['x-workspace-id'];
+    const { admin, eqWorkspace } = makeAdmin(activeSlot());
+    createAdminClient.mockReturnValue(admin);
+
+    const result = await validateLicenseRequest(makeRequest(headers), 'kerfcut');
+
+    expect(eqWorkspace).not.toHaveBeenCalled();
+    expect(result).toMatchObject({ success: true, workspaceId: 'ws-1' });
+  });
+
   it('returns 403 when the license/workspace is not found', async () => {
     const { admin } = makeAdmin(null, { message: 'not found' });
     createAdminClient.mockReturnValue(admin);

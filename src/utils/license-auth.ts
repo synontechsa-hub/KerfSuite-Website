@@ -19,7 +19,7 @@ export async function validateLicenseRequest(
   // Get IP (Standard Next.js header pattern)
   const currentIp = request.headers.get('x-forwarded-for')?.split(',')[0] || '127.0.0.1'
 
-  if (!cdkey || !machineId || !workspaceId) {
+  if (!cdkey || !machineId) {
     return { error: 'Missing license headers', status: 401 }
   }
 
@@ -28,12 +28,18 @@ export async function validateLicenseRequest(
   // Hash the incoming key to match the database
   const cdkeyHash = crypto.createHash('sha256').update(cdkey).digest('hex')
 
-  const { data: slot, error } = await adminClient
+  let slotQuery = adminClient
     .from('license_slots')
     .select('id, status, bound_machine_id, workspace_id, last_ip, abuse_score, is_flagged, app')
     .eq('cdkey_hash', cdkeyHash)
-    .eq('workspace_id', workspaceId)
-    .single()
+
+  // A CD-key hash is globally unique. Desktop apps therefore do not need to
+  // send a caller-controlled workspace ID; the bound licence is the authority.
+  if (workspaceId) {
+    slotQuery = slotQuery.eq('workspace_id', workspaceId)
+  }
+
+  const { data: slot, error } = await slotQuery.single()
 
   if (error || !slot) {
     return { error: 'Invalid license or workspace', status: 403 }
