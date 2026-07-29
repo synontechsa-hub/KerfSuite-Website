@@ -36,44 +36,61 @@ async function ensureAdminWithMFA(supabase: SupabaseClient) {
 }
 
 export async function generateKey(formData: FormData) {
-  const supabase = await createClient()
-  const { user, profile, workspace } = await ensureAdminWithMFA(supabase)
+  try {
+    const supabase = await createClient()
+    const { user, profile, workspace } = await ensureAdminWithMFA(supabase)
 
-  const allowedApps = workspace.allowedApps;
-  const appResult = AppSchema.safeParse(formData.get('app'));
-  if (!appResult.success) throw new Error('Invalid app type');
-  const app = appResult.data;
+    const allowedApps = workspace.allowedApps;
+    const appResult = AppSchema.safeParse(formData.get('app'));
+    if (!appResult.success) throw new Error('Invalid app type');
+    const app = appResult.data;
 
-  if (!allowedApps.includes(app)) {
-    throw new Error(`Unauthorized: Workspace does not have access to ${app}`)
+    if (!allowedApps.includes(app)) {
+      throw new Error(`Unauthorized: Workspace does not have access to ${app}`)
+    }
+
+    const prefix = app === 'kerfstock' ? 'KST-PRO' : 'KCT-PRO'
+    const generateSegment = () => crypto.randomBytes(4).toString('hex').toUpperCase()
+    const cdkey = `${prefix}-${generateSegment()}-${generateSegment()}`
+    const cdkeyHash = crypto.createHash('sha256').update(cdkey).digest('hex')
+
+    const license = await PortalService.generateLicense(supabase, {
+      workspaceId: profile.workspaceId,
+      app: app,
+      cdkey: null, // SECURITY: Never store raw keys. Safe due to hash lookup in RPC.
+      cdkeyHash: cdkeyHash,
+      createdBy: user.id
+    });
+
+    await PortalService.logAction(supabase, {
+      workspaceId: profile.workspaceId,
+      actorId: user.id,
+      actorEmail: profile.email,
+      actionType: 'key_generated',
+      targetId: license.id,
+      description: `Generated ${app} key ending in ...${cdkey.slice(-4)}`
+    })
+
+    revalidatePath('/portal')
+    return { key: cdkey, error: null, requiresMfa: false }
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : ''
+    if (message.includes('MFA_REQUIRED')) {
+      return {
+        key: null,
+        error: 'Verify MFA from Account Security before generating a key.',
+        requiresMfa: true
+      }
+    }
+
+    console.error('Error generating key:', error)
+    return {
+      key: null,
+      error: 'Failed to generate the licence key. Please try again.',
+      requiresMfa: false
+    }
   }
-
-  const prefix = app === 'kerfstock' ? 'KST-PRO' : 'KCT-PRO'
-  const generateSegment = () => crypto.randomBytes(4).toString('hex').toUpperCase()
-  const cdkey = `${prefix}-${generateSegment()}-${generateSegment()}`
-  const cdkeyHash = crypto.createHash('sha256').update(cdkey).digest('hex')
-
-  const license = await PortalService.generateLicense(supabase, {
-    workspaceId: profile.workspaceId,
-    app: app,
-    cdkey: null, // SECURITY: Never store raw keys. Safe due to hash lookup in RPC.
-    cdkeyHash: cdkeyHash,
-    createdBy: user.id
-  });
-
-  await PortalService.logAction(supabase, {
-    workspaceId: profile.workspaceId,
-    actorId: user.id,
-    actorEmail: profile.email,
-    actionType: 'key_generated',
-    targetId: license.id,
-    description: `Generated ${app} key ending in ...${cdkey.slice(-4)}`
-  })
-
-  revalidatePath('/portal')
-  return cdkey
 }
-
 export async function updateLicenseLabel(licenseId: string, label: string) {
   try {
     const supabase = await createClient()

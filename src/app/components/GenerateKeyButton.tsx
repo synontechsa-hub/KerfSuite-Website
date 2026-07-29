@@ -1,12 +1,14 @@
 'use client'
 
 import React, { useState, useRef } from 'react'
+import Link from 'next/link'
 import { generateKey } from '../portal/actions'
 import styles from '../portal/page.module.css'
 import IndustrialModal from './IndustrialModal'
 
 export default function GenerateKeyButton({ allowedApps }: { allowedApps: string[] }) {
   const [error, setError] = useState<string | null>(null)
+  const [requiresMfa, setRequiresMfa] = useState(false)
   const [newKey, setNewKey] = useState<string | null>(null)
   const [showConfirm, setShowConfirm] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
@@ -57,9 +59,15 @@ export default function GenerateKeyButton({ allowedApps }: { allowedApps: string
         ref={formRef}
         action={async (formData) => {
           setError(null)
+          setRequiresMfa(false)
           try {
-            const key = await generateKey(formData)
-            if (key) setNewKey(key)
+            const result = await generateKey(formData)
+            if (result.key) {
+              setNewKey(result.key)
+            } else {
+              setError(result.error || 'Failed to generate key')
+              setRequiresMfa(result.requiresMfa)
+            }
           } catch (e: unknown) {
             setError(e instanceof Error ? e.message : 'Failed to generate key')
           }
@@ -83,6 +91,14 @@ export default function GenerateKeyButton({ allowedApps }: { allowedApps: string
         {error && (
           <span style={{ color: 'var(--status-error)', fontSize: '0.8rem', marginLeft: '0.5rem' }}>
             {error}
+            {requiresMfa && (
+              <>
+                {' '}
+                <Link href="/portal/account" style={{ color: 'var(--accent-orange)', fontWeight: 700 }}>
+                  OPEN ACCOUNT SECURITY
+                </Link>
+              </>
+            )}
           </span>
         )}
       </form>
