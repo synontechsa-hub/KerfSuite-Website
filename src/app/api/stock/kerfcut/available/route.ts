@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/utils/supabase/server'
 import { validateLicenseRequest } from '@/utils/license-auth'
+import { resolveRelation } from '@/utils/supabase-relations'
 
 export async function GET(request: Request) {
   const auth = await validateLicenseRequest(request, 'kerfcut')
@@ -39,20 +40,25 @@ export async function GET(request: Request) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
   return NextResponse.json({
-    assets: assets?.map(asset => ({
-      id: asset.id,
-      material_id: asset.material_id,
-      system_name: asset.system_name,
-      display_name: asset.display_name,
-      width: Number(asset.width),
-      height: Number(asset.height),
-      quantity: asset.quantity,
-      asset_type: asset.asset_type,
-      status: asset.status,
-      location_id: asset.location_id,
-      job_reference: asset.job_reference,
-      material: asset.materials?.[0] || null,
-      location: asset.locations?.[0]?.name || null,
-    })) || [],
+    assets: assets?.map(asset => {
+      const material = resolveRelation(asset.materials)
+      const location = resolveRelation(asset.locations)
+
+      return {
+        id: asset.id,
+        material_id: asset.material_id,
+        system_name: asset.system_name,
+        display_name: asset.display_name,
+        width: Number(asset.width),
+        height: Number(asset.height),
+        quantity: asset.quantity,
+        asset_type: asset.asset_type,
+        status: asset.status,
+        location_id: asset.location_id,
+        job_reference: asset.job_reference,
+        material,
+        location: location?.name || null,
+      }
+    }) || [],
   })
 }
