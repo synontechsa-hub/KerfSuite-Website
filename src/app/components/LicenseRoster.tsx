@@ -2,7 +2,6 @@
 
 import { useOptimistic } from 'react'
 import styles from '../portal/page.module.css'
-import CopyButton from './CopyButton'
 import EditableLabel from './EditableLabel'
 import RevokeButton from './RevokeButton'
 import { License } from '@/models/portal'
@@ -96,7 +95,7 @@ export default function LicenseRoster({
                 </div>
               </td>
               <td style={{ fontFamily: "var(--font-mono)", color: "var(--accent-orange)" }}>
-                {license.cdkey || 'REDACTED'} <CopyButton text={license.cdkey || ''} />
+                HASH-PROTECTED
               </td>
               <td style={{ textTransform: "uppercase", fontSize: "0.85rem" }}>{license.app}</td>
               <td>
