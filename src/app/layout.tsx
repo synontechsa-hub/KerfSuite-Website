@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Orbitron, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import Script from "next/script";
+import GoogleAnalytics from "./components/GoogleAnalytics";
 import "./globals.css";
 
 const orbitron = Orbitron({
@@ -45,23 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${orbitron.variable} ${jetbrainsMono.variable}`}>
       <body>
-        {gaId && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-
-                gtag('config', '${gaId}');
-              `}
-            </Script>
-          </>
-        )}
+        {gaId && <GoogleAnalytics measurementId={gaId} />}
         {children}
         <Analytics />
       </body>
