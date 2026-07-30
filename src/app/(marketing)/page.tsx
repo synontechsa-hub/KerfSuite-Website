@@ -401,8 +401,8 @@ export default function LandingPage() {
                       <input type="hidden" name="item_name" value="KerfCut Single Tool Annual License" />
                       <input type="hidden" name="amount" value="25.00" />
                       <input type="hidden" name="currency_code" value="USD" />
-                      <input type="hidden" name="return" value="https://kerfsuite.vercel.app/portal" />
-                      <input type="hidden" name="cancel_return" value="https://kerfsuite.vercel.app/#pricing" />
+                      <input type="hidden" name="return" value="https://kerf-suite.com/portal" />
+                      <input type="hidden" name="cancel_return" value="https://kerf-suite.com/#pricing" />
                       <input type="hidden" name="no_shipping" value="1" />
                       <input type="hidden" name="no_note" value="1" />
                       <button type="submit" className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', cursor: 'pointer', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
