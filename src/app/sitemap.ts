@@ -1,18 +1,23 @@
 import type { MetadataRoute } from 'next';
 
+function getBaseUrl() {
+  return (process.env.NEXT_PUBLIC_SITE_URL || 'https://kerf-suite.com').replace(/\/+$/, '');
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://kerf-suite.com';
+  const baseUrl = getBaseUrl();
+  const lastModified = new Date();
 
   return [
     {
-      url: `${baseUrl}`,
-      lastModified: new Date(),
+      url: `${baseUrl}/`,
+      lastModified,
       changeFrequency: 'monthly',
       priority: 1,
     },
     {
       url: `${baseUrl}/downloads`,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
