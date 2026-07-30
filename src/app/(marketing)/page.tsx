@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default function LandingPage() {
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://kerf-suite.com').replace(/\/$/, '');
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.kerf-suite.com').replace(/\/$/, '');
 
   return (
     <div className={styles.marketingPage}>

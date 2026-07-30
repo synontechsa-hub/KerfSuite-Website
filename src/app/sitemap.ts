@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 function getBaseUrl() {
-  return (process.env.NEXT_PUBLIC_SITE_URL || 'https://kerf-suite.com').replace(/\/+$/, '');
+  return (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.kerf-suite.com').replace(/\/+$/, '');
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
