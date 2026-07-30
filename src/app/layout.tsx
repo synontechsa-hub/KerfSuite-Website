@@ -19,6 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kerf-suite.com"),
   title: "KerfSuite — The Workshop Operating System",
   description: "A precision utility suite for serious workshops. Manage licenses, machines, and users across the KerfSuite ecosystem.",
   keywords: ["KerfSuite", "KerfCut", "KerfStock", "workshop software", "cut optimization", "CNC"],

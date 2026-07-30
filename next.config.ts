@@ -1,6 +1,21 @@
 import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from "next";
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ''} *.sentry.io https://www.googletagmanager.com`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: blob: *.supabase.co https://www.google-analytics.com https://www.googletagmanager.com",
+  "connect-src 'self' *.supabase.co *.sentry.io *.upstash.io https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://vitals.vercel-insights.com",
+  "form-action 'self' https://www.paypal.com",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "frame-ancestors 'none'",
+  ...(isDevelopment ? [] : ['upgrade-insecure-requests']),
+].join('; ');
+
 const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
@@ -10,13 +25,27 @@ const nextConfig: NextConfig = {
       {
         source: '/(.*)',
         headers: [
-          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.sentry.io https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: *.supabase.co https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' *.supabase.co *.sentry.io *.upstash.io https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://vitals.vercel-insights.com; frame-ancestors 'none';" },
+          { key: 'Content-Security-Policy', value: contentSecurityPolicy },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-Frame-Options', value: 'DENY' },
-          { key: 'X-XSS-Protection', value: '1; mode=block' },
+          { key: 'X-XSS-Protection', value: '0' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
-          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' }
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' }
+        ],
+      },
+      {
+        source: '/portal/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'private, no-store, max-age=0' },
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+        ],
+      },
+      {
+        source: '/api/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, max-age=0' },
         ],
       },
     ]
