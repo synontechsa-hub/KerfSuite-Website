@@ -14,6 +14,8 @@ export const metadata: Metadata = {
 };
 
 export default function LandingPage() {
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://kerf-suite.com').replace(/\/$/, '');
+
   return (
     <div className={styles.marketingPage}>
       <MarketingNav />
@@ -401,8 +403,13 @@ export default function LandingPage() {
                       <input type="hidden" name="item_name" value="KerfCut Single Tool Annual License" />
                       <input type="hidden" name="amount" value="25.00" />
                       <input type="hidden" name="currency_code" value="USD" />
+<<<<<<< HEAD
                       <input type="hidden" name="return" value="https://kerf-suite.com/portal" />
                       <input type="hidden" name="cancel_return" value="https://kerf-suite.com/#pricing" />
+=======
+                      <input type="hidden" name="return" value={`${siteUrl}/portal`} />
+                      <input type="hidden" name="cancel_return" value={`${siteUrl}/#pricing`} />
+>>>>>>> 699aab10bf057fc50d762d58ee65ad6e1229030b
                       <input type="hidden" name="no_shipping" value="1" />
                       <input type="hidden" name="no_note" value="1" />
                       <button type="submit" className="btn-filled" style={{ width: '100%', border: 'none', height: '38px', borderRadius: '7px', cursor: 'pointer', fontFamily: 'Orbitron', fontWeight: 'bold' }}>
