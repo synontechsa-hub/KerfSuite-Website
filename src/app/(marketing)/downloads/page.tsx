@@ -153,9 +153,9 @@ export default function DownloadsPage() {
 
           <div className="cyber-divider" />
 
-          <section style={{ padding: '4rem 0' }}>
+          <section className={dlStyles.guideSection}>
             <div className="section-inner">
-              <div style={{ maxWidth: '640px' }}>
+              <div className={dlStyles.guideContent}>
                 <p className="section-tag">Getting Started</p>
                 <h2 className="section-title" style={{ fontSize: '1.4rem' }}>
                   Activation <span>Guide</span>

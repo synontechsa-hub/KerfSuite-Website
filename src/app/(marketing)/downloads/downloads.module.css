@@ -155,9 +155,6 @@
   padding: 5rem 0;
 }
 
-.pageSubtitle {
-/* ...rest of existing styles for guides... */
-
 .releasesSection {
   padding: 3rem 0;
   display: flex;
@@ -262,6 +259,14 @@
   flex-wrap: wrap;
 }
 
+.guideSection {
+  padding: 4rem 0;
+}
+
+.guideContent {
+  max-width: 640px;
+}
+
 .guideList {
   list-style: none;
   counter-reset: guide-counter;
@@ -304,4 +309,130 @@
 .guideList li strong {
   color: var(--text-primary);
   font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  .dlScreen {
+    height: auto;
+    min-height: 0;
+    padding: 6rem 1.5rem 3rem;
+    align-items: stretch;
+  }
+
+  .dlInner {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    transform: none;
+    gap: 2rem;
+  }
+
+  .dlTextContainer {
+    position: static;
+    order: 1;
+    width: 100%;
+    text-align: center;
+  }
+
+  .dlCategoryTag {
+    margin-bottom: 1rem;
+  }
+
+  .dlHeadingText {
+    font-size: clamp(3rem, 9vw, 4.75rem);
+    line-height: 1.05;
+  }
+
+  .dlBodyText {
+    margin-top: 1.5rem;
+  }
+
+  .dlAppGrid {
+    position: static;
+    order: 2;
+    width: 100%;
+    align-items: center;
+  }
+
+  .dlAppRow {
+    width: min(100%, 380px);
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .dlAppLogo {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .dlBtnDownload {
+    width: 120px;
+    min-height: 44px;
+  }
+
+  .dlVisualPanel {
+    position: relative;
+    right: auto;
+    top: auto;
+    order: 3;
+    width: 100%;
+    height: clamp(240px, 55vw, 420px);
+    overflow: hidden;
+  }
+
+  .technicalSections {
+    padding: 3rem 0;
+  }
+
+  .releaseCard {
+    padding: 1.25rem;
+  }
+
+  .releaseBody {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 600px) {
+  .dlScreen {
+    padding: 5rem 1rem 2rem;
+  }
+
+  .dlHeadingText {
+    font-size: clamp(2.5rem, 12vw, 3.5rem);
+  }
+
+  .dlAppRow {
+    width: 100%;
+  }
+
+  .releaseHeader,
+  .releaseBody {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .releaseDate {
+    align-items: flex-start;
+  }
+
+  .downloadActions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .downloadActions .dlBtnDownload {
+    width: 100%;
+  }
+
+  .guideSection {
+    padding: 3rem 0;
+  }
+
+  :global(.section-inner) {
+    padding-inline: 1rem;
+  }
 }

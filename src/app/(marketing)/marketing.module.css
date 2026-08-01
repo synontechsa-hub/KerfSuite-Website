@@ -1365,6 +1365,91 @@
   }
 }
 
+/* Responsive pricing layout uses the current component class names. */
+@media (max-width: 1024px) {
+  .pricingSection {
+    min-height: 0;
+    padding: 6rem 1.5rem;
+    align-items: stretch;
+  }
+
+  .pricingInner {
+    width: 100%;
+    margin: 0;
+    max-width: 900px;
+    gap: 3rem;
+  }
+
+  .pricingTextContainer {
+    inset: auto;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .pricingCategoryTag,
+  .pricingHeadingText,
+  .pricingBodyContainer {
+    position: static;
+    left: auto;
+    top: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .pricingCategoryTag { margin-bottom: -1.25rem; }
+
+  .pricingHeadingText {
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    line-height: 1.05;
+    white-space: normal;
+  }
+
+  .pricingBodyContainer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 2rem;
+    text-align: left;
+  }
+
+  .pricingGrid {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 350px));
+  }
+
+  .pricingCard,
+  .pricingCard.workshopCard {
+    width: 100%;
+    height: 430px;
+  }
+
+  .pricingCard:hover { transform: none; }
+  .cardFrame { padding-bottom: 100px; }
+
+  .pricingAction,
+  .pricingCard:hover .pricingAction {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricingSection { padding: 5rem 1rem; }
+
+  .pricingGrid {
+    max-width: 360px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pricingHeadingText {
+    font-size: clamp(2rem, 10vw, 3.25rem);
+  }
+
+  .pricingBodyContainer {
+    max-width: 560px;
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
 /* ----------------------------------------------------------------
    Industrial CTA Screen
    ---------------------------------------------------------------- */
