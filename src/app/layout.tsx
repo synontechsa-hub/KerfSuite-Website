@@ -1,0 +1,55 @@
+import type { Metadata } from "next";
+import { Orbitron, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import GoogleAnalytics from "./components/GoogleAnalytics";
+import "./globals.css";
+
+const orbitron = Orbitron({
+  variable: "--font-orbitron",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://www.kerf-suite.com"),
+  title: "KerfSuite — The Workshop Operating System",
+  description: "A precision utility suite for serious workshops. Manage licenses, machines, and users across the KerfSuite ecosystem.",
+  keywords: ["KerfSuite", "KerfCut", "KerfStock", "workshop software", "cut optimization", "CNC"],
+  icons: {
+    icon: [
+      { url: '/svg/favicon.svg', type: 'image/svg+xml' },
+    ],
+  },
+  openGraph: {
+    title: "KerfSuite — The Workshop Operating System",
+    description: "Precision at every stage of production.",
+    type: "website",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
+  return (
+    <html lang="en" className={`${orbitron.variable} ${jetbrainsMono.variable}`}>
+      <body>
+        {gaId && <GoogleAnalytics measurementId={gaId} />}
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  );
+}
+

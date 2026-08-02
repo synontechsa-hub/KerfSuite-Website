@@ -1,0 +1,71 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import styles from '../page.module.css';
+import InventoryRoster from './InventoryRoster';
+import AddAssetModal from './AddAssetModal';
+import QRLabel from './QRLabel';
+import { Asset, Material, Location } from '@/models/portal';
+
+export default function InventoryManager({
+  initialAssets,
+  materials,
+  locations
+}: {
+  initialAssets: Asset[],
+  materials: Material[],
+  locations: Location[]
+}) {
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [printingAsset, setPrintingAsset] = useState<Asset | null>(null);
+
+  const handleAddAsset = () => {
+    // Smoothly refresh data from server
+    router.refresh();
+  };
+
+  return (
+    <>
+      <header className={`${styles.header} panel`}>
+        <h2 className="stencil-heading" style={{ fontSize: "1rem", color: "var(--text-primary)" }}>
+          INVENTORY / STOCK
+        </h2>
+        <div className={styles.headerActions}>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="btn-primary"
+            style={{ fontSize: '0.7rem' }}
+          >
+            + ADD MANUAL ASSET
+          </button>
+        </div>
+      </header>
+
+      <div className="panel" style={{ marginTop: "1rem" }}>
+        <InventoryRoster
+          initialAssets={initialAssets}
+          materials={materials}
+          locations={locations}
+          onPrint={(asset) => setPrintingAsset(asset)}
+        />
+      </div>
+
+      <AddAssetModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        materials={materials}
+        locations={locations}
+        onAdd={handleAddAsset}
+      />
+
+      {printingAsset && (
+        <QRLabel
+          asset={printingAsset}
+          onClose={() => setPrintingAsset(null)}
+        />
+      )}
+    </>
+  );
+}
