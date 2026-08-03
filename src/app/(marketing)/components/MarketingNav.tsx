@@ -20,6 +20,12 @@ export default function MarketingNav() {
         <li><Link href="/#philosophy" onClick={() => setMenuOpen(false)}>philosophy</Link></li>
         <li><Link href="/#apps" onClick={() => setMenuOpen(false)}>products</Link></li>
         <li><Link href="/#pricing" onClick={() => setMenuOpen(false)}>pricing</Link></li>
+        <li className={styles.mobileNavAction}>
+          <Link href="/login" onClick={() => setMenuOpen(false)}>login</Link>
+        </li>
+        <li className={styles.mobileNavAction}>
+          <Link href="/signup" onClick={() => setMenuOpen(false)}>sign up</Link>
+        </li>
         <li><Link href="/downloads" onClick={() => setMenuOpen(false)}>downloads</Link></li>
         <li>
           <a

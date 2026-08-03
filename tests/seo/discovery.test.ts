@@ -25,7 +25,7 @@ describe('search-engine discovery metadata', () => {
     expect(entries.some(({ url }) => /\/(portal|login|signup|join|auth|api)(\/|$)/.test(url))).toBe(false);
   });
 
-  it('advertises one canonical sitemap and blocks non-public routes', () => {
+  it('advertises one canonical sitemap and leaves auth pages crawlable for noindex processing', () => {
     process.env.NEXT_PUBLIC_SITE_URL = 'https://www.kerf-suite.com/';
 
     const metadata = robots();
@@ -36,8 +36,6 @@ describe('search-engine discovery metadata', () => {
     expect(rule.allow).toEqual(['/', '/downloads']);
     expect(rule.disallow).toEqual([
       '/portal',
-      '/login',
-      '/signup',
       '/join',
       '/auth',
       '/api',

@@ -11,7 +11,13 @@ const KERFCUT_INSTALLER_URL = 'https://github.com/Feed-Rate/KerfSuite/releases/d
 
 export const metadata: Metadata = {
   title: 'Downloads',
-  description: 'Download the latest KerfSuite applications. KerfCut v1.0.1 Beta available now on Windows x64.',
+  description: 'Download KerfSuite for Windows: get the current KerfCut beta installer, check system requirements, follow activation steps, and review release details for your workshop.',
+  alternates: {
+    canonical: '/downloads',
+  },
+  openGraph: {
+    url: '/downloads',
+  },
 };
 
 const releases = [

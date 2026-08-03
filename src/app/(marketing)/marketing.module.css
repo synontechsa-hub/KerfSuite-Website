@@ -73,6 +73,10 @@
   color: var(--text-primary);
 }
 
+.mobileNavAction {
+  display: none;
+}
+
 .navActions {
   display: flex;
   align-items: center;
@@ -1901,6 +1905,10 @@
    Responsive
    ---------------------------------------------------------------- */
 @media (max-width: 768px) {
+  .nav {
+    padding: 0 1rem;
+  }
+
   .navLinks {
     display: none;
     position: fixed;
@@ -1916,6 +1924,14 @@
 
   .navLinks.open {
     display: flex;
+  }
+
+  .mobileNavAction {
+    display: list-item;
+  }
+
+  .navActions > a {
+    display: none;
   }
 
   .navHamburger {

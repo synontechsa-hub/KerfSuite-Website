@@ -30,12 +30,15 @@ describe("GoogleAnalytics", () => {
     });
   }
 
-  it("does not load Google Analytics before the visitor chooses", () => {
+  it("initializes Google consent mode with storage denied before the visitor chooses", () => {
     render(<GoogleAnalytics measurementId={measurementId} />);
     finishConsentCheck();
 
     expect(screen.getByRole("dialog", { name: /optional site analytics/i })).toBeInTheDocument();
-    expect(document.getElementById("kerfsuite-google-analytics")).not.toBeInTheDocument();
+    expect(document.getElementById("kerfsuite-google-analytics")).toHaveAttribute(
+      "src",
+      `https://www.googletagmanager.com/gtag/js?id=${measurementId}`,
+    );
   });
 
   it("loads the correct Google tag after analytics consent", () => {
@@ -53,14 +56,17 @@ describe("GoogleAnalytics", () => {
     expect(screen.getByRole("button", { name: /change analytics privacy preference/i })).toBeInTheDocument();
   });
 
-  it("keeps the Google tag blocked when analytics is declined", () => {
+  it("keeps analytics storage denied when analytics is declined", () => {
     render(<GoogleAnalytics measurementId={measurementId} />);
     finishConsentCheck();
 
     fireEvent.click(screen.getByRole("button", { name: /essential only/i }));
 
     expect(window.localStorage.getItem(storageKey)).toBe("denied");
-    expect(document.getElementById("kerfsuite-google-analytics")).not.toBeInTheDocument();
+    expect(document.getElementById("kerfsuite-google-analytics")).toHaveAttribute(
+      "src",
+      `https://www.googletagmanager.com/gtag/js?id=${measurementId}`,
+    );
   });
 
   it("honours a previously granted choice on later visits", () => {

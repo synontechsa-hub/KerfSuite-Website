@@ -24,7 +24,7 @@ function setGoogleConsent(consent: AnalyticsConsent) {
   });
 }
 
-function loadGoogleAnalytics(measurementId: string) {
+function initializeGoogleAnalytics(measurementId: string) {
   if (!window.gtag) {
     window.dataLayer = window.dataLayer || [];
     window.gtag = (...args: unknown[]) => window.dataLayer.push(args);
@@ -35,20 +35,12 @@ function loadGoogleAnalytics(measurementId: string) {
       ad_personalization: "denied",
     });
     window.gtag("set", "ads_data_redaction", true);
-    window.gtag("consent", "update", {
-      analytics_storage: "granted",
-      ad_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied",
-    });
     window.gtag("js", new Date());
     window.gtag("config", measurementId, {
       send_page_view: false,
       allow_google_signals: false,
       allow_ad_personalization_signals: false,
     });
-  } else {
-    setGoogleConsent("granted");
   }
 
   if (!document.getElementById(GOOGLE_TAG_SCRIPT_ID)) {
@@ -82,11 +74,13 @@ export default function GoogleAnalytics({
   const [preferencesOpen, setPreferencesOpen] = useState(false);
 
   useEffect(() => {
+    initializeGoogleAnalytics(measurementId);
+
     const timer = window.setTimeout(() => {
       const savedConsent = window.localStorage.getItem(CONSENT_STORAGE_KEY);
       if (savedConsent === "granted" || savedConsent === "denied") {
         setConsent(savedConsent);
-        if (savedConsent === "granted") loadGoogleAnalytics(measurementId);
+        if (savedConsent === "granted") setGoogleConsent("granted");
         return;
       }
 
@@ -99,7 +93,7 @@ export default function GoogleAnalytics({
   useEffect(() => {
     if (consent !== "granted") return;
 
-    loadGoogleAnalytics(measurementId);
+    initializeGoogleAnalytics(measurementId);
     window.gtag?.("event", "page_view", {
       page_location: window.location.href,
       page_path: pathname,
@@ -114,7 +108,8 @@ export default function GoogleAnalytics({
     setPreferencesOpen(false);
 
     if (choice === "granted") {
-      loadGoogleAnalytics(measurementId);
+      initializeGoogleAnalytics(measurementId);
+      setGoogleConsent("granted");
       return;
     }
 
