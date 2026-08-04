@@ -37,8 +37,9 @@ describe('Kerf Entitlement Lease issuer', () => {
     const [encodedHeader, encodedClaims, encodedSignature] = issued.token.split('.')
     const header = JSON.parse(Buffer.from(encodedHeader, 'base64url').toString('utf8'))
     const claims = JSON.parse(Buffer.from(encodedClaims, 'base64url').toString('utf8'))
+    const signature = Buffer.from(encodedSignature, 'base64url')
 
-    expect(verify(null, Buffer.from(encodedHeader + '.' + encodedClaims), createPublicKey(publicKeyPem), Buffer.from(encodedSignature, 'base64url'))).toBe(true)
+    expect(verify(null, Buffer.from(encodedHeader + '.' + encodedClaims), createPublicKey(publicKeyPem), signature)).toBe(true)
     expect(header).toEqual({ alg: 'EdDSA', kid: 'test-kel-2026-01', typ: 'JWT' })
     expect(claims).toMatchObject({
       lease_version: '1',
@@ -58,5 +59,19 @@ describe('Kerf Entitlement Lease issuer', () => {
       KEL_SIGNING_PRIVATE_KEY_PEM: privateKeyPem,
       KEL_SIGNING_KEY_ID: 'unsafe key id'
     })).toThrow(KerfEntitlementSigningConfigurationError)
+    expect(() => readKerfEntitlementSigningConfiguration({
+      KEL_SIGNING_PRIVATE_KEY_PEM: privateKeyPem,
+      KEL_SIGNING_KEY_ID: 'test-kel-2026-01',
+      KEL_DURATION_HOURS: '0'
+    })).toThrow(KerfEntitlementSigningConfigurationError)
+  })
+
+  it('accepts escaped PEM configuration and defaults to a seven-day lease', () => {
+    const configurationFromEnvironment = readKerfEntitlementSigningConfiguration({
+      KEL_SIGNING_PRIVATE_KEY_PEM: privateKeyPem.replace(/\n/g, '\\n'),
+      KEL_SIGNING_KEY_ID: 'test-kel-2026-01'
+    })
+
+    expect(configurationFromEnvironment.durationHours).toBe(168)
   })
 })
