@@ -36,7 +36,7 @@ export async function proxy(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1'
     const path = request.nextUrl.pathname
 
-    if (path.startsWith('/api/v1/licenses/verify') && licenseRatelimit) {
+    if ((path.startsWith('/api/v1/licenses/verify') || path.startsWith('/api/v2/entitlements/lease')) && licenseRatelimit) {
       try {
         const { success } = await licenseRatelimit.limit(`license_${ip}`)
         if (!success) {
