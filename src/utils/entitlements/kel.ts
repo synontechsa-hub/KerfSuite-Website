@@ -73,7 +73,7 @@ function getEd25519PrivateKey(privateKeyPem: string): KeyObject {
 }
 
 export function readKerfEntitlementSigningConfiguration(
-  environment: NodeJS.ProcessEnv = process.env
+  environment: Record<string, string | undefined> = process.env
 ): KerfEntitlementSigningConfiguration {
   const privateKeyPem = environment.KEL_SIGNING_PRIVATE_KEY_PEM
   const keyId = environment.KEL_SIGNING_KEY_ID
